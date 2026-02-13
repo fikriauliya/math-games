@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Hitung Yuk! 🔢</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100dvh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: #e8f5e9; overflow: hidden; user-select: none;
+    }
+    .screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; }
+    .screen.active { display: flex; }
+
+    .start-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+    .start-title { font-size: 2rem; font-weight: 900; color: #2e7d32; margin: 0.5rem 0; }
+    .start-sub { font-size: 1.1rem; color: #66bb6a; margin-bottom: 1.5rem; }
+    .btn-play {
+      font-family: inherit; font-size: 1.5rem; font-weight: 900;
+      background: #43a047; color: white; border: none; border-radius: 2rem;
+      padding: 1rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #2e7d32;
+    }
+    .btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #2e7d32; }
+
+    .question { font-size: 1.4rem; font-weight: 700; color: #2e7d32; margin-bottom: 0.8rem; }
+    .objects-display {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+      max-width: 320px; margin-bottom: 1.2rem; min-height: 100px; align-items: center;
+    }
+    .obj { font-size: 3.5rem; animation: pop 0.3s ease backwards; }
+    .choices {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      width: 100%; max-width: 320px;
+    }
+    .choice-btn {
+      font-family: inherit; font-size: 2.5rem; font-weight: 900;
+      padding: 1rem; border: 4px solid #c8e6c9; border-radius: 1.2rem;
+      background: white; cursor: pointer; transition: all 0.15s; color: #2e7d32;
+    }
+    .choice-btn:active { transform: scale(0.95); }
+    .choice-btn.correct { background: #c8e6c9; border-color: #43a047; animation: shake-yes 0.5s; }
+    .choice-btn.wrong { background: #ffcdd2; border-color: #e53935; animation: shake-no 0.4s; }
+
+    .score-bar { display: flex; gap: 0.3rem; margin-bottom: 1rem; }
+    .star { font-size: 1.8rem; opacity: 0.2; transition: all 0.3s; }
+    .star.earned { opacity: 1; animation: star-pop 0.4s ease; }
+
+    .result-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+    .result-title { font-size: 2rem; font-weight: 900; color: #2e7d32; margin: 0.5rem 0; }
+    .result-sub { font-size: 1.2rem; color: #66bb6a; margin-bottom: 1.5rem; }
+
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+    @keyframes shake-yes { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes shake-no { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+    @keyframes star-pop { 0% { transform: scale(0); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🔢</div>
+  <div class="start-title">Hitung Yuk!</div>
+  <div class="start-sub">Ada berapa? Tap angka yang benar!</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="score-bar" id="score-bar"></div>
+  <div class="question">Ada berapa?</div>
+  <div class="objects-display" id="objects"></div>
+  <div class="choices" id="choices"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Main Lagi! 🔄</button>
+</div>
+
+<script>
+const EMOJIS = ['🍎','🍌','🌟','🐟','🦋','🌸','🎈','🍪','🐣','🍓','🧁','🐞','🌈','🎀','🍩'];
+const TOTAL = 8;
+let round, score, answer;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+function startGame() {
+  round = 0; score = 0;
+  show('game-screen');
+  renderStars();
+  nextRound();
+}
+
+function renderStars() {
+  const bar = document.getElementById('score-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const s = document.createElement('span');
+    s.className = 'star' + (i < score ? ' earned' : '');
+    s.textContent = '⭐';
+    bar.appendChild(s);
+  }
+}
+
+function nextRound() {
+  if (round >= TOTAL) return endGame();
+  answer = Math.floor(Math.random() * 5) + 1; // 1-5
+  const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+
+  const container = document.getElementById('objects');
+  container.innerHTML = '';
+  for (let i = 0; i < answer; i++) {
+    const span = document.createElement('span');
+    span.className = 'obj';
+    span.textContent = emoji;
+    span.style.animationDelay = (i * 0.1) + 's';
+    container.appendChild(span);
+  }
+
+  // Generate 4 choices including the answer
+  const wrong = new Set();
+  while (wrong.size < 3) {
+    const n = Math.floor(Math.random() * 5) + 1;
+    if (n !== answer) wrong.add(n);
+  }
+  const options = shuffle([answer, ...wrong]);
+
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  options.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = n;
+    btn.onclick = () => pick(btn, n);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function pick(btn, val) {
+  document.querySelectorAll('.choice-btn').forEach(b => b.onclick = null);
+  const correct = val === answer;
+  btn.classList.add(correct ? 'correct' : 'wrong');
+
+  if (correct) {
+    score++;
+    renderStars();
+    try {
+      const u = new SpeechSynthesisUtterance(String(answer));
+      u.lang = 'id-ID'; u.rate = 0.8; u.pitch = 1.2;
+      speechSynthesis.speak(u);
+    } catch(e) {}
+  } else {
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (Number(b.textContent) === answer) b.classList.add('correct');
+    });
+  }
+
+  setTimeout(() => { round++; nextRound(); }, correct ? 1000 : 1800);
+}
+
+function endGame() {
+  const perfect = score === TOTAL;
+  const good = score >= TOTAL * 0.6;
+  document.getElementById('result-emoji').textContent = perfect ? '🏆' : good ? '🎉' : '💪';
+  document.getElementById('result-title').textContent = perfect ? 'Pintar Sekali!' : good ? 'Bagus!' : 'Ayo Lagi!';
+  document.getElementById('result-sub').textContent = `${score} dari ${TOTAL} benar!`;
+  show('result-screen');
+}
+</script>
+</body>
+</html>

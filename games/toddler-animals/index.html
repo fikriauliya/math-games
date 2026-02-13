@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Suara Hewan! 🐄</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100dvh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: #fff8e1; overflow: hidden; user-select: none;
+    }
+    .screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; }
+    .screen.active { display: flex; }
+
+    /* Start */
+    .start-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+    .start-title { font-size: 2rem; font-weight: 900; color: #5d4037; margin: 0.5rem 0; }
+    .start-sub { font-size: 1.1rem; color: #8d6e63; margin-bottom: 1.5rem; }
+    .btn-play {
+      font-family: inherit; font-size: 1.5rem; font-weight: 900;
+      background: #ff8f00; color: white; border: none; border-radius: 2rem;
+      padding: 1rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #e65100;
+    }
+    .btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #e65100; }
+
+    /* Game */
+    .question { font-size: 1.3rem; font-weight: 700; color: #5d4037; margin-bottom: 0.5rem; }
+    .animal-display { font-size: 8rem; margin: 0.5rem 0; animation: pop 0.4s ease; }
+    .animal-name { font-size: 1.8rem; font-weight: 900; color: #4e342e; margin-bottom: 1rem; }
+    .choices {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      width: 100%; max-width: 400px; padding: 0 1rem;
+    }
+    .choice-btn {
+      font-family: inherit; font-size: 1.3rem; font-weight: 900;
+      padding: 1.2rem 0.5rem; border: 4px solid #d7ccc8; border-radius: 1.2rem;
+      background: white; cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .choice-btn .sound-text { font-size: 1.5rem; }
+    .choice-btn:active { transform: scale(0.95); }
+    .choice-btn.correct { background: #c8e6c9; border-color: #43a047; animation: shake-yes 0.5s; }
+    .choice-btn.wrong { background: #ffcdd2; border-color: #e53935; animation: shake-no 0.4s; }
+
+    .score-bar {
+      display: flex; gap: 0.3rem; margin-bottom: 1rem;
+    }
+    .star { font-size: 1.8rem; opacity: 0.2; transition: all 0.3s; }
+    .star.earned { opacity: 1; animation: star-pop 0.4s ease; }
+
+    /* Result */
+    .result-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+    .result-title { font-size: 2rem; font-weight: 900; color: #5d4037; margin: 0.5rem 0; }
+    .result-sub { font-size: 1.2rem; color: #8d6e63; margin-bottom: 1.5rem; }
+
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes shake-yes { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes shake-no { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+    @keyframes star-pop { 0% { transform: scale(0); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🐄</div>
+  <div class="start-title">Suara Hewan!</div>
+  <div class="start-sub">Tebak suara hewan yang benar 🎵</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="score-bar" id="score-bar"></div>
+  <div class="question">Hewan ini bilang apa?</div>
+  <div class="animal-display" id="animal-emoji"></div>
+  <div class="animal-name" id="animal-name"></div>
+  <div class="choices" id="choices"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Main Lagi! 🔄</button>
+</div>
+
+<script>
+const ANIMALS = [
+  { emoji: '🐄', name: 'Sapi', sound: 'Mooo!', wrong: ['Guk guk!', 'Meong!', 'Kukuruyuk!'] },
+  { emoji: '🐔', name: 'Ayam', sound: 'Kukuruyuk!', wrong: ['Mooo!', 'Mbee!', 'Kwek kwek!'] },
+  { emoji: '🐱', name: 'Kucing', sound: 'Meong!', wrong: ['Guk guk!', 'Cit cit!', 'Mooo!'] },
+  { emoji: '🐶', name: 'Anjing', sound: 'Guk guk!', wrong: ['Meong!', 'Mooo!', 'Mbee!'] },
+  { emoji: '🐸', name: 'Katak', sound: 'Koak koak!', wrong: ['Cit cit!', 'Guk guk!', 'Kukuruyuk!'] },
+  { emoji: '🐑', name: 'Domba', sound: 'Mbee!', wrong: ['Mooo!', 'Guk guk!', 'Koak koak!'] },
+  { emoji: '🦆', name: 'Bebek', sound: 'Kwek kwek!', wrong: ['Kukuruyuk!', 'Cit cit!', 'Meong!'] },
+  { emoji: '🐦', name: 'Burung', sound: 'Cit cit!', wrong: ['Kwek kwek!', 'Koak koak!', 'Mbee!'] },
+  { emoji: '🐷', name: 'Babi', sound: 'Oink oink!', wrong: ['Mooo!', 'Guk guk!', 'Mbee!'] },
+  { emoji: '🦁', name: 'Singa', sound: 'Aum!', wrong: ['Guk guk!', 'Meong!', 'Mooo!'] },
+];
+
+const TOTAL = 6;
+let queue, current, score, round;
+
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+function startGame() {
+  queue = shuffle([...ANIMALS]).slice(0, TOTAL);
+  score = 0; round = 0;
+  show('game-screen');
+  renderStars();
+  nextRound();
+}
+
+function renderStars() {
+  const bar = document.getElementById('score-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const s = document.createElement('span');
+    s.className = 'star' + (i < score ? ' earned' : '');
+    s.textContent = '⭐';
+    bar.appendChild(s);
+  }
+}
+
+function nextRound() {
+  if (round >= TOTAL) return endGame();
+  current = queue[round];
+  document.getElementById('animal-emoji').textContent = current.emoji;
+  document.getElementById('animal-emoji').style.animation = 'none';
+  requestAnimationFrame(() => document.getElementById('animal-emoji').style.animation = 'pop 0.4s ease');
+  document.getElementById('animal-name').textContent = current.name;
+
+  const wrongPick = shuffle([...current.wrong]).slice(0, 3);
+  const options = shuffle([current.sound, ...wrongPick]);
+
+  const container = document.getElementById('choices');
+  container.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="sound-text">${opt}</span>`;
+    btn.onclick = () => pick(btn, opt);
+    container.appendChild(btn);
+  });
+}
+
+function pick(btn, answer) {
+  document.querySelectorAll('.choice-btn').forEach(b => b.onclick = null);
+  const correct = answer === current.sound;
+  btn.classList.add(correct ? 'correct' : 'wrong');
+
+  if (correct) {
+    score++;
+    renderStars();
+    // Show correct briefly, then speak
+    try {
+      const u = new SpeechSynthesisUtterance(current.sound);
+      u.lang = 'id-ID'; u.rate = 0.8; u.pitch = 1.3;
+      speechSynthesis.speak(u);
+    } catch(e) {}
+  } else {
+    // Highlight correct
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (b.textContent.trim() === current.sound) b.classList.add('correct');
+    });
+  }
+
+  setTimeout(() => { round++; nextRound(); }, correct ? 1200 : 2000);
+}
+
+function endGame() {
+  const perfect = score === TOTAL;
+  const good = score >= TOTAL * 0.6;
+  document.getElementById('result-emoji').textContent = perfect ? '🏆' : good ? '🎉' : '💪';
+  document.getElementById('result-title').textContent = perfect ? 'Hebat Sekali!' : good ? 'Bagus!' : 'Ayo Coba Lagi!';
+  document.getElementById('result-sub').textContent = `${score} dari ${TOTAL} benar!`;
+  show('result-screen');
+}
+</script>
+</body>
+</html>
