@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tap Warna! 🎨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; min-height: 100vh; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+    .screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem; }
+    .hidden { display: none !important; }
+    
+    /* Start */
+    #start { background: linear-gradient(135deg, #ff9a9e, #fecfef, #fdfcfb); }
+    #start h1 { font-size: 3rem; font-weight: 900; color: #333; }
+    #start p { font-size: 1.2rem; color: #666; }
+    .mode-btns { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; }
+    .mode-btn { padding: 1.2rem; font-size: 1.3rem; font-weight: 800; border: none; border-radius: 20px; cursor: pointer; font-family: 'Nunito'; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .mode-btn:active { transform: scale(0.95); }
+    .mode-btn.colors { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .mode-btn.shapes { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .mode-btn.count { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    
+    /* Game */
+    #game { background: #fdfcfb; padding: 1rem; gap: 0.5rem; }
+    .prompt { text-align: center; padding: 0.8rem; }
+    .prompt-text { font-size: 1.2rem; color: #666; font-weight: 700; }
+    .prompt-target { font-size: 2.5rem; font-weight: 900; margin: 0.3rem 0; }
+    
+    .score-bar { display: flex; justify-content: space-between; width: 100%; padding: 0 0.5rem; }
+    .stars { font-size: 1.5rem; }
+    .round-info { font-size: 1rem; color: #999; font-weight: 700; }
+    
+    .choices-grid {
+      display: grid; gap: 1rem; width: 100%; max-width: 400px; flex: 1;
+      align-content: center;
+    }
+    .choices-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .choices-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    
+    .choice {
+      aspect-ratio: 1; border-radius: 25px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 3rem; box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      transition: transform 0.15s; border: 4px solid transparent;
+    }
+    .choice:active { transform: scale(0.9); }
+    .choice.correct { animation: bounce 0.5s; border-color: #4caf50; }
+    .choice.wrong { animation: shake 0.4s; opacity: 0.5; }
+    
+    @keyframes bounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+    
+    /* Celebration */
+    .celebration { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 100; }
+    .celebration .emoji { font-size: 4rem; animation: celebrate 1s forwards; position: absolute; }
+    @keyframes celebrate { 0% { transform: scale(0) translateY(0); opacity: 1; } 50% { transform: scale(1.5) translateY(-30px); opacity: 1; } 100% { transform: scale(1) translateY(-80px); opacity: 0; } }
+    
+    /* Result */
+    #result { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+    #result h1 { font-size: 2.5rem; font-weight: 900; color: #333; }
+    .big-stars { font-size: 4rem; margin: 1rem 0; }
+    .result-btn { padding: 1rem 3rem; font-size: 1.3rem; font-weight: 900; border: none; border-radius: 50px; cursor: pointer; font-family: 'Nunito'; background: white; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .result-btn:active { transform: scale(0.95); }
+    
+    a.back { color: rgba(0,0,0,0.4); text-decoration: none; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🎨 Tap Warna!</h1>
+    <p>Game seru untuk si kecil</p>
+    <div class="mode-btns">
+      <button class="mode-btn colors" onclick="startGame('colors')">🎨 Tap Warna!</button>
+      <button class="mode-btn shapes" onclick="startGame('shapes')">🔷 Tap Bentuk!</button>
+      <button class="mode-btn count" onclick="startGame('count')">🐣 Hitung Hewan!</button>
+    </div>
+    <a href="../" class="back">← Kembali</a>
+  </div>
+  
+  <div id="game" class="screen hidden">
+    <div class="score-bar">
+      <div class="stars" id="stars"></div>
+      <div class="round-info" id="round-info">1/10</div>
+    </div>
+    <div class="prompt">
+      <div class="prompt-text" id="prompt-text">Tap yang warna...</div>
+      <div class="prompt-target" id="prompt-target">MERAH</div>
+    </div>
+    <div class="choices-grid cols-2" id="choices"></div>
+    <div class="celebration hidden" id="celebration"></div>
+  </div>
+  
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🎉 Hebat!</h1>
+    <div class="big-stars" id="big-stars">⭐⭐⭐</div>
+    <button class="result-btn" onclick="location.reload()">Main Lagi!</button>
+    <a href="../" class="back">← Kembali</a>
+  </div>
+
+  <script>
+    const COLORS = [
+      { name: 'MERAH', color: '#f44336', emoji: '🔴' },
+      { name: 'BIRU', color: '#2196F3', emoji: '🔵' },
+      { name: 'KUNING', color: '#FFEB3B', emoji: '🟡' },
+      { name: 'HIJAU', color: '#4CAF50', emoji: '🟢' },
+      { name: 'ORANGE', color: '#FF9800', emoji: '🟠' },
+      { name: 'UNGU', color: '#9C27B0', emoji: '🟣' },
+      { name: 'PINK', color: '#E91E63', emoji: '💗' },
+      { name: 'COKLAT', color: '#795548', emoji: '🟤' },
+    ];
+    
+    const SHAPES = [
+      { name: 'LINGKARAN', emoji: '⚫', svg: 'circle' },
+      { name: 'BINTANG', emoji: '⭐', svg: 'star' },
+      { name: 'HATI', emoji: '❤️', svg: 'heart' },
+      { name: 'SEGITIGA', emoji: '🔺', svg: 'triangle' },
+      { name: 'KOTAK', emoji: '⬛', svg: 'square' },
+      { name: 'BULAN', emoji: '🌙', svg: 'moon' },
+    ];
+    
+    const ANIMALS = ['🐶','🐱','🐰','🐸','🐣','🐷','🐮','🦊','🐻','🐼','🐨','🦁','🐯','🐵','🐔'];
+    
+    let s = {};
+    
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+      return a;
+    }
+    
+    function startGame(mode) {
+      s = { mode, round: 0, total: 10, correct: 0, locked: false };
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('game').classList.remove('hidden');
+      nextRound();
+    }
+    
+    function nextRound() {
+      if (s.round >= s.total) return endGame();
+      s.round++;
+      s.locked = false;
+      
+      document.getElementById('round-info').textContent = `${s.round}/${s.total}`;
+      document.getElementById('stars').textContent = '⭐'.repeat(s.correct);
+      
+      const grid = document.getElementById('choices');
+      grid.innerHTML = '';
+      
+      if (s.mode === 'colors') {
+        grid.className = 'choices-grid cols-2';
+        const picked = shuffle(COLORS).slice(0, 4);
+        const target = picked[Math.floor(Math.random() * picked.length)];
+        
+        document.getElementById('prompt-text').textContent = 'Tap yang warna...';
+        document.getElementById('prompt-target').textContent = target.name;
+        document.getElementById('prompt-target').style.color = target.color;
+        
+        picked.forEach(c => {
+          const div = document.createElement('div');
+          div.className = 'choice';
+          div.style.background = c.color;
+          div.dataset.correct = c.name === target.name ? '1' : '0';
+          div.addEventListener('click', () => handleTap(div));
+          div.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(div); }, {passive:false});
+          grid.appendChild(div);
+        });
+      }
+      else if (s.mode === 'shapes') {
+        grid.className = 'choices-grid cols-3';
+        const picked = shuffle(SHAPES).slice(0, 6);
+        const target = picked[Math.floor(Math.random() * picked.length)];
+        
+        document.getElementById('prompt-text').textContent = 'Tap yang bentuk...';
+        document.getElementById('prompt-target').textContent = target.name;
+        document.getElementById('prompt-target').style.color = '#333';
+        
+        picked.forEach(sh => {
+          const div = document.createElement('div');
+          div.className = 'choice';
+          div.style.background = '#e3f2fd';
+          div.textContent = sh.emoji;
+          div.dataset.correct = sh.name === target.name ? '1' : '0';
+          div.addEventListener('click', () => handleTap(div));
+          div.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(div); }, {passive:false});
+          grid.appendChild(div);
+        });
+      }
+      else if (s.mode === 'count') {
+        grid.className = 'choices-grid cols-2';
+        const targetCount = Math.floor(Math.random() * 5) + 1;
+        const animal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
+        
+        document.getElementById('prompt-text').textContent = 'Ada berapa ' + animal + '?';
+        document.getElementById('prompt-target').textContent = (animal + ' ').repeat(targetCount);
+        document.getElementById('prompt-target').style.color = '#333';
+        document.getElementById('prompt-target').style.fontSize = '2rem';
+        
+        // Generate 4 number choices
+        const answers = new Set([targetCount]);
+        while (answers.size < 4) {
+          const wrong = Math.max(1, targetCount + Math.floor(Math.random() * 5) - 2);
+          answers.add(wrong);
+        }
+        
+        [...answers].sort((a,b) => a-b).forEach(num => {
+          const div = document.createElement('div');
+          div.className = 'choice';
+          div.style.background = ['#ffcdd2','#bbdefb','#c8e6c9','#fff9c4'][num % 4];
+          div.textContent = num;
+          div.style.fontSize = '4rem';
+          div.style.fontWeight = '900';
+          div.style.color = '#333';
+          div.dataset.correct = num === targetCount ? '1' : '0';
+          div.addEventListener('click', () => handleTap(div));
+          div.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(div); }, {passive:false});
+          grid.appendChild(div);
+        });
+      }
+    }
+    
+    function handleTap(el) {
+      if (s.locked) return;
+      s.locked = true;
+      
+      if (el.dataset.correct === '1') {
+        el.classList.add('correct');
+        s.correct++;
+        celebrate();
+        // Play success sound via Audio API
+        try {
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.frequency.value = 523; osc.type = 'sine';
+          gain.gain.value = 0.3;
+          osc.start(); osc.stop(ctx.currentTime + 0.15);
+          setTimeout(() => {
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.connect(gain2); gain2.connect(ctx.destination);
+            osc2.frequency.value = 659; osc2.type = 'sine';
+            gain2.gain.value = 0.3;
+            osc2.start(); osc2.stop(ctx.currentTime + 0.2);
+          }, 150);
+        } catch(e) {}
+        setTimeout(nextRound, 800);
+      } else {
+        el.classList.add('wrong');
+        // Buzz sound
+        try {
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.frequency.value = 200; osc.type = 'square';
+          gain.gain.value = 0.2;
+          osc.start(); osc.stop(ctx.currentTime + 0.2);
+        } catch(e) {}
+        setTimeout(() => { el.classList.remove('wrong'); s.locked = false; }, 500);
+      }
+    }
+    
+    function celebrate() {
+      const cel = document.getElementById('celebration');
+      cel.classList.remove('hidden');
+      cel.innerHTML = '';
+      const emojis = ['🌟','✨','🎉','⭐','💫','🥳'];
+      for (let i = 0; i < 6; i++) {
+        const span = document.createElement('span');
+        span.className = 'emoji';
+        span.textContent = emojis[i % emojis.length];
+        span.style.left = (20 + Math.random() * 60) + '%';
+        span.style.top = (30 + Math.random() * 40) + '%';
+        span.style.animationDelay = (i * 0.1) + 's';
+        cel.appendChild(span);
+      }
+      setTimeout(() => cel.classList.add('hidden'), 1200);
+    }
+    
+    function endGame() {
+      document.getElementById('game').classList.add('hidden');
+      document.getElementById('result').classList.remove('hidden');
+      const pct = s.correct / s.total;
+      document.getElementById('result-title').textContent = pct >= 0.8 ? '🎉 Hebat Sekali!' : pct >= 0.5 ? '⭐ Bagus!' : '💪 Coba Lagi!';
+      document.getElementById('big-stars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.7 ? '⭐⭐' : '⭐';
+    }
+  </script>
+</body>
+</html>
