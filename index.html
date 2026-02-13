@@ -3,127 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tug of War — Math & Logic Games for Kids</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <title>Math & Logic Games for Kids</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #faf8f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1rem;
+    }
+    
+    .header { text-align: center; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 900; color: #2d3436; }
+    h1 .emoji { font-size: 2rem; }
+    .subtitle { color: #636e72; font-size: 1rem; margin-top: 0.3rem; }
+    
+    .games-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem; width: 100%; max-width: 900px;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 16px; padding: 1.5rem;
+      text-decoration: none; color: #333;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #e8e4df;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+    .game-card:active { transform: scale(0.98); }
+    
+    .game-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .game-title { font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-bottom: 0.3rem; }
+    .game-desc { font-size: 0.85rem; color: #636e72; line-height: 1.5; }
+    .game-tags { display: flex; gap: 0.4rem; margin-top: 0.8rem; flex-wrap: wrap; }
+    .tag {
+      padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;
+      background: #f0eeeb; color: #636e72;
+    }
+    .tag.hot { background: #fff0f0; color: #e17055; }
+    .tag.new { background: #eafff0; color: #00b894; }
+    .tag.multi { background: #fff8e6; color: #e67e22; }
+    .tag.toddler { background: #fce4ec; color: #c2185b; }
+    
+    .section-label {
+      width: 100%; max-width: 900px; margin: 1.5rem 0 0.8rem;
+      font-size: 0.85rem; font-weight: 800; color: #b2bec3;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    
+    footer { margin-top: 3rem; color: #b2bec3; font-size: 0.8rem; }
+    
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem; }
+      .games-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Start Screen -->
-  <div id="start-screen" class="screen">
-    <h1>🎮 TUG OF WAR</h1>
-    <h2>MATHEMATICS</h2>
-    <div class="settings">
-      <label>Difficulty:
-        <select id="difficulty">
-          <option value="easy">Easy (1-10)</option>
-          <option value="medium" selected>Medium (1-20)</option>
-          <option value="hard">Hard (1-50)</option>
-        </select>
-      </label>
-      <label>Operations:
-        <select id="operations">
-          <option value="add">Addition (+)</option>
-          <option value="sub">Subtraction (−)</option>
-          <option value="mix" selected>Mixed (+, −)</option>
-          <option value="mul">Multiplication (×)</option>
-          <option value="all">All (+, −, ×)</option>
-        </select>
-      </label>
-      <label>Time (seconds):
-        <select id="game-time">
-          <option value="60">60s</option>
-          <option value="90" selected>90s</option>
-          <option value="120">120s</option>
-        </select>
-      </label>
-    </div>
-    <button id="start-btn" class="big-btn">START GAME</button>
-    <p class="hint">👈 Player 1 uses LEFT side · Player 2 uses RIGHT side 👉</p>
+  <div class="header">
+    <h1><span class="emoji">🎮</span> Math & Logic Games for Kids</h1>
+    <p class="subtitle">Fun games for the whole family — no login required!</p>
   </div>
-
-  <!-- Game Screen -->
-  <div id="game-screen" class="screen hidden">
-    <!-- Header -->
-    <div class="game-header">
-      <div class="team-score team1-score">
-        <span class="team-label">Team 1</span>
-        <span class="score" id="score1">0</span>
+  
+  <div class="section-label">🧮 Math Games</div>
+  <div class="games-grid">
+    <a href="games/tug-of-war/" class="game-card">
+      <div class="game-emoji">🪢</div>
+      <div class="game-title">Tug of War</div>
+      <div class="game-desc">2-player math battle! Answer questions to pull the rope. First to pull their opponent over wins!</div>
+      <div class="game-tags">
+        <span class="tag hot">🔥 Popular</span>
+        <span class="tag multi">👥 2 Players</span>
+        <span class="tag">➕ ➖ ✖️</span>
       </div>
-      <div class="timer-box">
-        <span class="timer-icon">⏱</span>
-        <span id="timer">01:30</span>
+    </a>
+    
+    <a href="games/speed-math/" class="game-card">
+      <div class="game-emoji">🏎️</div>
+      <div class="game-title">Math Racer</div>
+      <div class="game-desc">Answer fast to race your car! Build combos for bonus points. How high can you score?</div>
+      <div class="game-tags">
+        <span class="tag">👤 1 Player</span>
+        <span class="tag">⚡ Speed</span>
       </div>
-      <div class="team-score team2-score">
-        <span class="team-label">Team 2</span>
-        <span class="score" id="score2">0</span>
+    </a>
+    
+    <a href="games/bubble-pop/" class="game-card">
+      <div class="game-emoji">🫧</div>
+      <div class="game-title">Bubble Pop</div>
+      <div class="game-desc">Pop floating bubbles that match the target! Find singles or pairs that add up to the number.</div>
+      <div class="game-tags">
+        <span class="tag">👤 1 Player</span>
+        <span class="tag">🎯 Target</span>
       </div>
-    </div>
-
-    <!-- Tug of War Arena -->
-    <div class="arena">
-      <div class="rope-container">
-        <div class="team1-chars" id="team1-chars">
-          <div class="character blue">🧑‍🔧</div>
-          <div class="character blue">🧑‍🔧</div>
-        </div>
-        <div class="rope" id="rope">
-          <div class="rope-line"></div>
-          <div class="flag" id="flag">🚩</div>
-        </div>
-        <div class="team2-chars" id="team2-chars">
-          <div class="character red">🧑‍🚒</div>
-          <div class="character red">🧑‍🚒</div>
-        </div>
+    </a>
+    
+    <a href="games/memory-math/" class="game-card">
+      <div class="game-emoji">🧠</div>
+      <div class="game-title">Math Memory</div>
+      <div class="game-desc">Flip cards and match equations with their answers. Train your memory AND your math!</div>
+      <div class="game-tags">
+        <span class="tag">👤 1-2 Players</span>
+        <span class="tag">🧩 Puzzle</span>
       </div>
-      <div class="center-line"></div>
-    </div>
-
-    <!-- Player Panels -->
-    <div class="panels">
-      <!-- Team 1 Panel (Left) -->
-      <div class="panel team1-panel">
-        <div class="panel-header team1-header">
-          <span>Team 1</span>
-          <span class="panel-score" id="panel-score1">0</span>
-        </div>
-        <div class="question" id="question1">2 + 5 = ?</div>
-        <input type="text" class="answer-display" id="answer1" readonly>
-        <div class="numpad" id="numpad1"></div>
+    </a>
+    
+    <a href="games/number-ninja/" class="game-card">
+      <div class="game-emoji">🥷</div>
+      <div class="game-title">Number Ninja</div>
+      <div class="game-desc">Math problems fall from the sky — slash them with the right answer before they hit the ground!</div>
+      <div class="game-tags">
+        <span class="tag new">✨ New</span>
+        <span class="tag">👤 1 Player</span>
+        <span class="tag">⚔️ Action</span>
       </div>
-
-      <!-- Team 2 Panel (Right) -->
-      <div class="panel team2-panel">
-        <div class="panel-header team2-header">
-          <span>Team 2</span>
-          <span class="panel-score" id="panel-score2">0</span>
-        </div>
-        <div class="question" id="question2">6 + 8 = ?</div>
-        <input type="text" class="answer-display" id="answer2" readonly>
-        <div class="numpad" id="numpad2"></div>
-      </div>
-    </div>
+    </a>
   </div>
-
-  <!-- Result Screen -->
-  <div id="result-screen" class="screen hidden">
-    <div class="result-content">
-      <h1 id="winner-text">🏆 Team 1 Wins!</h1>
-      <div class="final-scores">
-        <div class="final-score team1-final">
-          <span>Team 1</span>
-          <span id="final-score1">0</span>
-        </div>
-        <span class="vs">VS</span>
-        <div class="final-score team2-final">
-          <span>Team 2</span>
-          <span id="final-score2">0</span>
-        </div>
+  
+  <div class="section-label">👶 Toddler Games (Ages 2-4)</div>
+  <div class="games-grid">
+    <a href="games/toddler-colors/" class="game-card">
+      <div class="game-emoji">🎨</div>
+      <div class="game-title">Tap Warna!</div>
+      <div class="game-desc">Tap warna, bentuk, dan hitung hewan! Khusus untuk si kecil dengan tombol besar dan suara lucu. 🎵</div>
+      <div class="game-tags">
+        <span class="tag toddler">👶 Toddler</span>
+        <span class="tag">🎨 Warna</span>
+        <span class="tag">🔷 Bentuk</span>
+        <span class="tag">🐣 Hitung</span>
       </div>
-      <button id="replay-btn" class="big-btn">PLAY AGAIN</button>
-    </div>
+    </a>
   </div>
-
-  <script src="game.js"></script>
+  
+  <footer>Made with ❤️ by Auri for the Auliya family</footer>
 </body>
 </html>

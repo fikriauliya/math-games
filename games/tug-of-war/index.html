@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tug of War — Math & Logic Games for Kids</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="start-screen" class="screen">
+    <h1>🎮 TUG OF WAR</h1>
+    <h2>MATHEMATICS</h2>
+    <div class="settings">
+      <label>Difficulty:
+        <select id="difficulty">
+          <option value="easy">Easy (1-10)</option>
+          <option value="medium" selected>Medium (1-20)</option>
+          <option value="hard">Hard (1-50)</option>
+        </select>
+      </label>
+      <label>Operations:
+        <select id="operations">
+          <option value="add">Addition (+)</option>
+          <option value="sub">Subtraction (−)</option>
+          <option value="mix" selected>Mixed (+, −)</option>
+          <option value="mul">Multiplication (×)</option>
+          <option value="all">All (+, −, ×)</option>
+        </select>
+      </label>
+      <label>Time (seconds):
+        <select id="game-time">
+          <option value="60">60s</option>
+          <option value="90" selected>90s</option>
+          <option value="120">120s</option>
+        </select>
+      </label>
+    </div>
+    <button id="start-btn" class="big-btn">START GAME</button>
+    <p class="hint">👈 Player 1 uses LEFT side · Player 2 uses RIGHT side 👉</p>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen hidden">
+    <!-- Header -->
+    <div class="game-header">
+      <div class="team-score team1-score">
+        <span class="team-label">Team 1</span>
+        <span class="score" id="score1">0</span>
+      </div>
+      <div class="timer-box">
+        <span class="timer-icon">⏱</span>
+        <span id="timer">01:30</span>
+      </div>
+      <div class="team-score team2-score">
+        <span class="team-label">Team 2</span>
+        <span class="score" id="score2">0</span>
+      </div>
+    </div>
+
+    <!-- Tug of War Arena -->
+    <div class="arena">
+      <div class="rope-container">
+        <div class="team1-chars" id="team1-chars">
+          <div class="character blue">🧑‍🔧</div>
+          <div class="character blue">🧑‍🔧</div>
+        </div>
+        <div class="rope" id="rope">
+          <div class="rope-line"></div>
+          <div class="flag" id="flag">🚩</div>
+        </div>
+        <div class="team2-chars" id="team2-chars">
+          <div class="character red">🧑‍🚒</div>
+          <div class="character red">🧑‍🚒</div>
+        </div>
+      </div>
+      <div class="center-line"></div>
+    </div>
+
+    <!-- Player Panels -->
+    <div class="panels">
+      <!-- Team 1 Panel (Left) -->
+      <div class="panel team1-panel">
+        <div class="panel-header team1-header">
+          <span>Team 1</span>
+          <span class="panel-score" id="panel-score1">0</span>
+        </div>
+        <div class="question" id="question1">2 + 5 = ?</div>
+        <input type="text" class="answer-display" id="answer1" readonly>
+        <div class="numpad" id="numpad1"></div>
+      </div>
+
+      <!-- Team 2 Panel (Right) -->
+      <div class="panel team2-panel">
+        <div class="panel-header team2-header">
+          <span>Team 2</span>
+          <span class="panel-score" id="panel-score2">0</span>
+        </div>
+        <div class="question" id="question2">6 + 8 = ?</div>
+        <input type="text" class="answer-display" id="answer2" readonly>
+        <div class="numpad" id="numpad2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen" class="screen hidden">
+    <div class="result-content">
+      <h1 id="winner-text">🏆 Team 1 Wins!</h1>
+      <div class="final-scores">
+        <div class="final-score team1-final">
+          <span>Team 1</span>
+          <span id="final-score1">0</span>
+        </div>
+        <span class="vs">VS</span>
+        <div class="final-score team2-final">
+          <span>Team 2</span>
+          <span id="final-score2">0</span>
+        </div>
+      </div>
+      <button id="replay-btn" class="big-btn">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
