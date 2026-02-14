@@ -1,4 +1,9 @@
 import { COLORS, SHAPES, ANIMALS, shuffle, generateCountingAnswers, getEndResult, type ColorItem, type ShapeItem } from './logic';
+import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'toddler-colors';
 
 interface ToddlerState {
   mode: string;
@@ -104,35 +109,11 @@ function handleTap(el: HTMLElement) {
     el.classList.add('correct');
     s.correct++;
     celebrate();
-    try {
-      const ctx = new AudioContext();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = 523; osc.type = 'sine';
-      gain.gain.value = 0.3;
-      osc.start(); osc.stop(ctx.currentTime + 0.15);
-      setTimeout(() => {
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2); gain2.connect(ctx.destination);
-        osc2.frequency.value = 659; osc2.type = 'sine';
-        gain2.gain.value = 0.3;
-        osc2.start(); osc2.stop(ctx.currentTime + 0.2);
-      }, 150);
-    } catch(e) {}
+    playToddlerCorrect();
     setTimeout(nextRound, 800);
   } else {
     el.classList.add('wrong');
-    try {
-      const ctx = new AudioContext();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = 200; osc.type = 'square';
-      gain.gain.value = 0.2;
-      osc.start(); osc.stop(ctx.currentTime + 0.2);
-    } catch(e) {}
+    playToddlerWrong();
     setTimeout(() => { el.classList.remove('wrong'); s.locked = false; }, 500);
   }
 }
@@ -160,6 +141,26 @@ function endGame() {
   const result = getEndResult(s.correct, s.total);
   document.getElementById('result-title')!.textContent = result.title;
   document.getElementById('big-stars')!.textContent = result.stars;
+  
+  playWin();
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, s.correct);
+  if (isNew && s.correct > 0) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    document.getElementById('result-title')!.after(el);
+  }
+  if (s.correct === s.total) showConfetti();
 }
 
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Skor terbaik: ${best}/10`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('.mode-btns')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;

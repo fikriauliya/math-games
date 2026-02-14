@@ -1,4 +1,9 @@
 import { CONFIG, genQuestion, calcPoints, calcAccuracy } from './logic';
+import { playCorrect, playWrong, playCombo, playWin, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'number-ninja';
 
 interface FallingItem {
   id: number;
@@ -100,9 +105,11 @@ function trySlash() {
     slashed++;
     scoreEl.textContent = String(score);
     updateCombo();
+    if (combo >= 3) playCombo(combo); else playCorrect();
   } else {
     combo = 0;
     updateCombo();
+    playWrong();
   }
   answerInput.focus();
 }
@@ -163,6 +170,17 @@ function endGame() {
   const accuracy = calcAccuracy(slashed, missed);
   document.getElementById('stats')!.innerHTML = `🗡️ Slashed: ${slashed}<br>💨 Missed: ${missed}<br>🎯 Accuracy: ${accuracy}%<br>🔥 Best Combo: ${maxCombo}x`;
   gameOverScreen.classList.add('show');
+  
+  playWin();
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, score);
+  if (isNew) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    document.getElementById('final-score')!.after(el);
+  }
+  if (missed === 0 && slashed > 10) showConfetti();
 }
 
 function showStart() {
@@ -173,5 +191,14 @@ function showStart() {
 slashBtn.addEventListener('click', trySlash);
 answerInput.addEventListener('keydown', (e: KeyboardEvent) => { if (e.key === 'Enter') trySlash(); });
 
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Your best: ${best}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('.difficulty-btns')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;
 (window as any).showStart = showStart;

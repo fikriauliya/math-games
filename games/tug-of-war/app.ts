@@ -1,6 +1,10 @@
 // Tug of War: Mathematics
 import { genQuestion as _genQuestion, clampRopeOffset, calcRopeOffset, determineWinner, formatTime, type Question } from './logic';
+import { playCorrect, playWrong, playWin, playTick, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
 
+const GAME_ID = 'tug-of-war';
 const $ = (id: string) => document.getElementById(id)!;
 
 interface GameState {
@@ -25,19 +29,17 @@ let state: GameState = {
   answer1: '', answer2: '',
   question1: null, question2: null,
   timeLeft: 90, timer: null,
-  ropeOffset: 0, // -100 to 100, negative = team1 winning
+  ropeOffset: 0,
   difficulty: 'medium',
   operations: 'mix',
   gameActive: false,
   negative1: false, negative2: false,
 };
 
-// Generate question
 function genQuestion(): Question {
   return _genQuestion(state.difficulty, state.operations);
 }
 
-// Create numpad
 function createNumpad(team: number) {
   const pad = $(`numpad${team}`);
   pad.innerHTML = '';
@@ -58,7 +60,6 @@ function createNumpad(team: number) {
     btn.dataset.value = b.value;
     btn.dataset.team = team;
     
-    // Use both touch and click
     const handler = (e: Event) => {
       e.preventDefault();
       if (!state.gameActive) return;
@@ -100,11 +101,10 @@ function checkAnswer(team: number) {
   if ((state as any)[answerKey] === '') return;
   
   if (input === question.answer) {
-    // Correct!
     (state as any)[`score${team}`]++;
     updateScores();
+    playCorrect();
     
-    // Visual feedback
     display.classList.add('correct');
     panel.classList.add('flash-correct');
     setTimeout(() => {
@@ -112,21 +112,18 @@ function checkAnswer(team: number) {
       panel.classList.remove('flash-correct');
     }, 300);
     
-    // Move rope
     state.ropeOffset = calcRopeOffset(state.ropeOffset, team);
     updateRope();
     
-    // Animate pull
     const chars = $(`team${team}-chars`);
     chars.querySelectorAll('.character').forEach(c => {
       c.classList.add('pulling');
       setTimeout(() => c.classList.remove('pulling'), 300);
     });
     
-    // New question
     newQuestion(team);
   } else {
-    // Wrong!
+    playWrong();
     display.classList.add('wrong');
     panel.classList.add('flash-wrong');
     setTimeout(() => {
@@ -157,8 +154,6 @@ function updateScores() {
 function updateRope() {
   const container = document.querySelector('.rope-container');
   (container as HTMLElement).style.transform = `translateX(${-state.ropeOffset * 0.5}px)`;
-  
-  // Move flag
   const flag = $('flag');
   flag.style.left = `${50 + state.ropeOffset * 0.3}%`;
 }
@@ -171,6 +166,7 @@ function updateTimer() {
   
   if (state.timeLeft <= 10) {
     $('timer').parentElement.style.animation = 'pulse 0.5s infinite alternate';
+    playTick();
   }
   
   if (state.timeLeft <= 0) {
@@ -219,30 +215,45 @@ function endGame() {
   $('final-score2').textContent = String(state.score2);
   
   $('winner-text').textContent = determineWinner(state.score1, state.score2);
+  
+  playWin();
+  const totalScore = state.score1 + state.score2;
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, totalScore);
+  if (isNew && totalScore > 0) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    $('winner-text').after(el);
+  }
+  if (totalScore > 20) showConfetti();
 }
 
-// Keyboard support (for testing on desktop)
 document.addEventListener('keydown', (e: KeyboardEvent) => {
   if (!state.gameActive) return;
-  
-  // Team 1: keys Q-W-E / A-S-D / Z-X-C or numpad area
   const team1Map: Record<string, string> = { 'q': '1', 'w': '2', 'e': '3', 'a': '4', 's': '5', 'd': '6', 'z': '7', 'x': '8', 'c': '9', 'v': '0' };
   const team2Map: Record<string, string> = { 'u': '1', 'i': '2', 'o': '3', 'j': '4', 'k': '5', 'l': '6', 'm': '7', ',': '8', '.': '9', 'n': '0' };
-  
   const key = e.key.toLowerCase();
-  
   if (team1Map[key]) handleInput(1, team1Map[key]);
   else if (key === 'r') handleInput(1, 'clear');
   else if (key === 'f' || key === 'g') handleInput(1, 'submit');
-  
   else if (team2Map[key]) handleInput(2, team2Map[key]);
   else if (key === 'p') handleInput(2, 'clear');
   else if (key === ';' || key === "'") handleInput(2, 'submit');
 });
 
-// Event listeners
 $('start-btn').addEventListener('click', startGame);
 $('replay-btn').addEventListener('click', () => {
   $('result-screen').classList.add('hidden');
   $('start-screen').classList.remove('hidden');
 });
+
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Your best: ${best}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  $('start-btn').before(el);
+}
+
+initMuteButton();

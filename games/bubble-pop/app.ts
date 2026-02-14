@@ -1,4 +1,9 @@
 import { COLORS, generateTarget, checkSingleMatch, checkPairMatch, calcPopScore, getResultTitle } from './logic';
+import { playPop, playWrong, playCombo, playWin, playTick, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'bubble-pop';
 
 interface BubbleState {
   score: number;
@@ -27,6 +32,7 @@ function startGame() {
   s.timerInterval = setInterval(() => {
     s.time--;
     document.getElementById('timer')!.textContent = String(s.time);
+    if (s.time <= 10 && s.time > 0) playTick();
     if (s.time <= 0) endGame();
   }, 1000);
   for (let i = 0; i < 6; i++) setTimeout(() => spawnBubble(), i * 200);
@@ -75,11 +81,14 @@ function popBubble(el: HTMLElement, num: number) {
       el.classList.add('popped');
       s.popped++; s.combo++; s.score += calcPopScore(s.combo, 'single');
       if (s.combo > s.bestCombo) s.bestCombo = s.combo;
+      playPop();
+      if (s.combo >= 3) playCombo(s.combo);
       showFloat(el, '+' + calcPopScore(s.combo, 'single'), '#4caf50');
       setTimeout(() => { el.remove(); newTarget(); }, 300);
     } else {
       el.classList.add('wrong-pop');
       s.missed++; s.combo = 0;
+      playWrong();
       showFloat(el, '✕', '#f44336');
       setTimeout(() => el.remove(), 300);
     }
@@ -94,12 +103,15 @@ function popBubble(el: HTMLElement, num: number) {
         el.classList.add('popped');
         s.popped += 2; s.combo++; s.score += calcPopScore(s.combo, 'pair');
         if (s.combo > s.bestCombo) s.bestCombo = s.combo;
+        playPop();
+        if (s.combo >= 3) playCombo(s.combo);
         showFloat(el, '+' + calcPopScore(s.combo, 'pair'), '#4caf50');
         setTimeout(() => { s.selected!.el.remove(); el.remove(); newTarget(); }, 300);
       } else {
         s.selected.el.style.border = 'none';
         s.selected.el.style.boxShadow = '';
         s.missed++; s.combo = 0;
+        playWrong();
         showFloat(el, s.selected.num + '+' + num + '≠' + s.target, '#f44336');
         s.selected = null;
       }
@@ -134,6 +146,26 @@ function endGame() {
   document.getElementById('r-missed')!.textContent = String(s.missed);
   document.getElementById('r-combo')!.textContent = String(s.bestCombo);
   document.getElementById('result-title')!.textContent = getResultTitle(s.score);
+  
+  playWin();
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, s.score);
+  if (isNew) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    document.getElementById('r-score')!.after(el);
+  }
+  if (s.missed === 0 && s.popped > 10) showConfetti();
 }
 
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Your best: ${best}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('#start .big-btn')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;

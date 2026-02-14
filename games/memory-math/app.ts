@@ -1,4 +1,9 @@
 import { genPairs, shuffle, makeCards, isMatch, getStars, formatTime as fmtTime, type Pair, type Card } from './logic';
+import { playCorrect, playWrong, playWin, playClick, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'memory-math';
 
 interface MemoryState {
   cards: Card[];
@@ -43,6 +48,7 @@ function startGame() {
 function flipCard(el: HTMLElement, idx: number) {
   if (s.locked || el.classList.contains('flipped') || el.classList.contains('matched')) return;
   
+  playClick();
   el.classList.add('flipped');
   el.textContent = s.cards[idx].text;
   s.flipped.push({ el, idx });
@@ -58,9 +64,11 @@ function flipCard(el: HTMLElement, idx: number) {
       s.matched++;
       s.flipped = [];
       s.locked = false;
+      playCorrect();
       updateHUD();
       if (s.matched === s.total) endGame();
     } else {
+      playWrong();
       setTimeout(() => {
         a.el.classList.remove('flipped');
         a.el.textContent = '';
@@ -92,14 +100,37 @@ function endGame() {
   const min = Math.floor(elapsed / 60);
   const sec = elapsed % 60;
   
+  // For memory, score = total pairs * 100 - moves * 5 (higher is better, fewer moves)
+  const memScore = Math.max(0, s.total * 100 - s.moves * 5);
+  
   setTimeout(() => {
     document.getElementById('game')!.classList.add('hidden');
     document.getElementById('result')!.classList.remove('hidden');
     document.getElementById('r-moves')!.textContent = String(s.moves);
     document.getElementById('r-time')!.textContent = `${min}:${String(sec).padStart(2, '0')}`;
-    
     document.getElementById('r-stars')!.textContent = getStars(s.total, s.moves);
+    
+    playWin();
+    setLastPlayed(GAME_ID);
+    const isNew = setHighScore(GAME_ID, memScore);
+    if (isNew) {
+      const el = document.createElement('div');
+      el.textContent = '🎉 NEW RECORD!';
+      el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+      document.getElementById('r-stars')!.after(el);
+    }
+    // Perfect = matched all pairs with minimal moves
+    if (s.moves <= s.total + 2) showConfetti();
   }, 500);
 }
 
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Your best: ${best}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('#start .big-btn')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;

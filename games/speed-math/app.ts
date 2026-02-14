@@ -1,4 +1,9 @@
 import { genQ, calcScore, getGrade, type Question } from './logic';
+import { playCorrect, playWrong, playCombo, playWin, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'speed-math';
 
 interface GameState {
   score: number;
@@ -61,12 +66,18 @@ function answer(val: number, btn: HTMLButtonElement) {
     state.streak++;
     if (state.streak > state.bestStreak) state.bestStreak = state.streak;
     state.score += calcScore(state.streak);
-    if (state.streak >= 3) showCombo(state.streak);
+    if (state.streak >= 3) {
+      showCombo(state.streak);
+      playCombo(state.streak);
+    } else {
+      playCorrect();
+    }
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll<HTMLButtonElement>('.choice-btn').forEach(b => { if (parseInt(b.textContent!) === state.currentQ!.answer) b.classList.add('correct'); });
     state.wrong++;
     state.streak = 0;
+    playWrong();
   }
   
   document.getElementById('score')!.textContent = String(state.score);
@@ -97,7 +108,27 @@ function endGame() {
   document.getElementById('r-wrong')!.textContent = String(state.wrong);
   document.getElementById('r-streak')!.textContent = String(state.bestStreak);
   document.getElementById('r-score')!.textContent = String(state.score);
+  
+  playWin();
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, state.score);
+  if (isNew) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    document.getElementById('r-score')!.after(el);
+  }
+  if (state.correct === state.total) showConfetti();
 }
 
-// Expose to global for onclick handlers
+// Show high score on start screen
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Your best: ${best}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('#start .big-btn')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;

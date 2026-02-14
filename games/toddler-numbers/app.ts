@@ -1,4 +1,9 @@
 import { EMOJIS, TOTAL, shuffle, generateAnswer, pickEmoji, generateChoices, getResultText } from './logic';
+import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
+import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
+import { showConfetti } from '../../lib/confetti';
+
+const GAME_ID = 'toddler-numbers';
 let round: number;
 let score: number;
 let answer: number;
@@ -59,12 +64,14 @@ function pick(btn: HTMLButtonElement, val: number) {
   if (correct) {
     score++;
     renderStars();
+    playToddlerCorrect();
     try {
       const u = new SpeechSynthesisUtterance(String(answer));
       u.lang = 'id-ID'; u.rate = 0.8; u.pitch = 1.2;
       speechSynthesis.speak(u);
     } catch(e) {}
   } else {
+    playToddlerWrong();
     document.querySelectorAll<HTMLButtonElement>('.choice-btn').forEach(b => {
       if (Number(b.textContent) === answer) b.classList.add('correct');
     });
@@ -79,6 +86,26 @@ function endGame() {
   document.getElementById('result-title')!.textContent = result.title;
   document.getElementById('result-sub')!.textContent = result.sub;
   show('result-screen');
+  
+  playWin();
+  setLastPlayed(GAME_ID);
+  const isNew = setHighScore(GAME_ID, score);
+  if (isNew && score > 0) {
+    const el = document.createElement('div');
+    el.textContent = '🎉 NEW RECORD!';
+    el.style.cssText = 'font-size:1.5rem;font-weight:900;color:#ffd700;animation:pulse 0.5s infinite alternate;margin:0.5rem 0;';
+    document.getElementById('result-title')!.after(el);
+  }
+  if (score === TOTAL) showConfetti();
 }
 
+const best = getHighScore(GAME_ID);
+if (best > 0) {
+  const el = document.createElement('div');
+  el.textContent = `Skor terbaik: ${best}/${TOTAL}`;
+  el.style.cssText = 'color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:0.5rem;';
+  document.querySelector('.btn-play')!.before(el);
+}
+
+initMuteButton();
 (window as any).startGame = startGame;
