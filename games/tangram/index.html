@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tangram Puzzle 🔺</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🔺</div>
+  <div class="start-title">Tangram Puzzle</div>
+  <div class="start-sub">Arrange 7 pieces to match the shape!</div>
+  <div class="diff-buttons">
+    <button class="btn-diff" onclick="startGame('easy')">Easy</button>
+    <button class="btn-diff" onclick="startGame('medium')">Medium</button>
+    <button class="btn-diff" onclick="startGame('hard')">Hard</button>
+  </div>
+</div>
+<div class="screen" id="game-screen">
+  <div class="game-header"><span id="puzzle-name">1/5: Square</span><button id="next-btn" class="btn-next">Next →</button></div>
+  <div class="play-area">
+    <div class="silhouette-container"><div class="silhouette" id="silhouette"></div></div>
+    <div class="pieces-area" id="pieces-area"></div>
+  </div>
+</div>
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+<script src="./app.ts"></script>
+</body>
+</html>

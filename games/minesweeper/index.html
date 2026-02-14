@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Minesweeper 💣</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">💣</div>
+  <div class="start-title">Minesweeper</div>
+  <div class="start-sub">Clear the field without hitting mines!</div>
+  <div class="diff-buttons">
+    <button class="btn-diff" onclick="startGame('easy')">Easy (6×6)</button>
+    <button class="btn-diff" onclick="startGame('medium')">Medium (8×8)</button>
+    <button class="btn-diff" onclick="startGame('hard')">Hard (10×10)</button>
+  </div>
+</div>
+<div class="screen" id="game-screen">
+  <div class="game-header">
+    <span id="mine-count">💣 6</span>
+    <button id="flag-btn" class="flag-toggle">🚩 Flag: OFF</button>
+    <span id="timer">⏱ 0s</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+<script src="./app.ts"></script>
+</body>
+</html>

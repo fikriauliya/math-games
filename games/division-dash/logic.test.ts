@@ -44,7 +44,7 @@ describe('division-dash logic', () => {
 
   it('getGrade returns correct grades', () => {
     expect(getGrade(150, 10).grade).toBe('S');
-    expect(getGrade(50, 10).grade).toBe('B');
+    expect(getGrade(80, 10).grade).toBe('B');
     expect(getGrade(10, 10).grade).toBe('C');
   });
 

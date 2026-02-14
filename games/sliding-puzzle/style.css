@@ -1,0 +1,62 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #d7ccc8 0%, #bcaaa4 40%, #a1887f 100%);
+  overflow: hidden; user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(139,109,79,0.05) 0px, rgba(139,109,79,0.05) 2px, transparent 2px, transparent 20px);
+}
+.back-link { position: fixed; top: 12px; left: 12px; z-index: 999; color: #4e342e; text-decoration: none; font-weight: 700; }
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; position: relative; z-index: 1; }
+.screen.active { display: flex; }
+
+.start-emoji { font-size: clamp(3rem, 10vw, 5rem); }
+.start-title { font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; color: #3e2723; margin: 0.5rem 0; }
+.start-sub { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #5d4037; margin-bottom: 1.5rem; text-align: center; }
+
+.diff-buttons { display: flex; gap: 0.5rem; }
+.btn-diff {
+  font-family: inherit; font-size: 1rem; font-weight: 900;
+  background: linear-gradient(135deg, #8d6e63, #6d4c41); color: white; border: none; border-radius: 1rem;
+  padding: 0.8rem 1.5rem; cursor: pointer; box-shadow: 0 3px 0 #4e342e;
+  touch-action: manipulation;
+}
+.btn-diff:active { transform: translateY(2px); }
+
+.btn-play {
+  font-family: inherit; font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 900;
+  background: linear-gradient(135deg, #8d6e63, #6d4c41); color: white; border: none; border-radius: 2rem;
+  padding: 1rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #4e342e;
+  min-height: 56px; touch-action: manipulation;
+}
+
+.game-header { display: flex; justify-content: space-between; width: 100%; max-width: 360px; font-weight: 900; color: #3e2723; font-size: 1.1rem; margin-bottom: 0.5rem; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+  width: min(85vw, 360px); height: min(85vw, 360px);
+  background: #5d4037; border-radius: 0.5rem; padding: 4px;
+}
+.tile {
+  font-family: inherit; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 900;
+  background: linear-gradient(135deg, #efebe9, #d7ccc8); color: #3e2723;
+  border: 2px solid #bcaaa4; border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; touch-action: manipulation;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2);
+}
+.tile.empty { background: transparent; border: none; box-shadow: none; cursor: default; }
+.tile.movable { background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-color: #ff8f00; }
+.tile.movable:active { transform: scale(0.92); }
+
+.result-emoji { font-size: clamp(3rem, 10vw, 5rem); }
+.result-title { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; color: #3e2723; margin: 0.5rem 0; }
+.result-sub { font-size: clamp(1rem, 3vw, 1.3rem); color: #5d4037; margin-bottom: 1.5rem; }
+
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }

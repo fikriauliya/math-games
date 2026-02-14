@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tic Tac Toe ❌⭕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">❌⭕</div>
+  <div class="start-title">Tic Tac Toe</div>
+  <div class="start-sub">Classic game! Play vs AI or a friend.</div>
+  <div class="mode-select">
+    <button class="btn-mode" onclick="startGame('1p')">vs AI 🤖</button>
+    <button class="btn-mode" onclick="startGame('2p')">2 Players 👥</button>
+  </div>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="turn-label" id="turn-label">❌ X's Turn</div>
+  <div class="ttt-board" id="ttt-board"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame('1p')">Play Again! 🔄</button>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

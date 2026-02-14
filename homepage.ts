@@ -9,6 +9,16 @@ const GAMES = [
   { id: 'toddler-colors', path: 'games/toddler-colors/' },
   { id: 'toddler-animals', path: 'games/toddler-animals/' },
   { id: 'toddler-numbers', path: 'games/toddler-numbers/' },
+  { id: 'multiplication-war', path: 'games/multiplication-war/' },
+  { id: 'mean-median', path: 'games/mean-median/' },
+  { id: 'geometry-shapes', path: 'games/geometry-shapes/' },
+  { id: 'factor-finder', path: 'games/factor-finder/' },
+  { id: 'math-maze', path: 'games/math-maze/' },
+  { id: 'connect-four', path: 'games/connect-four/' },
+  { id: 'tic-tac-toe', path: 'games/tic-tac-toe/' },
+  { id: 'simon-says', path: 'games/simon-says/' },
+  { id: 'toddler-weather', path: 'games/toddler-weather/' },
+  { id: 'toddler-fingers', path: 'games/toddler-fingers/' },
 ];
 
 function timeAgo(iso: string): string {

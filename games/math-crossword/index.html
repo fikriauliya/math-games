@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Math Crossword</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>📰 MATH CROSSWORD</h1>
+    <h2>Fill the grid with math!</h2>
+    <button class="big-btn" onclick="startGame()">START</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <div id="game" class="screen hidden">
+    <div class="grid" id="grid"></div>
+    <div class="clues-panel">
+      <div class="clues-col" id="clues-across"></div>
+      <div class="clues-col" id="clues-down"></div>
+    </div>
+    <button class="big-btn check-btn" onclick="checkAnswers()">CHECK ✓</button>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <button class="big-btn" onclick="location.reload()">NEW PUZZLE</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>

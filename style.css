@@ -78,6 +78,16 @@ h1 .emoji { font-size: clamp(1.1rem, 4vw, 1.8rem); }
 .game-card.theme-food { border-left: 4px solid #ff9800; }
 .game-card.theme-emotions { border-left: 4px solid #ffb300; }
 .game-card.theme-actions { border-left: 4px solid #43a047; }
+.game-card.theme-multwar { border-left: 4px solid #2e7d32; }
+.game-card.theme-stats { border-left: 4px solid #283593; }
+.game-card.theme-geometry { border-left: 4px solid #0d1b2a; }
+.game-card.theme-factor { border-left: 4px solid #5d4037; }
+.game-card.theme-maze2 { border-left: 4px solid #ff9800; }
+.game-card.theme-connect4 { border-left: 4px solid #0d47a1; }
+.game-card.theme-tictactoe { border-left: 4px solid #2e7d32; }
+.game-card.theme-simon { border-left: 4px solid #333; }
+.game-card.theme-weather { border-left: 4px solid #42a5f5; }
+.game-card.theme-fingers { border-left: 4px solid #ff9800; }
 
 .game-emoji { font-size: 2rem; flex-shrink: 0; width: 2.5rem; text-align: center; }
 .game-info { flex: 1; min-width: 0; }

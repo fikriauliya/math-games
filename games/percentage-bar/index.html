@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Percentage Bar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>📊 PERCENTAGE BAR</h1>
+    <h2>Master percentages!</h2>
+    <button class="big-btn" onclick="startGame()">START</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <div id="game" class="screen hidden">
+    <div class="round-indicator" id="round-num">1/10</div>
+    <div class="visual-bar hidden" id="visual-bar"><div class="bar-fill" id="bar-fill"></div></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>

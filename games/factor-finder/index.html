@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Factor Finder ⛏️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">💎</div>
+  <div class="start-title">Factor Finder</div>
+  <div class="start-sub">Mine for factors! Find all factors or answer true/false.</div>
+  <button class="btn-play" onclick="startGame()">Dig In! ⛏️</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="round-info">Round <span id="round-num">1</span> / 10</div>
+  <div class="score-display">Score: <span id="score">0</span></div>
+  <div class="question-text" id="question-text"></div>
+  <div class="gem-grid" id="gem-grid"></div>
+  <button class="btn-submit" id="btn-submit" style="display:none" onclick="submitFactors()">Submit ✓</button>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

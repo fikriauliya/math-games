@@ -1,0 +1,48 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif; min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #faf8ef; color: #776e65; overflow: hidden; user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 500px; padding: 1rem; text-align: center; }
+.screen.hidden { display: none; }
+
+h1 { font-size: clamp(2rem, 7vw, 3rem); font-weight: 900; }
+h2 { font-size: clamp(1rem, 3vw, 1.2rem); opacity: 0.6; margin-bottom: 1.5rem; }
+.big-btn {
+  font-family: inherit; font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 900;
+  background: #8f7a66; color: white; border: none; border-radius: 0.5rem;
+  padding: 1rem 3rem; cursor: pointer; box-shadow: 0 3px 0 #6d5b4a;
+  min-height: 56px; touch-action: manipulation;
+}
+.big-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #6d5b4a; }
+.back { color: rgba(119,110,101,0.4); margin-top: 1rem; text-decoration: none; font-size: 0.9rem; }
+
+.hud { margin-bottom: 0.5rem; }
+.hud-label { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; }
+.hud-value { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  background: #bbada0; border-radius: 8px; padding: 8px;
+  width: clamp(280px, 80vw, 400px); aspect-ratio: 1;
+}
+.tile {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; font-weight: 900;
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  background: rgba(238,228,218,0.35);
+  transition: all 0.1s;
+  aspect-ratio: 1;
+}
+.tile-2, .tile-4 { font-size: clamp(1.4rem, 5vw, 2rem); }
+.tile-128, .tile-256, .tile-512 { font-size: clamp(1rem, 3.5vw, 1.5rem); }
+.tile-1024, .tile-2048 { font-size: clamp(0.8rem, 3vw, 1.2rem); }
+
+.hint { font-size: 0.85rem; opacity: 0.5; margin-top: 1rem; }
+.final-score { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; margin: 1rem 0 1.5rem; }
+
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+@media (max-width: 480px) { .grid { gap: 6px; padding: 6px; } }

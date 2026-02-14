@@ -18,7 +18,7 @@ const randomInt = (max: number) => Effect.sync(() => Math.floor(Math.random() * 
 // ── Effect-based functions ─────────────────────────────────────
 export const generateCardEffect = (diff: Difficulty): Effect.Effect<BingoCard> =>
   Effect.sync(() => {
-    const range = diff === 'easy' ? 20 : diff === 'medium' ? 40 : 100;
+    const range = diff === 'easy' ? 30 : diff === 'medium' ? 50 : 100;
     const nums = new Set<number>();
     while (nums.size < 24) {
       nums.add(Math.floor(Math.random() * range) + 1);

@@ -1,0 +1,60 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Merriweather', 'Nunito', serif; min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #fdf6e3; color: #2c2c2c; overflow-x: hidden; user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 500px; padding: 1rem; text-align: center; }
+.screen.hidden { display: none; }
+
+h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 700; }
+h2 { font-size: clamp(0.9rem, 2.5vw, 1.1rem); opacity: 0.6; margin-bottom: 1.5rem; font-style: italic; }
+.big-btn {
+  font-family: 'Nunito', sans-serif; font-size: clamp(1.1rem, 3.5vw, 1.4rem); font-weight: 900;
+  background: #2c2c2c; color: #fdf6e3; border: none; border-radius: 0.5rem;
+  padding: 0.8rem 2.5rem; cursor: pointer; box-shadow: 0 3px 0 #1a1a1a;
+  min-height: 50px; touch-action: manipulation;
+}
+.big-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1a1a1a; }
+.back { color: rgba(44,44,44,0.4); margin-top: 1rem; text-decoration: none; font-size: 0.85rem; }
+
+.grid {
+  display: grid; gap: 2px; width: fit-content; margin: 1rem auto;
+  border: 3px solid #2c2c2c; background: #2c2c2c;
+}
+.cell {
+  width: clamp(40px, 12vw, 56px); height: clamp(40px, 12vw, 56px);
+  background: white; position: relative; display: flex; align-items: center; justify-content: center;
+}
+.cell.black { background: #2c2c2c; }
+.cell-num {
+  position: absolute; top: 2px; left: 3px; font-size: 0.55rem; font-weight: 700; color: #666;
+  font-family: 'Nunito', sans-serif;
+}
+.cell-input {
+  width: 100%; height: 100%; border: none; text-align: center; font-family: 'Nunito', sans-serif;
+  font-size: clamp(1rem, 3.5vw, 1.4rem); font-weight: 800; background: transparent; color: #2c2c2c;
+  outline: none; caret-color: #2c2c2c;
+}
+.cell-input:focus { background: #fff9c4; }
+.cell-input.correct { background: #c8e6c9; color: #2e7d32; }
+.cell-input.wrong { background: #ffcdd2; color: #c62828; }
+
+.clues-panel {
+  display: flex; gap: 1.5rem; margin: 1rem 0; text-align: left; width: 100%;
+  font-family: 'Nunito', sans-serif; font-size: 0.85rem;
+}
+.clues-col { flex: 1; }
+.clues-col strong { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; }
+.clue { margin-bottom: 0.2rem; }
+
+.check-btn { margin-top: 0.5rem; }
+
+.result-emoji { font-size: clamp(3rem, 10vw, 5rem); }
+.result-title { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 700; margin: 0.5rem 0; }
+.result-sub { font-size: 1rem; opacity: 0.6; margin-bottom: 1.5rem; }
+
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+@media (max-width: 480px) { .clues-panel { flex-direction: column; gap: 0.5rem; } }
