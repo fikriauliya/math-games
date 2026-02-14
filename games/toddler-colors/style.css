@@ -1,7 +1,26 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { font-family: 'Nunito', sans-serif; min-height: 100dvh; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
-.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem; padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left)); }
+body {
+  font-family: 'Nunito', sans-serif; min-height: 100dvh; overflow: hidden;
+  user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; height: 6px; z-index: 0; pointer-events: none;
+  background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #01a3a4);
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.08;
+  background:
+    radial-gradient(circle 40px at 15% 25%, #ff9ff3, transparent),
+    radial-gradient(circle 30px at 80% 15%, #48dbfb, transparent),
+    radial-gradient(circle 35px at 50% 80%, #feca57, transparent),
+    radial-gradient(circle 25px at 25% 70%, #54a0ff, transparent),
+    radial-gradient(circle 30px at 75% 60%, #ff6b6b, transparent);
+}
+.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem; padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left)); position: relative; z-index: 1; }
 .hidden { display: none !important; }
 
 #start { background: linear-gradient(135deg, #ff9a9e, #fecfef, #fdfcfb); }

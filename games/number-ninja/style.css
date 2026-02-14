@@ -2,12 +2,29 @@
 html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Nunito', sans-serif;
-  background: #1a1a2e;
+  background: linear-gradient(180deg, #1a0000, #2d1f1f);
   color: white;
   min-height: 100dvh;
   overflow: hidden;
   touch-action: manipulation;
   -webkit-user-select: none; user-select: none;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; top: 5%; right: 8%; width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,220,0.15) 0%, transparent 70%);
+  z-index: 0; pointer-events: none;
+  box-shadow: 0 0 60px 30px rgba(255,255,200,0.05);
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.06;
+  background:
+    linear-gradient(45deg, transparent 40%, rgba(192,57,43,0.5) 40%, rgba(192,57,43,0.5) 40.5%, transparent 40.5%),
+    linear-gradient(-30deg, transparent 60%, rgba(192,57,43,0.4) 60%, rgba(192,57,43,0.4) 60.3%, transparent 60.3%),
+    linear-gradient(60deg, transparent 30%, rgba(192,57,43,0.3) 30%, rgba(192,57,43,0.3) 30.3%, transparent 30.3%);
 }
 .back {
   position: fixed; top: 12px; left: 12px; z-index: 100;
@@ -20,7 +37,7 @@ body {
 
 #start-screen {
   position: fixed; inset: 0; z-index: 50;
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background: linear-gradient(135deg, #1a0000, #2d1f1f);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1.5rem; padding: 2rem;
   padding: max(2rem, env(safe-area-inset-top)) max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(2rem, env(safe-area-inset-left));
@@ -51,11 +68,11 @@ body {
 }
 #hud .score { font-size: clamp(1.1rem, 2.5vw, 1.3rem); font-weight: 900; }
 #hud .lives { font-size: clamp(1.1rem, 2.5vw, 1.3rem); }
-#hud .combo { font-size: 0.9rem; color: #ffd54f; font-weight: 700; }
+#hud .combo { font-size: 0.9rem; color: #c0392b; font-weight: 700; }
 
 #game-area {
   position: fixed; inset: 0;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(180deg, #1a0000 0%, #2d1f1f 50%, #1a0a0a 100%);
 }
 
 .falling-item {
@@ -63,12 +80,13 @@ body {
   animation: none; transition: top 0.05s linear;
 }
 .falling-item .question {
-  background: rgba(255,255,255,0.12);
-  border: 2px solid rgba(255,255,255,0.25);
-  border-radius: 16px; padding: 8px 14px;
+  background: rgba(255,248,225,0.12);
+  border: 2px solid rgba(210,180,140,0.35);
+  border-radius: 4px; padding: 8px 14px;
   font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 800;
   white-space: nowrap;
   backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 #input-area {

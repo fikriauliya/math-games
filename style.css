@@ -34,6 +34,16 @@ h1 .emoji { font-size: clamp(1.3rem, 4vw, 2rem); }
 .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
 .game-card:active { transform: scale(0.98); }
 
+/* Theme accents per game */
+.game-card.theme-tug { border-left: 4px solid #2e7d32; background: linear-gradient(135deg, rgba(46,125,50,0.05), white); }
+.game-card.theme-racer { border-left: 4px solid #f5a623; background: linear-gradient(135deg, rgba(26,26,46,0.05), white); }
+.game-card.theme-bubble { border-left: 4px solid #0077b6; background: linear-gradient(135deg, rgba(0,119,182,0.05), white); }
+.game-card.theme-memory { border-left: 4px solid #7b1fa2; background: linear-gradient(135deg, rgba(45,27,105,0.05), white); }
+.game-card.theme-ninja { border-left: 4px solid #c0392b; background: linear-gradient(135deg, rgba(192,57,43,0.05), white); }
+.game-card.theme-colors { border-left: 4px solid #f5576c; background: linear-gradient(135deg, rgba(245,87,108,0.05), white); }
+.game-card.theme-animals { border-left: 4px solid #ff8f00; background: linear-gradient(135deg, rgba(255,143,0,0.05), white); }
+.game-card.theme-numbers { border-left: 4px solid #2e5339; background: linear-gradient(135deg, rgba(46,83,57,0.05), white); }
+
 .game-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .game-title { font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-bottom: 0.3rem; }
 .game-desc { font-size: clamp(0.8rem, 2vw, 0.85rem); color: #636e72; line-height: 1.5; }

@@ -1,7 +1,32 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #2d1b69, #11998e); color: white; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
-.screen { width: 100vw; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; padding: max(2rem, env(safe-area-inset-top)) max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(2rem, env(safe-area-inset-left)); }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #2d1b69, #11001c);
+  color: white; min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,215,0,0.6), transparent),
+    radial-gradient(1px 1px at 20% 45%, rgba(255,215,0,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 35% 25%, rgba(255,215,0,0.5), transparent),
+    radial-gradient(1px 1px at 50% 70%, rgba(255,215,0,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 65% 10%, rgba(255,215,0,0.5), transparent),
+    radial-gradient(1px 1px at 75% 55%, rgba(255,215,0,0.4), transparent),
+    radial-gradient(1px 1px at 85% 35%, rgba(255,215,0,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 90% 80%, rgba(255,215,0,0.3), transparent),
+    radial-gradient(1px 1px at 45% 90%, rgba(255,215,0,0.5), transparent),
+    radial-gradient(1px 1px at 5% 75%, rgba(255,215,0,0.4), transparent);
+  animation: sparkle 3s ease-in-out infinite alternate;
+}
+@keyframes sparkle {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+.screen { width: 100vw; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; padding: max(2rem, env(safe-area-inset-top)) max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(2rem, env(safe-area-inset-left)); position: relative; z-index: 1; }
 .hidden { display: none !important; }
 h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; }
 h2 { font-size: clamp(0.9rem, 2.5vw, 1.1rem); opacity: 0.7; }
@@ -23,15 +48,16 @@ h2 { font-size: clamp(0.9rem, 2.5vw, 1.1rem); opacity: 0.7; }
 .card {
   aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
   border-radius: 12px; cursor: pointer; font-weight: 800; font-family: 'Nunito';
-  font-size: clamp(0.8rem, 2.5vw, 1.1rem); transition: all 0.3s; perspective: 1000px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  font-size: clamp(0.8rem, 2.5vw, 1.1rem); transition: all 0.3s, box-shadow 0.3s; perspective: 1000px;
+  background: linear-gradient(135deg, #4a148c, #7b1fa2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,215,0,0.2);
   touch-action: manipulation;
   min-height: 44px; min-width: 44px;
 }
-.card.flipped, .card.matched { background: white; color: #333; }
-.card.matched { background: #c8e6c9; color: #2e7d32; box-shadow: 0 0 15px rgba(76,175,80,0.3); }
-.card:not(.flipped):not(.matched):hover { transform: scale(1.05); }
+.card.flipped, .card.matched { background: white; color: #333; border-color: transparent; }
+.card.matched { background: #ffd700; color: #4a148c; box-shadow: 0 0 20px rgba(255,215,0,0.4); }
+.card:not(.flipped):not(.matched):hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
 .card:not(.flipped):not(.matched)::after { content: '?'; font-size: 1.5rem; color: rgba(255,255,255,0.5); }
 .card.flipped::after, .card.matched::after { content: none; }
 
