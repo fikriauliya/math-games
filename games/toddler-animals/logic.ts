@@ -1,3 +1,6 @@
+import { Effect, Either } from 'effect';
+
+// ── Types ──────────────────────────────────────────────────────
 export interface Animal {
   emoji: string;
   name: string;
@@ -5,6 +8,7 @@ export interface Animal {
   wrong: string[];
 }
 
+// ── Constants ──────────────────────────────────────────────────
 export const ANIMALS: Animal[] = [
   { emoji: '🐄', name: 'Sapi', sound: 'Mooo!', wrong: ['Guk guk!', 'Meong!', 'Kukuruyuk!'] },
   { emoji: '🐔', name: 'Ayam', sound: 'Kukuruyuk!', wrong: ['Mooo!', 'Mbee!', 'Kwek kwek!'] },
@@ -20,13 +24,43 @@ export const ANIMALS: Animal[] = [
 
 export const TOTAL = 6;
 
+// ── Random helpers ─────────────────────────────────────────────
+const randomInt = (max: number) => Effect.sync(() => Math.floor(Math.random() * max));
+
+// ── Effect-based functions ─────────────────────────────────────
+export const shuffleEffect = <T>(a: T[]): Effect.Effect<T[]> =>
+  Effect.gen(function* () {
+    const arr = [...a];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = yield* randomInt(i + 1);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
+
+export const checkAnswerEffect = (answer: string, correctSound: string): Either.Either<string, string> =>
+  answer === correctSound ? Either.right('Correct!') : Either.left('Wrong!');
+
+export const getOptionsEffect = (animal: Animal): Effect.Effect<string[]> =>
+  Effect.gen(function* () {
+    const wrongPick = (yield* shuffleEffect([...animal.wrong])).slice(0, 3);
+    return yield* shuffleEffect([animal.sound, ...wrongPick]);
+  });
+
+export const getResultTextEffect = (score: number, total: number): Effect.Effect<{ emoji: string; title: string; sub: string }> =>
+  Effect.succeed((() => {
+    const perfect = score === total;
+    const good = score >= total * 0.6;
+    return {
+      emoji: perfect ? '🏆' : good ? '🎉' : '💪',
+      title: perfect ? 'Hebat Sekali!' : good ? 'Bagus!' : 'Ayo Coba Lagi!',
+      sub: `${score} dari ${total} benar!`,
+    };
+  })());
+
+// ── Plain wrappers ─────────────────────────────────────────────
 export function shuffle<T>(a: T[]): T[] {
-  const arr = [...a];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
+  return Effect.runSync(shuffleEffect(a));
 }
 
 export function checkAnswer(answer: string, correctSound: string): boolean {
@@ -34,16 +68,9 @@ export function checkAnswer(answer: string, correctSound: string): boolean {
 }
 
 export function getOptions(animal: Animal): string[] {
-  const wrongPick = shuffle([...animal.wrong]).slice(0, 3);
-  return shuffle([animal.sound, ...wrongPick]);
+  return Effect.runSync(getOptionsEffect(animal));
 }
 
 export function getResultText(score: number, total: number): { emoji: string; title: string; sub: string } {
-  const perfect = score === total;
-  const good = score >= total * 0.6;
-  return {
-    emoji: perfect ? '🏆' : good ? '🎉' : '💪',
-    title: perfect ? 'Hebat Sekali!' : good ? 'Bagus!' : 'Ayo Coba Lagi!',
-    sub: `${score} dari ${total} benar!`,
-  };
+  return Effect.runSync(getResultTextEffect(score, total));
 }

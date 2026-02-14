@@ -1,6 +1,10 @@
+import { Effect, pipe } from 'effect';
+
+// ── Types ──────────────────────────────────────────────────────
 export interface ColorItem { name: string; color: string; emoji: string; }
 export interface ShapeItem { name: string; emoji: string; svg: string; }
 
+// ── Constants ──────────────────────────────────────────────────
 export const COLORS: ColorItem[] = [
   { name: 'MERAH', color: '#f44336', emoji: '🔴' },
   { name: 'BIRU', color: '#2196F3', emoji: '🔵' },
@@ -23,34 +27,51 @@ export const SHAPES: ShapeItem[] = [
 
 export const ANIMALS = ['🐶','🐱','🐰','🐸','🐣','🐷','🐮','🦊','🐻','🐼','🐨','🦁','🐯','🐵','🐔'];
 
+// ── Random helpers ─────────────────────────────────────────────
+const randomInt = (max: number) => Effect.sync(() => Math.floor(Math.random() * max));
+
+// ── Effect-based functions ─────────────────────────────────────
+export const shuffleEffect = <T>(arr: T[]): Effect.Effect<T[]> =>
+  Effect.gen(function* () {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = yield* randomInt(i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  });
+
+export const generateCountingAnswersEffect = (targetCount: number): Effect.Effect<number[]> =>
+  Effect.gen(function* () {
+    const answers = new Set([targetCount]);
+    const candidates = [1, 2, 3, 4, 5, 6, 7].filter(n => n !== targetCount);
+    // shuffle candidates
+    const shuffled = yield* shuffleEffect(candidates);
+    for (const c of shuffled) {
+      if (answers.size >= 4) break;
+      answers.add(c);
+    }
+    return [...answers].sort((a, b) => a - b);
+  });
+
+export const getEndResultEffect = (correct: number, total: number): Effect.Effect<{ title: string; stars: string }> =>
+  Effect.succeed((() => {
+    const pct = correct / total;
+    return {
+      title: pct >= 0.8 ? '🎉 Hebat Sekali!' : pct >= 0.5 ? '⭐ Bagus!' : '💪 Coba Lagi!',
+      stars: pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.7 ? '⭐⭐' : '⭐',
+    };
+  })());
+
+// ── Plain wrappers ─────────────────────────────────────────────
 export function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
+  return Effect.runSync(shuffleEffect(arr));
 }
 
 export function generateCountingAnswers(targetCount: number): number[] {
-  const answers = new Set([targetCount]);
-  const candidates = [1, 2, 3, 4, 5, 6, 7].filter(n => n !== targetCount);
-  // shuffle candidates
-  for (let i = candidates.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
-  }
-  for (const c of candidates) {
-    if (answers.size >= 4) break;
-    answers.add(c);
-  }
-  return [...answers].sort((a, b) => a - b);
+  return Effect.runSync(generateCountingAnswersEffect(targetCount));
 }
 
 export function getEndResult(correct: number, total: number): { title: string; stars: string } {
-  const pct = correct / total;
-  return {
-    title: pct >= 0.8 ? '🎉 Hebat Sekali!' : pct >= 0.5 ? '⭐ Bagus!' : '💪 Coba Lagi!',
-    stars: pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.7 ? '⭐⭐' : '⭐',
-  };
+  return Effect.runSync(getEndResultEffect(correct, total));
 }
