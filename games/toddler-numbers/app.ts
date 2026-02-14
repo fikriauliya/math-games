@@ -1,10 +1,8 @@
-const EMOJIS = ['🍎','🍌','🌟','🐟','🦋','🌸','🎈','🍪','🐣','🍓','🧁','🐞','🌈','🎀','🍩'];
-const TOTAL = 8;
+import { EMOJIS, TOTAL, shuffle, generateAnswer, pickEmoji, generateChoices, getResultText } from './logic';
 let round: number;
 let score: number;
 let answer: number;
 
-function shuffle<T>(a: T[]): T[] { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function show(id: string) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id)!.classList.add('active'); }
 
 function startGame() {
@@ -27,8 +25,8 @@ function renderStars() {
 
 function nextRound() {
   if (round >= TOTAL) return endGame();
-  answer = Math.floor(Math.random() * 5) + 1;
-  const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+  answer = generateAnswer();
+  const emoji = pickEmoji();
 
   const container = document.getElementById('objects')!;
   container.innerHTML = '';
@@ -40,12 +38,7 @@ function nextRound() {
     container.appendChild(span);
   }
 
-  const wrong = new Set<number>();
-  while (wrong.size < 3) {
-    const n = Math.floor(Math.random() * 5) + 1;
-    if (n !== answer) wrong.add(n);
-  }
-  const options = shuffle([answer, ...wrong]);
+  const options = generateChoices(answer);
 
   const choicesEl = document.getElementById('choices')!;
   choicesEl.innerHTML = '';
@@ -81,11 +74,10 @@ function pick(btn: HTMLButtonElement, val: number) {
 }
 
 function endGame() {
-  const perfect = score === TOTAL;
-  const good = score >= TOTAL * 0.6;
-  document.getElementById('result-emoji')!.textContent = perfect ? '🏆' : good ? '🎉' : '💪';
-  document.getElementById('result-title')!.textContent = perfect ? 'Pintar Sekali!' : good ? 'Bagus!' : 'Ayo Lagi!';
-  document.getElementById('result-sub')!.textContent = `${score} dari ${TOTAL} benar!`;
+  const result = getResultText(score, TOTAL);
+  document.getElementById('result-emoji')!.textContent = result.emoji;
+  document.getElementById('result-title')!.textContent = result.title;
+  document.getElementById('result-sub')!.textContent = result.sub;
   show('result-screen');
 }
 

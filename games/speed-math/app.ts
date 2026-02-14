@@ -1,8 +1,4 @@
-interface Question {
-  text: string;
-  answer: number;
-  choices: number[];
-}
+import { genQ, calcScore, getGrade, type Question } from './logic';
 
 interface GameState {
   score: number;
@@ -17,23 +13,6 @@ interface GameState {
 }
 
 let state: GameState = { score: 0, correct: 0, wrong: 0, streak: 0, bestStreak: 0, qIdx: 0, diff: 'medium', total: 20, currentQ: null };
-
-function genQ(diff: string): Question {
-  const max: Record<string, number> = { easy: 10, medium: 20, hard: 50 };
-  const ops = diff === 'easy' ? ['+'] : diff === 'medium' ? ['+', '−'] : ['+', '−', '×'];
-  const op = ops[Math.floor(Math.random() * ops.length)];
-  let a: number, b: number, ans: number;
-  if (op === '×') { a = Math.floor(Math.random()*12)+1; b = Math.floor(Math.random()*12)+1; ans = a*b; }
-  else if (op === '−') { a = Math.floor(Math.random()*max[diff])+1; b = Math.floor(Math.random()*a)+1; ans = a-b; }
-  else { a = Math.floor(Math.random()*max[diff])+1; b = Math.floor(Math.random()*max[diff])+1; ans = a+b; }
-  
-  const choices = new Set([ans]);
-  while (choices.size < 4) {
-    const wrong = ans + Math.floor(Math.random()*10) - 5;
-    if (wrong !== ans && wrong >= 0) choices.add(wrong);
-  }
-  return { text: `${a} ${op} ${b} = ?`, answer: ans, choices: [...choices].sort((a,b) => a-b) };
-}
 
 function startGame() {
   state = { score: 0, correct: 0, wrong: 0, streak: 0, bestStreak: 0, qIdx: 0,
@@ -81,8 +60,7 @@ function answer(val: number, btn: HTMLButtonElement) {
     state.correct++;
     state.streak++;
     if (state.streak > state.bestStreak) state.bestStreak = state.streak;
-    const bonus = Math.min(state.streak, 5);
-    state.score += 10 * bonus;
+    state.score += calcScore(state.streak);
     if (state.streak >= 3) showCombo(state.streak);
   } else {
     btn.classList.add('wrong');
@@ -112,10 +90,9 @@ function showCombo(n: number) {
 function endGame() {
   document.getElementById('game')!.classList.add('hidden');
   document.getElementById('result')!.classList.remove('hidden');
-  const pct = state.correct / state.total * 100;
-  const grade = pct >= 95 ? 'S' : pct >= 90 ? 'A+' : pct >= 80 ? 'A' : pct >= 70 ? 'B' : pct >= 60 ? 'C' : 'D';
+  const { grade, message } = getGrade(state.correct, state.total);
   document.getElementById('grade')!.textContent = grade;
-  document.getElementById('grade-text')!.textContent = pct >= 90 ? '🏆 AMAZING!' : pct >= 70 ? '⭐ Great Job!' : '💪 Keep Practicing!';
+  document.getElementById('grade-text')!.textContent = message;
   document.getElementById('r-correct')!.textContent = String(state.correct);
   document.getElementById('r-wrong')!.textContent = String(state.wrong);
   document.getElementById('r-streak')!.textContent = String(state.bestStreak);

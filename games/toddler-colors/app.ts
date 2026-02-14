@@ -1,27 +1,4 @@
-interface ColorItem { name: string; color: string; emoji: string; }
-interface ShapeItem { name: string; emoji: string; svg: string; }
-
-const COLORS: ColorItem[] = [
-  { name: 'MERAH', color: '#f44336', emoji: '🔴' },
-  { name: 'BIRU', color: '#2196F3', emoji: '🔵' },
-  { name: 'KUNING', color: '#FFEB3B', emoji: '🟡' },
-  { name: 'HIJAU', color: '#4CAF50', emoji: '🟢' },
-  { name: 'ORANGE', color: '#FF9800', emoji: '🟠' },
-  { name: 'UNGU', color: '#9C27B0', emoji: '🟣' },
-  { name: 'PINK', color: '#E91E63', emoji: '💗' },
-  { name: 'COKLAT', color: '#795548', emoji: '🟤' },
-];
-
-const SHAPES: ShapeItem[] = [
-  { name: 'LINGKARAN', emoji: '⚫', svg: 'circle' },
-  { name: 'BINTANG', emoji: '⭐', svg: 'star' },
-  { name: 'HATI', emoji: '❤️', svg: 'heart' },
-  { name: 'SEGITIGA', emoji: '🔺', svg: 'triangle' },
-  { name: 'KOTAK', emoji: '⬛', svg: 'square' },
-  { name: 'BULAN', emoji: '🌙', svg: 'moon' },
-];
-
-const ANIMALS = ['🐶','🐱','🐰','🐸','🐣','🐷','🐮','🦊','🐻','🐼','🐨','🦁','🐯','🐵','🐔'];
+import { COLORS, SHAPES, ANIMALS, shuffle, generateCountingAnswers, getEndResult, type ColorItem, type ShapeItem } from './logic';
 
 interface ToddlerState {
   mode: string;
@@ -32,12 +9,6 @@ interface ToddlerState {
 }
 
 let s: ToddlerState = {} as ToddlerState;
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
-  return a;
-}
 
 function startGame(mode: string) {
   s = { mode, round: 0, total: 10, correct: 0, locked: false };
@@ -107,13 +78,9 @@ function nextRound() {
     promptTarget.style.color = '#333';
     promptTarget.style.fontSize = '2rem';
     
-    const answers = new Set([targetCount]);
-    while (answers.size < 4) {
-      const wrong = Math.max(1, targetCount + Math.floor(Math.random() * 5) - 2);
-      answers.add(wrong);
-    }
+    const answersList = generateCountingAnswers(targetCount);
     
-    [...answers].sort((a,b) => a-b).forEach(num => {
+    answersList.forEach(num => {
       const div = document.createElement('div');
       div.className = 'choice';
       div.style.background = ['#ffcdd2','#bbdefb','#c8e6c9','#fff9c4'][num % 4];
@@ -190,9 +157,9 @@ function celebrate() {
 function endGame() {
   document.getElementById('game')!.classList.add('hidden');
   document.getElementById('result')!.classList.remove('hidden');
-  const pct = s.correct / s.total;
-  document.getElementById('result-title')!.textContent = pct >= 0.8 ? '🎉 Hebat Sekali!' : pct >= 0.5 ? '⭐ Bagus!' : '💪 Coba Lagi!';
-  document.getElementById('big-stars')!.textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.7 ? '⭐⭐' : '⭐';
+  const result = getEndResult(s.correct, s.total);
+  document.getElementById('result-title')!.textContent = result.title;
+  document.getElementById('big-stars')!.textContent = result.stars;
 }
 
 (window as any).startGame = startGame;

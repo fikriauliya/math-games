@@ -1,17 +1,11 @@
+import { CONFIG, genQuestion, calcPoints, calcAccuracy } from './logic';
+
 interface FallingItem {
   id: number;
   el: HTMLElement;
   y: number;
   answer: number;
   speed: number;
-}
-
-interface DiffConfig {
-  maxNum: number;
-  ops: string[];
-  speed: number;
-  spawnMs: number;
-  lives: number;
 }
 
 const gameArea = document.getElementById('game-area')!;
@@ -48,43 +42,6 @@ for (let i = 0; i < 40; i++) {
   gameArea.appendChild(s);
 }
 
-const config: Record<string, DiffConfig> = {
-  easy:   { maxNum: 10, ops: ['+','-'], speed: 0.4, spawnMs: 3000, lives: 5 },
-  medium: { maxNum: 12, ops: ['+','-','×'], speed: 0.6, spawnMs: 2200, lives: 4 },
-  hard:   { maxNum: 15, ops: ['+','-','×','÷'], speed: 0.8, spawnMs: 1800, lives: 3 },
-};
-
-function genQuestion(diff: string): { text: string; answer: number } {
-  const c = config[diff];
-  const op = c.ops[Math.floor(Math.random() * c.ops.length)];
-  let a: number, b: number, answer: number, text: string;
-  switch (op) {
-    case '+':
-      a = Math.floor(Math.random() * c.maxNum) + 1;
-      b = Math.floor(Math.random() * c.maxNum) + 1;
-      answer = a + b; text = `${a} + ${b}`;
-      break;
-    case '-':
-      a = Math.floor(Math.random() * c.maxNum) + 2;
-      b = Math.floor(Math.random() * a) + 1;
-      answer = a - b; text = `${a} − ${b}`;
-      break;
-    case '×':
-      a = Math.floor(Math.random() * c.maxNum) + 1;
-      b = Math.floor(Math.random() * 10) + 2;
-      answer = a * b; text = `${a} × ${b}`;
-      break;
-    case '÷':
-    default:
-      b = Math.floor(Math.random() * 9) + 2;
-      answer = Math.floor(Math.random() * c.maxNum) + 1;
-      a = answer * b;
-      text = `${a} ÷ ${b}`;
-      break;
-  }
-  return { text, answer };
-}
-
 function spawnItem() {
   if (!gameRunning) return;
   const q = genQuestion(difficulty);
@@ -97,7 +54,7 @@ function spawnItem() {
   el.style.left = x + 'px';
   el.style.top = '-60px';
   gameArea.appendChild(el);
-  const item: FallingItem = { id, el, y: -60, answer: q.answer, speed: config[difficulty].speed + Math.random() * 0.2 };
+  const item: FallingItem = { id, el, y: -60, answer: q.answer, speed: CONFIG[difficulty].speed + Math.random() * 0.2 };
   items.push(item);
 }
 
@@ -138,7 +95,7 @@ function trySlash() {
     items = items.filter(i => i.id !== best!.id);
     combo++;
     if (combo > maxCombo) maxCombo = combo;
-    const pts = 10 * (1 + Math.floor(combo / 3));
+    const pts = calcPoints(combo);
     score += pts;
     slashed++;
     scoreEl.textContent = String(score);
@@ -180,7 +137,7 @@ function startGame(diff: string) {
   inputArea.style.display = 'flex';
   items.forEach(i => i.el.remove());
   items = [];
-  score = 0; lives = config[diff].lives; combo = 0; maxCombo = 0; slashed = 0; missed = 0;
+  score = 0; lives = CONFIG[diff].lives; combo = 0; maxCombo = 0; slashed = 0; missed = 0;
   scoreEl.textContent = '0';
   updateLives();
   updateCombo();
@@ -188,9 +145,9 @@ function startGame(diff: string) {
   answerInput.value = '';
   answerInput.focus();
   spawnItem();
-  spawnTimer = setInterval(spawnItem, config[diff].spawnMs);
-  setTimeout(() => { if (gameRunning && spawnTimer) { clearInterval(spawnTimer); spawnTimer = setInterval(spawnItem, config[diff].spawnMs * 0.8); }}, 30000);
-  setTimeout(() => { if (gameRunning && spawnTimer) { clearInterval(spawnTimer); spawnTimer = setInterval(spawnItem, config[diff].spawnMs * 0.6); }}, 60000);
+  spawnTimer = setInterval(spawnItem, CONFIG[diff].spawnMs);
+  setTimeout(() => { if (gameRunning && spawnTimer) { clearInterval(spawnTimer); spawnTimer = setInterval(spawnItem, CONFIG[diff].spawnMs * 0.8); }}, 30000);
+  setTimeout(() => { if (gameRunning && spawnTimer) { clearInterval(spawnTimer); spawnTimer = setInterval(spawnItem, CONFIG[diff].spawnMs * 0.6); }}, 60000);
   frameId = requestAnimationFrame(gameLoop);
 }
 
@@ -203,7 +160,7 @@ function endGame() {
   hudEl.style.display = 'none';
   inputArea.style.display = 'none';
   document.getElementById('final-score')!.textContent = String(score);
-  const accuracy = slashed + missed > 0 ? Math.round(slashed / (slashed + missed) * 100) : 0;
+  const accuracy = calcAccuracy(slashed, missed);
   document.getElementById('stats')!.innerHTML = `🗡️ Slashed: ${slashed}<br>💨 Missed: ${missed}<br>🎯 Accuracy: ${accuracy}%<br>🔥 Best Combo: ${maxCombo}x`;
   gameOverScreen.classList.add('show');
 }

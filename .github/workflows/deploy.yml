@@ -12,6 +12,7 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
+      - run: bun test
       - run: bun build ./index.html ./games/*/index.html --outdir=dist --minify
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3

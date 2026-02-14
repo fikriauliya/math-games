@@ -1,3 +1,5 @@
+import { COLORS, generateTarget, checkSingleMatch, checkPairMatch, calcPopScore, getResultTitle } from './logic';
+
 interface BubbleState {
   score: number;
   popped: number;
@@ -13,7 +15,6 @@ interface BubbleState {
 }
 
 let s: BubbleState = {} as BubbleState;
-const colors = ['#f093fb','#f5576c','#00d2ff','#3a7bd5','#ffd700','#4caf50','#ff6b6b','#a29bfe','#fd79a8','#00cec9'];
 
 function startGame() {
   s = { score: 0, popped: 0, missed: 0, combo: 0, bestCombo: 0, time: 60,
@@ -32,7 +33,7 @@ function startGame() {
 }
 
 function newTarget() {
-  s.target = s.mode === 'single' ? Math.floor(Math.random() * 20) + 1 : Math.floor(Math.random() * 15) + 5;
+  s.target = generateTarget(s.mode);
   document.getElementById('target')!.textContent = String(s.target);
   s.selected = null;
 }
@@ -51,7 +52,7 @@ function spawnBubble() {
   }
   
   const size = 55 + Math.random() * 25;
-  const color = colors[Math.floor(Math.random() * colors.length)];
+  const color = COLORS[Math.floor(Math.random() * COLORS.length)];
   const x = Math.random() * (window.innerWidth - size);
   const duration = 6 + Math.random() * 4;
   
@@ -69,11 +70,11 @@ function spawnBubble() {
 
 function popBubble(el: HTMLElement, num: number) {
   if (s.mode === 'single') {
-    if (num === s.target) {
+    if (checkSingleMatch(num, s.target)) {
       el.classList.add('popped');
-      s.popped++; s.combo++; s.score += 10 * Math.min(s.combo, 5);
+      s.popped++; s.combo++; s.score += calcPopScore(s.combo, 'single');
       if (s.combo > s.bestCombo) s.bestCombo = s.combo;
-      showFloat(el, '+' + (10 * Math.min(s.combo, 5)), '#4caf50');
+      showFloat(el, '+' + calcPopScore(s.combo, 'single'), '#4caf50');
       setTimeout(() => { el.remove(); newTarget(); }, 300);
     } else {
       el.classList.add('wrong-pop');
@@ -87,12 +88,12 @@ function popBubble(el: HTMLElement, num: number) {
       el.style.border = '3px solid white';
       el.style.boxShadow = '0 0 20px rgba(255,255,255,0.5)';
     } else {
-      if (s.selected.num + num === s.target) {
+      if (checkPairMatch(s.selected.num, num, s.target)) {
         s.selected.el.classList.add('popped');
         el.classList.add('popped');
-        s.popped += 2; s.combo++; s.score += 20 * Math.min(s.combo, 5);
+        s.popped += 2; s.combo++; s.score += calcPopScore(s.combo, 'pair');
         if (s.combo > s.bestCombo) s.bestCombo = s.combo;
-        showFloat(el, '+' + (20 * Math.min(s.combo, 5)), '#4caf50');
+        showFloat(el, '+' + calcPopScore(s.combo, 'pair'), '#4caf50');
         setTimeout(() => { s.selected!.el.remove(); el.remove(); newTarget(); }, 300);
       } else {
         s.selected.el.style.border = 'none';
@@ -131,7 +132,7 @@ function endGame() {
   document.getElementById('r-popped')!.textContent = String(s.popped);
   document.getElementById('r-missed')!.textContent = String(s.missed);
   document.getElementById('r-combo')!.textContent = String(s.bestCombo);
-  document.getElementById('result-title')!.textContent = s.score >= 500 ? '🏆 AMAZING!' : s.score >= 200 ? '⭐ Great Job!' : '💪 Keep Going!';
+  document.getElementById('result-title')!.textContent = getResultTitle(s.score);
 }
 
 (window as any).startGame = startGame;

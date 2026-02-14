@@ -1,14 +1,4 @@
-interface Pair {
-  equation: string;
-  answer: string;
-  id: number;
-}
-
-interface Card {
-  text: string;
-  pairId: number;
-  type: string;
-}
+import { genPairs, shuffle, makeCards, isMatch, getStars, formatTime as fmtTime, type Pair, type Card } from './logic';
 
 interface MemoryState {
   cards: Card[];
@@ -23,47 +13,11 @@ interface MemoryState {
 
 let s: MemoryState = {} as MemoryState;
 
-function genPairs(count: number): Pair[] {
-  const pairs: Pair[] = [];
-  const used = new Set<string>();
-  while (pairs.length < count) {
-    const a = Math.floor(Math.random() * 12) + 1;
-    const b = Math.floor(Math.random() * 12) + 1;
-    const ops = ['+', '−', '×'];
-    const op = ops[Math.floor(Math.random() * ops.length)];
-    let ans: number;
-    if (op === '+') ans = a + b;
-    else if (op === '−') { if (a < b) continue; ans = a - b; }
-    else ans = a * b;
-    
-    const eq = `${a} ${op} ${b}`;
-    const key = eq + '=' + ans!;
-    if (used.has(key)) continue;
-    used.add(key);
-    pairs.push({ equation: eq, answer: String(ans!), id: pairs.length });
-  }
-  return pairs;
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
 function startGame() {
   const size = parseInt((document.getElementById('size') as HTMLSelectElement).value);
   const pairCount = size === 4 ? 8 : 10;
   const pairs = genPairs(pairCount);
-  
-  const cards: Card[] = [];
-  pairs.forEach(p => {
-    cards.push({ text: p.equation, pairId: p.id, type: 'eq' });
-    cards.push({ text: p.answer, pairId: p.id, type: 'ans' });
-  });
-  shuffle(cards);
+  const cards = shuffle(makeCards(pairs));
   
   s = { cards, moves: 0, matched: 0, total: pairCount, flipped: [], locked: false, startTime: Date.now(), timerInterval: null };
   
@@ -98,7 +52,7 @@ function flipCard(el: HTMLElement, idx: number) {
     s.locked = true;
     const [a, b] = s.flipped;
     
-    if (a.idx !== b.idx && s.cards[a.idx].pairId === s.cards[b.idx].pairId) {
+    if (a.idx !== b.idx && isMatch(s.cards[a.idx], s.cards[b.idx])) {
       a.el.classList.add('matched');
       b.el.classList.add('matched');
       s.matched++;
@@ -144,9 +98,7 @@ function endGame() {
     document.getElementById('r-moves')!.textContent = String(s.moves);
     document.getElementById('r-time')!.textContent = `${min}:${String(sec).padStart(2, '0')}`;
     
-    const efficiency = s.total / s.moves;
-    const stars = efficiency >= 0.8 ? '⭐⭐⭐' : efficiency >= 0.5 ? '⭐⭐' : '⭐';
-    document.getElementById('r-stars')!.textContent = stars;
+    document.getElementById('r-stars')!.textContent = getStars(s.total, s.moves);
   }, 500);
 }
 

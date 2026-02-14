@@ -1,10 +1,7 @@
 // Tug of War: Mathematics
-const $ = (id: string) => document.getElementById(id)!;
+import { genQuestion as _genQuestion, clampRopeOffset, calcRopeOffset, determineWinner, formatTime, type Question } from './logic';
 
-interface Question {
-  text: string;
-  answer: number;
-}
+const $ = (id: string) => document.getElementById(id)!;
 
 interface GameState {
   score1: number;
@@ -37,33 +34,7 @@ let state: GameState = {
 
 // Generate question
 function genQuestion(): Question {
-  const ranges: Record<string, number> = { easy: 10, medium: 20, hard: 50 };
-  const max = ranges[state.difficulty];
-  const ops = state.operations;
-  
-  let op;
-  if (ops === 'add') op = '+';
-  else if (ops === 'sub') op = '−';
-  else if (ops === 'mul') op = '×';
-  else if (ops === 'mix') op = Math.random() < 0.5 ? '+' : '−';
-  else op = ['+', '−', '×'][Math.floor(Math.random() * 3)];
-  
-  let a, b, answer;
-  if (op === '×') {
-    a = Math.floor(Math.random() * 12) + 1;
-    b = Math.floor(Math.random() * 12) + 1;
-    answer = a * b;
-  } else if (op === '−') {
-    a = Math.floor(Math.random() * max) + 1;
-    b = Math.floor(Math.random() * a) + 1; // ensure non-negative for easy
-    answer = a - b;
-  } else {
-    a = Math.floor(Math.random() * max) + 1;
-    b = Math.floor(Math.random() * max) + 1;
-    answer = a + b;
-  }
-  
-  return { text: `${a} ${op} ${b} = ?`, answer };
+  return _genQuestion(state.difficulty, state.operations);
 }
 
 // Create numpad
@@ -142,8 +113,7 @@ function checkAnswer(team: number) {
     }, 300);
     
     // Move rope
-    state.ropeOffset += (team === 1 ? -8 : 8);
-    state.ropeOffset = Math.max(-100, Math.min(100, state.ropeOffset));
+    state.ropeOffset = calcRopeOffset(state.ropeOffset, team);
     updateRope();
     
     // Animate pull
@@ -248,13 +218,7 @@ function endGame() {
   $('final-score1').textContent = state.score1;
   $('final-score2').textContent = state.score2;
   
-  if (state.score1 > state.score2) {
-    $('winner-text').textContent = '🏆 Team 1 Wins!';
-  } else if (state.score2 > state.score1) {
-    $('winner-text').textContent = '🏆 Team 2 Wins!';
-  } else {
-    $('winner-text').textContent = "🤝 It's a Tie!";
-  }
+  $('winner-text').textContent = determineWinner(state.score1, state.score2);
 }
 
 // Keyboard support (for testing on desktop)
