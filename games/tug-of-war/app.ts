@@ -1,7 +1,29 @@
 // Tug of War: Mathematics
-const $ = id => document.getElementById(id);
+const $ = (id: string) => document.getElementById(id)!;
 
-let state = {
+interface Question {
+  text: string;
+  answer: number;
+}
+
+interface GameState {
+  score1: number;
+  score2: number;
+  answer1: string;
+  answer2: string;
+  question1: Question | null;
+  question2: Question | null;
+  timeLeft: number;
+  timer: ReturnType<typeof setInterval> | null;
+  ropeOffset: number;
+  difficulty: string;
+  operations: string;
+  gameActive: boolean;
+  negative1: boolean;
+  negative2: boolean;
+}
+
+let state: GameState = {
   score1: 0, score2: 0,
   answer1: '', answer2: '',
   question1: null, question2: null,
@@ -14,8 +36,8 @@ let state = {
 };
 
 // Generate question
-function genQuestion() {
-  const ranges = { easy: 10, medium: 20, hard: 50 };
+function genQuestion(): Question {
+  const ranges: Record<string, number> = { easy: 10, medium: 20, hard: 50 };
   const max = ranges[state.difficulty];
   const ops = state.operations;
   
@@ -45,7 +67,7 @@ function genQuestion() {
 }
 
 // Create numpad
-function createNumpad(team) {
+function createNumpad(team: number) {
   const pad = $(`numpad${team}`);
   pad.innerHTML = '';
   
@@ -78,37 +100,37 @@ function createNumpad(team) {
   });
 }
 
-function handleInput(team, value) {
-  const answerKey = `answer${team}`;
-  const display = $(`answer${team}`);
+function handleInput(team: number, value: string) {
+  const answerKey = `answer${team}` as keyof GameState;
+  const display = $(`answer${team}`) as HTMLInputElement;
   
   if (value === 'clear') {
-    state[answerKey] = '';
-    state[`negative${team}`] = false;
+    (state as any)[answerKey] = '';
+    (state as any)[`negative${team}`] = false;
   } else if (value === 'submit') {
     checkAnswer(team);
     return;
   } else {
-    if (state[answerKey].length < 4) {
-      state[answerKey] += value;
+    if (((state as any)[answerKey] as string).length < 4) {
+      (state as any)[answerKey] += value;
     }
   }
   
-  display.value = (state[`negative${team}`] ? '-' : '') + state[answerKey];
+  display.value = ((state as any)[`negative${team}`] ? '-' : '') + (state as any)[answerKey];
 }
 
-function checkAnswer(team) {
-  const answerKey = `answer${team}`;
-  const input = parseInt(state[answerKey]) || 0;
-  const question = state[`question${team}`];
-  const display = $(`answer${team}`);
-  const panel = display.closest('.panel');
+function checkAnswer(team: number) {
+  const answerKey = `answer${team}` as keyof GameState;
+  const input = parseInt((state as any)[answerKey]) || 0;
+  const question = (state as any)[`question${team}`] as Question;
+  const display = $(`answer${team}`) as HTMLInputElement;
+  const panel = display.closest('.panel') as HTMLElement;
   
-  if (state[answerKey] === '') return;
+  if ((state as any)[answerKey] === '') return;
   
   if (input === question.answer) {
     // Correct!
-    state[`score${team}`]++;
+    (state as any)[`score${team}`]++;
     updateScores();
     
     // Visual feedback
@@ -143,16 +165,16 @@ function checkAnswer(team) {
     }, 300);
   }
   
-  state[answerKey] = '';
+  (state as any)[answerKey] = '';
   display.value = '';
 }
 
-function newQuestion(team) {
+function newQuestion(team: number) {
   const q = genQuestion();
-  state[`question${team}`] = q;
+  (state as any)[`question${team}`] = q;
   $(`question${team}`).textContent = q.text;
-  state[`answer${team}`] = '';
-  $(`answer${team}`).value = '';
+  (state as any)[`answer${team}`] = '';
+  ($(`answer${team}`) as HTMLInputElement).value = '';
 }
 
 function updateScores() {
@@ -164,7 +186,7 @@ function updateScores() {
 
 function updateRope() {
   const container = document.querySelector('.rope-container');
-  container.style.transform = `translateX(${-state.ropeOffset * 0.5}px)`;
+  (container as HTMLElement).style.transform = `translateX(${-state.ropeOffset * 0.5}px)`;
   
   // Move flag
   const flag = $('flag');
@@ -187,9 +209,9 @@ function updateTimer() {
 }
 
 function startGame() {
-  state.difficulty = $('difficulty').value;
-  state.operations = $('operations').value;
-  state.timeLeft = parseInt($('game-time').value);
+  state.difficulty = ($('difficulty') as HTMLSelectElement).value;
+  state.operations = ($('operations') as HTMLSelectElement).value;
+  state.timeLeft = parseInt(($('game-time') as HTMLSelectElement).value);
   state.score1 = 0;
   state.score2 = 0;
   state.answer1 = '';
@@ -236,12 +258,12 @@ function endGame() {
 }
 
 // Keyboard support (for testing on desktop)
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e: KeyboardEvent) => {
   if (!state.gameActive) return;
   
   // Team 1: keys Q-W-E / A-S-D / Z-X-C or numpad area
-  const team1Map = { 'q': '1', 'w': '2', 'e': '3', 'a': '4', 's': '5', 'd': '6', 'z': '7', 'x': '8', 'c': '9', 'v': '0' };
-  const team2Map = { 'u': '1', 'i': '2', 'o': '3', 'j': '4', 'k': '5', 'l': '6', 'm': '7', ',': '8', '.': '9', 'n': '0' };
+  const team1Map: Record<string, string> = { 'q': '1', 'w': '2', 'e': '3', 'a': '4', 's': '5', 'd': '6', 'z': '7', 'x': '8', 'c': '9', 'v': '0' };
+  const team2Map: Record<string, string> = { 'u': '1', 'i': '2', 'o': '3', 'j': '4', 'k': '5', 'l': '6', 'm': '7', ',': '8', '.': '9', 'n': '0' };
   
   const key = e.key.toLowerCase();
   

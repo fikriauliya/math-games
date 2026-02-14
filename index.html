@@ -5,64 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math & Logic Games for Kids</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #faf8f5;
-      color: #333;
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center;
-      padding: 2rem 1rem;
-    }
-    
-    .header { text-align: center; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 900; color: #2d3436; }
-    h1 .emoji { font-size: 2rem; }
-    .subtitle { color: #636e72; font-size: 1rem; margin-top: 0.3rem; }
-    
-    .games-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.2rem; width: 100%; max-width: 900px;
-    }
-    
-    .game-card {
-      background: white;
-      border-radius: 16px; padding: 1.5rem;
-      text-decoration: none; color: #333;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border: 1px solid #e8e4df;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-    .game-card:active { transform: scale(0.98); }
-    
-    .game-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .game-title { font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-bottom: 0.3rem; }
-    .game-desc { font-size: 0.85rem; color: #636e72; line-height: 1.5; }
-    .game-tags { display: flex; gap: 0.4rem; margin-top: 0.8rem; flex-wrap: wrap; }
-    .tag {
-      padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;
-      background: #f0eeeb; color: #636e72;
-    }
-    .tag.hot { background: #fff0f0; color: #e17055; }
-    .tag.new { background: #eafff0; color: #00b894; }
-    .tag.multi { background: #fff8e6; color: #e67e22; }
-    .tag.toddler { background: #fce4ec; color: #c2185b; }
-    
-    .section-label {
-      width: 100%; max-width: 900px; margin: 1.5rem 0 0.8rem;
-      font-size: 0.85rem; font-weight: 800; color: #b2bec3;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    
-    footer { margin-top: 3rem; color: #b2bec3; font-size: 0.8rem; }
-    
-    @media (max-width: 640px) {
-      h1 { font-size: 1.8rem; }
-      .games-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <div class="header">

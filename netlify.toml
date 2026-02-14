@@ -1,5 +1,6 @@
 [build]
-  publish = "."
+  command = "bun build ./index.html ./games/*/index.html --outdir=dist --minify"
+  publish = "dist"
 
 [[headers]]
   for = "/*"

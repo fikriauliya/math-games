@@ -1,0 +1,52 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #e8f5e9; overflow: hidden; user-select: none;
+}
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; }
+.screen.active { display: flex; }
+
+.start-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+.start-title { font-size: 2rem; font-weight: 900; color: #2e7d32; margin: 0.5rem 0; }
+.start-sub { font-size: 1.1rem; color: #66bb6a; margin-bottom: 1.5rem; }
+.btn-play {
+  font-family: inherit; font-size: 1.5rem; font-weight: 900;
+  background: #43a047; color: white; border: none; border-radius: 2rem;
+  padding: 1rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #2e7d32;
+}
+.btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #2e7d32; }
+
+.question { font-size: 1.4rem; font-weight: 700; color: #2e7d32; margin-bottom: 0.8rem; }
+.objects-display {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+  max-width: 320px; margin-bottom: 1.2rem; min-height: 100px; align-items: center;
+}
+.obj { font-size: 3.5rem; animation: pop 0.3s ease backwards; }
+.choices {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  width: 100%; max-width: 320px;
+}
+.choice-btn {
+  font-family: inherit; font-size: 2.5rem; font-weight: 900;
+  padding: 1rem; border: 4px solid #c8e6c9; border-radius: 1.2rem;
+  background: white; cursor: pointer; transition: all 0.15s; color: #2e7d32;
+}
+.choice-btn:active { transform: scale(0.95); }
+.choice-btn.correct { background: #c8e6c9; border-color: #43a047; animation: shake-yes 0.5s; }
+.choice-btn.wrong { background: #ffcdd2; border-color: #e53935; animation: shake-no 0.4s; }
+
+.score-bar { display: flex; gap: 0.3rem; margin-bottom: 1rem; }
+.star { font-size: 1.8rem; opacity: 0.2; transition: all 0.3s; }
+.star.earned { opacity: 1; animation: star-pop 0.4s ease; }
+
+.result-emoji { font-size: 5rem; animation: bounce 1s infinite; }
+.result-title { font-size: 2rem; font-weight: 900; color: #2e7d32; margin: 0.5rem 0; }
+.result-sub { font-size: 1.2rem; color: #66bb6a; margin-bottom: 1.5rem; }
+
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes shake-yes { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+@keyframes shake-no { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes star-pop { 0% { transform: scale(0); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }

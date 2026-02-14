@@ -1,0 +1,39 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #2d1b69, #11998e); color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.screen { width: 100vw; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; }
+.hidden { display: none !important; }
+h1 { font-size: 2.5rem; font-weight: 900; }
+h2 { font-size: 1.1rem; opacity: 0.7; }
+.big-btn { padding: 1rem 3rem; font-size: 1.3rem; font-weight: 900; border: none; border-radius: 50px; cursor: pointer; font-family: 'Nunito'; background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+.big-btn:active { transform: scale(0.95); }
+
+.hud { display: flex; gap: 2rem; padding: 1rem; }
+.hud-item { text-align: center; }
+.hud-lbl { font-size: 0.7rem; opacity: 0.6; }
+.hud-val { font-size: 1.3rem; font-weight: 900; }
+
+.grid {
+  display: grid; gap: 0.5rem; padding: 0.5rem;
+  width: 100%; max-width: 400px;
+}
+.grid.size-4 { grid-template-columns: repeat(4, 1fr); }
+.grid.size-5 { grid-template-columns: repeat(5, 1fr); }
+
+.card {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 12px; cursor: pointer; font-weight: 800; font-family: 'Nunito';
+  font-size: 1.1rem; transition: all 0.3s; perspective: 1000px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.card.flipped, .card.matched { background: white; color: #333; }
+.card.matched { background: #c8e6c9; color: #2e7d32; box-shadow: 0 0 15px rgba(76,175,80,0.3); }
+.card:not(.flipped):not(.matched):hover { transform: scale(1.05); }
+.card:not(.flipped):not(.matched)::after { content: '?'; font-size: 1.5rem; color: rgba(255,255,255,0.5); }
+.card.flipped::after, .card.matched::after { content: none; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 300px; width: 100%; }
+.stat { background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; text-align: center; }
+.stat-val { font-size: 2rem; font-weight: 900; }
+.stat-lbl { font-size: 0.8rem; opacity: 0.7; }
+a.back { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; }

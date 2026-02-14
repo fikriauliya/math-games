@@ -1,0 +1,116 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #1a1a2e;
+  color: white;
+  min-height: 100vh;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+}
+.back {
+  position: fixed; top: 12px; left: 12px; z-index: 100;
+  color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; font-size: 0.9rem;
+}
+.back:hover { color: white; }
+
+#start-screen {
+  position: fixed; inset: 0; z-index: 50;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.5rem; padding: 2rem;
+}
+#start-screen h1 { font-size: 3rem; font-weight: 900; }
+#start-screen .ninja-big { font-size: 5rem; }
+#start-screen p { opacity: 0.7; text-align: center; max-width: 320px; line-height: 1.5; }
+.difficulty-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+.diff-btn {
+  padding: 0.8rem 1.8rem; border: none; border-radius: 16px;
+  font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800;
+  color: white; cursor: pointer; transition: transform 0.15s;
+}
+.diff-btn:active { transform: scale(0.95); }
+.diff-btn.easy { background: #4caf50; }
+.diff-btn.medium { background: #ff9800; }
+.diff-btn.hard { background: #f44336; }
+
+#hud {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; background: rgba(0,0,0,0.3);
+}
+#hud .score { font-size: 1.3rem; font-weight: 900; }
+#hud .lives { font-size: 1.3rem; }
+#hud .combo { font-size: 0.9rem; color: #ffd54f; font-weight: 700; }
+
+#game-area {
+  position: fixed; inset: 0;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.falling-item {
+  position: absolute; text-align: center;
+  animation: none; transition: top 0.05s linear;
+}
+.falling-item .question {
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 16px; padding: 8px 14px;
+  font-size: 1.3rem; font-weight: 800;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+#input-area {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+  padding: 12px 16px 24px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  display: flex; gap: 8px; align-items: center;
+}
+#answer-input {
+  flex: 1; padding: 14px 18px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1); color: white;
+  font-family: 'Nunito', sans-serif; font-size: 1.4rem; font-weight: 800;
+  text-align: center; outline: none;
+}
+#answer-input::placeholder { color: rgba(255,255,255,0.3); }
+#answer-input:focus { border-color: #ffd54f; }
+#slash-btn {
+  padding: 14px 20px; border: none; border-radius: 16px;
+  background: #e91e63; color: white; font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem; font-weight: 900; cursor: pointer;
+}
+#slash-btn:active { transform: scale(0.95); }
+
+.slash-effect {
+  position: absolute; pointer-events: none; z-index: 30;
+  font-size: 2rem; font-weight: 900;
+  animation: slashAnim 0.6s ease-out forwards;
+}
+@keyframes slashAnim {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(1.5) translateY(-40px); }
+}
+
+#game-over {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,0.85);
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; padding: 2rem;
+}
+#game-over.show { display: flex; }
+#game-over h2 { font-size: 2.5rem; font-weight: 900; }
+#game-over .final-score { font-size: 4rem; font-weight: 900; color: #ffd54f; }
+#game-over .stats { opacity: 0.7; text-align: center; line-height: 1.8; }
+#game-over .play-again {
+  margin-top: 1rem; padding: 1rem 2.5rem; border: none; border-radius: 16px;
+  background: #e91e63; color: white; font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem; font-weight: 900; cursor: pointer;
+}
+
+.star {
+  position: absolute; width: 2px; height: 2px; background: white;
+  border-radius: 50%; opacity: 0.5;
+  animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
