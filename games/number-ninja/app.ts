@@ -46,7 +46,7 @@ function spawnItem() {
   if (!gameRunning) return;
   const q = genQuestion(difficulty);
   const id = ++itemId;
-  const areaW = window.innerWidth;
+  const areaW = gameArea.clientWidth || window.innerWidth;
   const x = 30 + Math.random() * (areaW - 160);
   const el = document.createElement('div');
   el.className = 'falling-item';
@@ -109,7 +109,7 @@ function trySlash() {
 
 function gameLoop() {
   if (!gameRunning) return;
-  const maxY = window.innerHeight - 120;
+  const maxY = (gameArea.clientHeight || window.innerHeight) - 120;
   for (let i = items.length - 1; i >= 0; i--) {
     const it = items[i];
     it.y += it.speed;

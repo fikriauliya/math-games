@@ -53,7 +53,8 @@ function spawnBubble() {
   
   const size = 55 + Math.random() * 25;
   const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-  const x = Math.random() * (window.innerWidth - size);
+  const areaWidth = document.getElementById('game-area')?.clientWidth || window.innerWidth;
+  const x = Math.random() * (areaWidth - size);
   const duration = 6 + Math.random() * 4;
   
   div.className = 'bubble';

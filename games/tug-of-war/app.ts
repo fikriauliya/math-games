@@ -59,7 +59,7 @@ function createNumpad(team: number) {
     btn.dataset.team = team;
     
     // Use both touch and click
-    const handler = (e) => {
+    const handler = (e: Event) => {
       e.preventDefault();
       if (!state.gameActive) return;
       handleInput(team, b.value);
@@ -148,10 +148,10 @@ function newQuestion(team: number) {
 }
 
 function updateScores() {
-  $('score1').textContent = state.score1;
-  $('score2').textContent = state.score2;
-  $('panel-score1').textContent = state.score1;
-  $('panel-score2').textContent = state.score2;
+  $('score1').textContent = String(state.score1);
+  $('score2').textContent = String(state.score2);
+  $('panel-score1').textContent = String(state.score1);
+  $('panel-score2').textContent = String(state.score2);
 }
 
 function updateRope() {
@@ -215,8 +215,8 @@ function endGame() {
   $('game-screen').classList.add('hidden');
   $('result-screen').classList.remove('hidden');
   
-  $('final-score1').textContent = state.score1;
-  $('final-score2').textContent = state.score2;
+  $('final-score1').textContent = String(state.score1);
+  $('final-score2').textContent = String(state.score2);
   
   $('winner-text').textContent = determineWinner(state.score1, state.score2);
 }
