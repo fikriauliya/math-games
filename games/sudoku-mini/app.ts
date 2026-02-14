@@ -2,13 +2,17 @@ import { createPuzzle, placeNumber, clearCell, getConflicts, formatTime, type Su
 import { playCorrect, playWrong, playClick, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'sudoku-mini';
+let _analyticsStartTime = 0;
 let state: SudokuState;
 let timerInterval: number;
 let selected: [number, number] | null = null;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   const diff = (document.getElementById('diff') as HTMLSelectElement).value as Difficulty;
   state = createPuzzle(diff);
   selected = null;
@@ -86,6 +90,8 @@ function onWin() {
   playWin();
   showConfetti();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
 
   const bestKey = `${GAME_ID}-${(document.getElementById('diff') as HTMLSelectElement).value}`;
   const prevBest = parseInt(localStorage.getItem(`mathgames-${bestKey}-besttime`) || '0') || 0;

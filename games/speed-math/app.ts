@@ -2,8 +2,10 @@ import { genQ, calcScore, getGrade, type Question } from './logic';
 import { playCorrect, playWrong, playCombo, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'speed-math';
+let _analyticsStartTime = 0;
 
 interface GameState {
   score: number;
@@ -20,6 +22,8 @@ interface GameState {
 let state: GameState = { score: 0, correct: 0, wrong: 0, streak: 0, bestStreak: 0, qIdx: 0, diff: 'medium', total: 20, currentQ: null };
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   state = { score: 0, correct: 0, wrong: 0, streak: 0, bestStreak: 0, qIdx: 0,
     diff: (document.getElementById('diff') as HTMLSelectElement).value,
     total: parseInt((document.getElementById('qcount') as HTMLSelectElement).value),
@@ -111,6 +115,8 @@ function endGame() {
   
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, state.score);
   if (isNew) {
     const el = document.createElement('div');

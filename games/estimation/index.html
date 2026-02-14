@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Estimation Station 🔬</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🔬</div>
+  <div class="start-title">Estimation Station</div>
+  <div class="start-sub">How many dots are in the jar?</div>
+  <button class="btn-play" onclick="startGame()">Play! 🎮</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="top-bar">
+    <span id="round-info">1 / 8</span>
+    <span id="score-display">⭐ 0</span>
+  </div>
+  <div class="question">How many dots?</div>
+  <div class="jar" id="jar"></div>
+  <div class="guess-row">
+    <input type="number" id="guess-input" class="guess-input" placeholder="?" min="0" max="200" inputmode="numeric">
+    <button id="submit-btn" class="btn-submit" onclick="submitGuess()">Guess!</button>
+  </div>
+  <div id="feedback" class="feedback"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

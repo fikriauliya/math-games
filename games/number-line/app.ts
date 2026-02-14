@@ -2,8 +2,10 @@ import { generateQuestion, getStars, calcScore, getGrade, TOTAL_ROUNDS, type Dif
 import { playCorrect, playWrong, playWin, playClick, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'number-line';
+let _analyticsStartTime = 0;
 let question: LineQuestion;
 let round = 0;
 let totalStars = 0;
@@ -11,6 +13,8 @@ let diff: Difficulty = 'easy';
 let currentGuess = -1;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   diff = (document.getElementById('diff') as HTMLSelectElement).value as Difficulty;
   round = 0; totalStars = 0;
   document.getElementById('start')!.classList.add('hidden');
@@ -119,6 +123,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew) {
     const el = document.createElement('div');

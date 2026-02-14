@@ -2,8 +2,10 @@ import { FRUITS, TOTAL, shuffle, generateRound, checkAnswer, getResultText, type
 import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'toddler-fruits';
+let _analyticsStartTime = 0;
 let queue: Fruit[];
 let round = 0;
 let score = 0;
@@ -23,6 +25,8 @@ function speak(text: string) {
 }
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   queue = shuffle([...FRUITS]);
   round = 0; score = 0;
   show('game-screen');
@@ -97,6 +101,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew && score > 0) {
     const el = document.createElement('div');

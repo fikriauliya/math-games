@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mini Nonogram 🟩</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🟩</div>
+  <div class="start-title">Mini Nonogram</div>
+  <div class="start-sub">Solve the puzzle to reveal the picture!</div>
+  <button class="btn-play" onclick="startGame()">Play! 🎮</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="question">Fill the cells to match the clues!</div>
+  <div id="grid-container"></div>
+  <div id="message" class="message"></div>
+  <div class="btn-row">
+    <button class="btn-action" onclick="checkPuzzle()">✅ Check</button>
+    <button class="btn-action btn-reset" onclick="resetGrid()">🔄 Reset</button>
+    <button class="btn-action btn-new" onclick="startGame()">🆕 New</button>
+  </div>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mirror Pattern 🔬</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🔬</div>
+  <div class="start-title">Mirror Pattern</div>
+  <div class="start-sub">Replicate the pattern on the right grid — copy, mirror, or rotate!</div>
+  <button class="btn-play" onclick="startGame()">Start Lab! 🧪</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="hud">
+    <span id="round-num">Round 1 / 10</span>
+    <span id="score-display">Score: 0</span>
+  </div>
+  <div class="mode-label" id="mode-label">Copy</div>
+  <div class="game-area" id="game-area">
+    <div class="grid-container">
+      <div class="grid-label">Pattern</div>
+      <div class="grid" id="pattern-grid"></div>
+    </div>
+    <div class="grid-container">
+      <div class="grid-label">Your Answer</div>
+      <div class="grid" id="user-grid"></div>
+    </div>
+  </div>
+  <button class="btn-submit" onclick="submitAnswer()">Check ✓</button>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

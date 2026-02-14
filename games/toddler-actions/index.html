@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Apa yang Dilakukan? 🏃</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Kembali</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🏃</div>
+  <div class="start-title">Apa yang Dilakukan?</div>
+  <div class="start-sub">Tebak aksi yang benar! 🎬</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="score-bar" id="score-bar"></div>
+  <div class="question" id="question-text">Mana yang LARI?</div>
+  <div class="choices" id="choices"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Main Lagi! 🔄</button>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

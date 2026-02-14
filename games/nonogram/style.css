@@ -1,0 +1,38 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Press Start 2P', monospace;
+  background: #0f380f;
+  color: #8bac0f;
+  min-height: 100dvh; overflow: hidden;
+}
+.back-link { position: fixed; top: 12px; left: 12px; z-index: 100; color: rgba(139,172,15,0.6); text-decoration: none; font-size: 0.7rem; }
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100dvh; padding: 1rem; text-align: center; }
+.screen.active { display: flex; }
+.start-emoji { font-size: 4rem; animation: pulse 2s infinite alternate; }
+.start-title { font-size: clamp(1rem,4vw,1.5rem); margin: 1rem 0; }
+.start-sub { font-size: 0.7rem; opacity: 0.7; margin-bottom: 1.5rem; line-height: 1.6; }
+.btn-play, .btn-action {
+  background: #306230; color: #8bac0f; border: 2px solid #8bac0f; border-radius: 4px;
+  padding: 0.8rem 1.5rem; font-size: 0.8rem; cursor: pointer; font-family: inherit;
+}
+.btn-play:active, .btn-action:active { transform: scale(0.95); background: #8bac0f; color: #0f380f; }
+.question { font-size: 0.65rem; margin-bottom: 0.8rem; line-height: 1.6; }
+.nono-table { border-collapse: collapse; }
+.clue { font-size: 0.6rem; padding: 4px 6px; text-align: center; color: #9bbc0f; }
+.row-clue { text-align: right; padding-right: 8px; white-space: nowrap; }
+.cell {
+  width: 48px; height: 48px; border: 2px solid #306230;
+  background: #9bbc0f; cursor: pointer; transition: background 0.15s;
+}
+.cell.filled { background: #0f380f; }
+.cell.solution { background: #306230; }
+.cell:active { transform: scale(0.9); }
+.message { font-size: 0.7rem; min-height: 2rem; margin: 0.8rem 0; }
+.btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+.btn-reset { border-color: #ff6b6b; color: #ff6b6b; }
+.btn-new { border-color: #4d96ff; color: #4d96ff; }
+.result-emoji { font-size: 4rem; }
+.result-title { font-size: 1rem; margin: 0.5rem 0; }
+.result-sub { font-size: 0.7rem; opacity: 0.7; margin-bottom: 1.5rem; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+@media (max-width: 380px) { .cell { width: 40px; height: 40px; } }

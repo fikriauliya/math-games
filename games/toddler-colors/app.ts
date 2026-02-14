@@ -2,8 +2,10 @@ import { COLORS, SHAPES, ANIMALS, shuffle, generateCountingAnswers, getEndResult
 import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'toddler-colors';
+let _analyticsStartTime = 0;
 
 interface ToddlerState {
   mode: string;
@@ -16,6 +18,8 @@ interface ToddlerState {
 let s: ToddlerState = {} as ToddlerState;
 
 function startGame(mode: string) {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   s = { mode, round: 0, total: 10, correct: 0, locked: false };
   document.getElementById('start')!.classList.add('hidden');
   document.getElementById('game')!.classList.remove('hidden');
@@ -144,6 +148,8 @@ function endGame() {
   
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, s.correct);
   if (isNew && s.correct > 0) {
     const el = document.createElement('div');

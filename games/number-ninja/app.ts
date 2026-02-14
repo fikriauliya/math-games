@@ -2,8 +2,10 @@ import { CONFIG, genQuestion, calcPoints, calcAccuracy } from './logic';
 import { playCorrect, playWrong, playCombo, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'number-ninja';
+let _analyticsStartTime = 0;
 
 interface FallingItem {
   id: number;
@@ -137,6 +139,8 @@ function gameLoop() {
 }
 
 function startGame(diff: string) {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   difficulty = diff;
   startScreen.style.display = 'none';
   gameOverScreen.classList.remove('show');
@@ -173,6 +177,8 @@ function endGame() {
   
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew) {
     const el = document.createElement('div');

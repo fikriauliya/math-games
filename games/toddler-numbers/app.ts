@@ -2,8 +2,10 @@ import { EMOJIS, TOTAL, shuffle, generateAnswer, pickEmoji, generateChoices, get
 import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'toddler-numbers';
+let _analyticsStartTime = 0;
 let round: number;
 let score: number;
 let answer: number;
@@ -11,6 +13,8 @@ let answer: number;
 function show(id: string) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id)!.classList.add('active'); }
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   round = 0; score = 0;
   show('game-screen');
   renderStars();
@@ -89,6 +93,8 @@ function endGame() {
   
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew && score > 0) {
     const el = document.createElement('div');

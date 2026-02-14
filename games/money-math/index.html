@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Uang Berapa? 💰</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">💰</div>
+  <div class="start-title">Uang Berapa?</div>
+  <div class="start-sub">Hitung uang dan kembalian! Belajar tentang Rupiah 🇮🇩</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+  <a href="/" class="back">← Kembali</a>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="hud">
+    <span id="round-num">Soal 1 / 10</span>
+    <span id="score-display">Skor: 0</span>
+  </div>
+  <div class="money-display" id="money-display"></div>
+  <div class="question-text" id="question-text"></div>
+  <div class="choices" id="choices"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Main Lagi! 🔄</button>
+  <a href="/" class="back">← Kembali</a>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

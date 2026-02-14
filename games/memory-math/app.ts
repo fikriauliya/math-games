@@ -2,8 +2,10 @@ import { genPairs, shuffle, makeCards, isMatch, getStars, formatTime as fmtTime,
 import { playCorrect, playWrong, playWin, playClick, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'memory-math';
+let _analyticsStartTime = 0;
 
 interface MemoryState {
   cards: Card[];
@@ -19,6 +21,8 @@ interface MemoryState {
 let s: MemoryState = {} as MemoryState;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   const size = parseInt((document.getElementById('size') as HTMLSelectElement).value);
   const pairCount = size === 4 ? 8 : 10;
   const pairs = genPairs(pairCount);
@@ -112,6 +116,8 @@ function endGame() {
     
     playWin();
     setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
     const isNew = setHighScore(GAME_ID, memScore);
     if (isNew) {
       const el = document.createElement('div');

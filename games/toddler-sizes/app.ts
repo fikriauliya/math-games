@@ -2,8 +2,10 @@ import { generateRound, checkAnswer, getResultText, TOTAL, type SizeRound } from
 import { playToddlerCorrect, playToddlerWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'toddler-sizes';
+let _analyticsStartTime = 0;
 let currentRound: SizeRound;
 let round = 0;
 let score = 0;
@@ -22,6 +24,8 @@ function speak(text: string) {
 }
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   round = 0; score = 0;
   show('game-screen');
   renderStars();
@@ -92,6 +96,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   setHighScore(GAME_ID, score);
   if (score === TOTAL) showConfetti();
 }

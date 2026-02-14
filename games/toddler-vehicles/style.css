@@ -1,0 +1,78 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #87CEEB 0%, #87CEEB 60%, #90EE90 75%, #808080 80%, #696969 100%);
+  overflow: hidden; user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+/* Road at bottom */
+body::after {
+  content: ''; position: fixed; bottom: 0; left: 0; right: 0; height: 80px;
+  background: #555; z-index: 0; pointer-events: none;
+  border-top: 4px solid #ffd700;
+}
+body::before {
+  content: '- - - - - - - - - - - - - -';
+  position: fixed; bottom: 35px; left: 0; right: 0;
+  text-align: center; color: white; font-size: 1.5rem; letter-spacing: 1rem;
+  z-index: 0; pointer-events: none;
+}
+
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; position: relative; z-index: 1; }
+.screen.active { display: flex; }
+
+.start-emoji { font-size: clamp(4rem, 12vw, 6rem); animation: bounce 1s infinite; }
+.start-title { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 900; color: #1565c0; margin: 0.5rem 0; }
+.start-sub { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #455a64; margin-bottom: 1.5rem; text-align: center; }
+
+.btn-play {
+  font-family: inherit; font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900;
+  background: #1565c0; color: white; border: none; border-radius: 2rem;
+  padding: 1.2rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #0d47a1;
+  min-height: 60px; touch-action: manipulation;
+}
+.btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #0d47a1; }
+
+.question { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; color: #1565c0; margin-bottom: 1rem; }
+
+.score-bar { display: flex; gap: 0.3rem; margin-bottom: 1rem; }
+.star { font-size: clamp(1.2rem, 3vw, 1.6rem); opacity: 0.2; transition: all 0.3s; }
+.star.earned { opacity: 1; animation: star-pop 0.4s ease; }
+
+.choices {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 3vw, 1.5rem);
+  width: 100%; max-width: 500px; padding: 0 1rem;
+}
+.choice-btn {
+  font-family: inherit;
+  padding: 2rem; border: 6px solid #bbdefb; border-radius: 2rem;
+  background: white; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 120px; touch-action: manipulation;
+  animation: bounce-gentle 2s infinite;
+}
+.choice-btn:nth-child(2) { animation-delay: 0.5s; }
+.vehicle-emoji { font-size: clamp(4rem, 12vw, 6rem); }
+.choice-btn:active { transform: scale(0.95); }
+.choice-btn.correct { background: #c8e6c9; border-color: #43a047; animation: shake-yes 0.5s; }
+.choice-btn.wrong { background: #ffcdd2; border-color: #e53935; animation: shake-no 0.4s; }
+
+.result-emoji { font-size: clamp(3rem, 10vw, 5rem); animation: bounce 1s infinite; }
+.result-title { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; color: #1565c0; margin: 0.5rem 0; }
+.result-sub { font-size: clamp(1rem, 2.5vw, 1.2rem); color: #455a64; margin-bottom: 1.5rem; }
+
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes bounce-gentle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes star-pop { 0% { transform: scale(0); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+@keyframes shake-yes { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+@keyframes shake-no { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+@media (max-width: 480px) {
+  .choices { max-width: 100%; padding: 0 0.5rem; }
+  .choice-btn { min-height: 100px; padding: 1.5rem; }
+  .vehicle-emoji { font-size: 3.5rem; }
+}

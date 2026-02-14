@@ -2,12 +2,16 @@ import { createPuzzleSync, createGrid, toggleMark, formatTime, type GridState, t
 import { playCorrect, playWrong, playClick, playWin, initMuteButton } from '../../lib/sounds';
 import { setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'logic-grid';
+let _analyticsStartTime = 0;
 let state: GridState;
 let timerInterval: number;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   const diff = (document.getElementById('diff') as HTMLSelectElement).value as Difficulty;
   const puzzle = createPuzzleSync(diff);
   state = createGrid(puzzle);
@@ -68,6 +72,8 @@ function onWin() {
   playWin();
   showConfetti();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   document.getElementById('game')!.classList.add('hidden');
   document.getElementById('result')!.classList.remove('hidden');
   document.getElementById('r-time')!.textContent = formatTime(elapsed);

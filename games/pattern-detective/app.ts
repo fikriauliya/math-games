@@ -2,13 +2,17 @@ import { generatePattern, checkAnswer, calcScore, getGrade, TOTAL_ROUNDS, type P
 import { playCorrect, playWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'pattern-detective';
+let _analyticsStartTime = 0;
 let question: PatternQuestion;
 let round = 0;
 let correct = 0;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   round = 0; correct = 0;
   document.getElementById('start')!.classList.add('hidden');
   document.getElementById('game')!.classList.remove('hidden');
@@ -81,6 +85,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew) {
     const el = document.createElement('div');

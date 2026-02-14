@@ -2,8 +2,10 @@ import { COLORS, generateTarget, checkSingleMatch, checkPairMatch, calcPopScore,
 import { playPop, playWrong, playCombo, playWin, playTick, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'bubble-pop';
+let _analyticsStartTime = 0;
 
 interface BubbleState {
   score: number;
@@ -22,6 +24,8 @@ interface BubbleState {
 let s: BubbleState = {} as BubbleState;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   s = { score: 0, popped: 0, missed: 0, combo: 0, bestCombo: 0, time: 60,
     mode: (document.getElementById('mode') as HTMLSelectElement).value, target: 0, selected: null,
     spawnInterval: null, timerInterval: null };
@@ -149,6 +153,8 @@ function endGame() {
   
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, s.score);
   if (isNew) {
     const el = document.createElement('div');

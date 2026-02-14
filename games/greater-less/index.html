@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Greater or Less? 🥊</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🥊</div>
+  <div class="start-title">Greater or Less?</div>
+  <div class="start-sub">Compare numbers! How many can you answer in 60 seconds?</div>
+  <div class="settings">
+    <label>Difficulty: <select id="diff"><option value="easy">Easy (1-20)</option><option value="medium" selected>Medium (1-100)</option><option value="hard">Hard (decimals)</option></select></label>
+  </div>
+  <button class="btn-play" onclick="startGame()">Fight! 🥊</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="hud">
+    <span id="timer">⏱️ 60s</span>
+    <span id="score-display">Score: 0</span>
+  </div>
+  <div class="arena">
+    <div class="corner red">
+      <div class="glove">🥊</div>
+      <div class="num" id="num-a">?</div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="corner blue">
+      <div class="glove" style="transform:scaleX(-1)">🥊</div>
+      <div class="num" id="num-b">?</div>
+    </div>
+  </div>
+  <div class="answer-row">
+    <button class="answer-btn" data-answer="<" onclick="pick('<')">◀ Left</button>
+    <button class="answer-btn eq-btn" data-answer="=" onclick="pick('=')">=</button>
+    <button class="answer-btn" data-answer=">" onclick="pick('>')">Right ▶</button>
+  </div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="location.reload()">Fight Again! 🥊</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

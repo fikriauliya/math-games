@@ -2,8 +2,10 @@ import { generatePuzzle, checkEquation, calcScore, getGrade, TOTAL_ROUNDS, type 
 import { playCorrect, playWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'equation-builder';
+let _analyticsStartTime = 0;
 
 let puzzle: Puzzle;
 let round = 0;
@@ -15,6 +17,8 @@ let slotOp: string | null = null;
 let slotB: number | null = null;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   round = 0;
   correct = 0;
   document.getElementById('start')!.classList.add('hidden');
@@ -121,6 +125,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew) {
     const el = document.createElement('div');

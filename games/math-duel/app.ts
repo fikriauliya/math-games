@@ -2,8 +2,10 @@ import { genQuestion, checkAnswer, getWinner, getResultEmoji, TOTAL_QUESTIONS, t
 import { playCorrect, playWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'math-duel';
+let _analyticsStartTime = 0;
 let question: Question;
 let qIdx = 0;
 let p1Score = 0;
@@ -11,6 +13,8 @@ let p2Score = 0;
 let answered = false;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   qIdx = 0; p1Score = 0; p2Score = 0;
   document.getElementById('start')!.classList.add('hidden');
   document.getElementById('game')!.classList.remove('hidden');
@@ -93,6 +97,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const maxScore = Math.max(p1Score, p2Score);
   setHighScore(GAME_ID, maxScore);
   if (p1Score === TOTAL_QUESTIONS || p2Score === TOTAL_QUESTIONS) showConfetti();

@@ -58,6 +58,26 @@ h1 .emoji { font-size: clamp(1.1rem, 4vw, 1.8rem); }
 .game-card.theme-maze { border-left: 4px solid #e74c3c; }
 .game-card.theme-sequence { border-left: 4px solid #f39c12; }
 .game-card.theme-oddone { border-left: 4px solid #ffd93d; }
+.game-card.theme-bingo { border-left: 4px solid #c0392b; }
+.game-card.theme-decimal { border-left: 4px solid #7c3aed; }
+.game-card.theme-money { border-left: 4px solid #8B6914; }
+.game-card.theme-skip { border-left: 4px solid #ff6f00; }
+.game-card.theme-greater { border-left: 4px solid #e53935; }
+.game-card.theme-truefalse { border-left: 4px solid #fdd835; }
+.game-card.theme-tower { border-left: 4px solid #8B7355; }
+.game-card.theme-mirror { border-left: 4px solid #00897b; }
+.game-card.theme-vehicles { border-left: 4px solid #1565c0; }
+.game-card.theme-body { border-left: 4px solid #00695c; }
+.game-card.theme-clock { border-left: 4px solid #8b6914; }
+.game-card.theme-target { border-left: 4px solid #2d5a27; }
+.game-card.theme-estimation { border-left: 4px solid #7c4dff; }
+.game-card.theme-placevalue { border-left: 4px solid #1a237e; }
+.game-card.theme-nonogram { border-left: 4px solid #0f380f; }
+.game-card.theme-wordlogic { border-left: 4px solid #5d4037; }
+.game-card.theme-colormix { border-left: 4px solid #e91e63; }
+.game-card.theme-food { border-left: 4px solid #ff9800; }
+.game-card.theme-emotions { border-left: 4px solid #ffb300; }
+.game-card.theme-actions { border-left: 4px solid #43a047; }
 
 .game-emoji { font-size: 2rem; flex-shrink: 0; width: 2.5rem; text-align: center; }
 .game-info { flex: 1; min-width: 0; }

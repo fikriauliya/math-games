@@ -2,8 +2,10 @@ import { generateGrid, validateAnswer, calcScore, getGrade, getElapsedText, DIFF
 import { playCorrect, playWrong, playWin, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'times-table';
+let _analyticsStartTime = 0;
 
 let grid: GridCell[] = [];
 let blanks = 0;
@@ -14,6 +16,8 @@ let timerInterval: any = null;
 let diff: Difficulty = 'easy';
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   diff = (document.getElementById('diff') as HTMLSelectElement).value as Difficulty;
   grid = generateGrid(diff);
   blanks = grid.filter(c => c.isBlank).length;
@@ -133,6 +137,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, score);
   if (isNew) {
     const el = document.createElement('div');

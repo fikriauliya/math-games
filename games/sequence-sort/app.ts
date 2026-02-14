@@ -2,11 +2,15 @@ import { createGameSync, placeItem, getRemainingItems, getModeLabel, type GameSt
 import { playCorrect, playWrong, playClick, playWin, initMuteButton } from '../../lib/sounds';
 import { setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'sequence-sort';
+let _analyticsStartTime = 0;
 let state: GameState;
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   state = createGameSync(10);
   document.getElementById('start')!.classList.add('hidden');
   document.getElementById('game')!.classList.remove('hidden');
@@ -65,6 +69,8 @@ function onWin() {
   playWin();
   showConfetti();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, state.score);
   document.getElementById('game')!.classList.add('hidden');
   document.getElementById('result')!.classList.remove('hidden');

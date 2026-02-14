@@ -3,8 +3,10 @@ import { genQuestion as _genQuestion, clampRopeOffset, calcRopeOffset, determine
 import { playCorrect, playWrong, playWin, playTick, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'tug-of-war';
+let _analyticsStartTime = 0;
 const $ = (id: string) => document.getElementById(id)!;
 
 interface GameState {
@@ -175,6 +177,8 @@ function updateTimer() {
 }
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   state.difficulty = ($('difficulty') as HTMLSelectElement).value;
   state.operations = ($('operations') as HTMLSelectElement).value;
   state.timeLeft = parseInt(($('game-time') as HTMLSelectElement).value);
@@ -219,6 +223,8 @@ function endGame() {
   playWin();
   const totalScore = state.score1 + state.score2;
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   const isNew = setHighScore(GAME_ID, totalScore);
   if (isNew && totalScore > 0) {
     const el = document.createElement('div');

@@ -2,8 +2,10 @@ import { generateRound, checkMatch, getResultText, TOTAL_ROUNDS, PAIRS_PER_ROUND
 import { playToddlerCorrect, playToddlerWrong, playWin, playClick, initMuteButton } from '../../lib/sounds';
 import { getHighScore, setHighScore, setLastPlayed } from '../../lib/storage';
 import { showConfetti } from '../../lib/confetti';
+import { trackGameStart, trackGameEnd, trackRating, createRatingUI } from '../../lib/analytics';
 
 const GAME_ID = 'toddler-match';
+let _analyticsStartTime = 0;
 let currentRound: MatchRound;
 let roundIdx = 0;
 let score = 0;
@@ -25,6 +27,8 @@ function speak(text: string) {
 }
 
 function startGame() {
+  _analyticsStartTime = Date.now();
+  trackGameStart(GAME_ID);
   roundIdx = 0; score = 0; totalMatches = 0;
   show('game-screen');
   nextRound();
@@ -145,6 +149,8 @@ function endGame() {
 
   playWin();
   setLastPlayed(GAME_ID);
+  trackGameEnd(GAME_ID, typeof score !== "undefined" && typeof score === "number" ? score : 0, Date.now() - _analyticsStartTime, true);
+  createRatingUI(GAME_ID, document.getElementById("result") || document.getElementById("result-screen") || document.body);
   setHighScore(GAME_ID, score);
   if (score === total) showConfetti();
 }

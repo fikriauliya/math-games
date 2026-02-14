@@ -10,6 +10,8 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@netlify/blobs": "^10.6.0",
+    "@netlify/functions": "^5.1.2",
     "effect": "^3.19.16"
   }
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tower Sort 🏛️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🏛️</div>
+  <div class="start-title">Tower Sort</div>
+  <div class="start-sub">Move all discs to the right pillar. Larger discs can't go on smaller ones!</div>
+  <div class="settings">
+    <label>Difficulty: <select id="diff"><option value="easy">Easy (3 discs)</option><option value="medium" selected>Medium (4 discs)</option><option value="hard">Hard (5 discs)</option></select></label>
+  </div>
+  <button class="btn-play" onclick="startGame()">Play! 🎮</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="hud">
+    <span id="move-count">Moves: 0</span>
+    <span id="min-moves">Min: 7</span>
+  </div>
+  <div class="towers">
+    <div class="peg" id="peg-0" onclick="pegClick(0)">
+      <div class="peg-pillar"></div>
+      <div class="peg-discs"></div>
+      <div class="peg-base"></div>
+    </div>
+    <div class="peg" id="peg-1" onclick="pegClick(1)">
+      <div class="peg-pillar"></div>
+      <div class="peg-discs"></div>
+      <div class="peg-base"></div>
+    </div>
+    <div class="peg" id="peg-2" onclick="pegClick(2)">
+      <div class="peg-pillar"></div>
+      <div class="peg-discs"></div>
+      <div class="peg-base"></div>
+    </div>
+  </div>
+  <div class="hint">Tap a peg to pick up, tap another to place</div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+  <a href="/" class="back">← Back to Games</a>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>
