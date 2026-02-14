@@ -40,6 +40,7 @@ h1 .emoji { font-size: clamp(1.1rem, 4vw, 1.8rem); }
 .game-card.theme-bubble { border-left: 4px solid #0077b6; }
 .game-card.theme-memory { border-left: 4px solid #7b1fa2; }
 .game-card.theme-ninja { border-left: 4px solid #c0392b; }
+.game-card.theme-sempoa { border-left: 4px solid #f97316; }
 .game-card.theme-colors { border-left: 4px solid #f5576c; }
 .game-card.theme-animals { border-left: 4px solid #ff8f00; }
 .game-card.theme-numbers { border-left: 4px solid #2e5339; }

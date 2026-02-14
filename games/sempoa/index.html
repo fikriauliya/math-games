@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sempoa Mental Math 🧮</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <a href="/" class="back">← Back to Games</a>
+
+  <div id="start-screen">
+    <div class="hero-emoji">🧮</div>
+    <h1>Sempoa Mental Math</h1>
+    <p>Flash Anzan — latih kalkulasi mentalmu!</p>
+    <div id="high-score-display"></div>
+
+    <div class="settings">
+      <div class="setting-group">
+        <label>Tingkat Kesulitan</label>
+        <div class="btn-group" id="difficulty-group">
+          <button class="opt-btn active" data-val="easy">🟢 Pemula</button>
+          <button class="opt-btn" data-val="medium">🟡 Menengah</button>
+          <button class="opt-btn" data-val="hard">🔴 Mahir</button>
+          <button class="opt-btn" data-val="expert">🟣 Ahli</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label>Jumlah Angka: <span id="count-display">3</span></label>
+        <input type="range" id="count-slider" min="3" max="10" value="3">
+      </div>
+      <div class="setting-group">
+        <label>Kecepatan Flash</label>
+        <div class="btn-group" id="speed-group">
+          <button class="opt-btn" data-val="slow">🐢 Lambat</button>
+          <button class="opt-btn active" data-val="normal">🚶 Normal</button>
+          <button class="opt-btn" data-val="fast">🏃 Cepat</button>
+          <button class="opt-btn" data-val="turbo">⚡ Turbo</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label>Mode Angka</label>
+        <div class="btn-group" id="mode-group">
+          <button class="opt-btn active" data-val="integer">🔢 Bulat</button>
+          <button class="opt-btn" data-val="decimal">🔣 Desimal</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">▶ Mulai!</button>
+  </div>
+
+  <div id="game-screen" style="display:none;">
+    <div id="round-info"></div>
+    <div id="flash-display">
+      <div id="flash-number"></div>
+    </div>
+    <div id="progress-bar"><div id="progress-fill"></div></div>
+  </div>
+
+  <div id="answer-screen" style="display:none;">
+    <div class="answer-prompt">Berapa jawabannya?</div>
+    <div id="answer-display" class="answer-value">0</div>
+    <div id="numpad"></div>
+  </div>
+
+  <div id="result-screen" style="display:none;">
+    <div id="result-icon"></div>
+    <div id="result-text"></div>
+    <div id="result-detail"></div>
+    <button class="next-btn" onclick="nextRound()">Lanjut →</button>
+  </div>
+
+  <div id="final-screen" style="display:none;">
+    <h2>Selesai!</h2>
+    <div id="final-grade"></div>
+    <div id="final-score"></div>
+    <div id="final-message"></div>
+    <div id="final-detail"></div>
+    <div id="rating-container"></div>
+    <button class="start-btn" onclick="showStart()">🔄 Main Lagi</button>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>
