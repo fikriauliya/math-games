@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Times Table Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>📊 TIMES TABLE</h1>
+    <h2>Fill in the multiplication grid!</h2>
+    <div class="settings">
+      <label>Difficulty: <select id="diff"><option value="easy">Easy (5×5)</option><option value="medium" selected>Medium (8×8)</option><option value="hard">Hard (12×12)</option></select></label>
+    </div>
+    <button class="big-btn" onclick="startGame()">START!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <div id="game" class="screen hidden">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-label">Time</div><div class="hud-value" id="timer">0s</div></div>
+      <div class="hud-item"><div class="hud-label">Left</div><div class="hud-value" id="blanks-left">0</div></div>
+      <div class="hud-item"><div class="hud-label">Mistakes</div><div class="hud-value" id="mistakes">0</div></div>
+    </div>
+    <div class="grid-container" id="grid"></div>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <h1 id="grade-text">🏆</h1>
+    <div class="grade" id="grade">A+</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-value" id="r-time">0s</div><div class="stat-label">Time</div></div>
+      <div class="stat"><div class="stat-value" id="r-mistakes">0</div><div class="stat-label">Mistakes</div></div>
+      <div class="stat"><div class="stat-value" id="r-score">0</div><div class="stat-label">Score</div></div>
+    </div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>

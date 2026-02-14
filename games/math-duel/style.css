@@ -1,0 +1,71 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #1a1a2e; color: white; height: 100dvh; display: flex; flex-direction: column;
+  overflow: hidden; user-select: none;
+}
+
+.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; }
+.hidden { display: none !important; }
+
+#start h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; background: linear-gradient(135deg, #ef4444, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+#start h2 { font-size: clamp(1rem, 3vw, 1.2rem); opacity: 0.7; }
+.hint { font-size: 0.85rem; opacity: 0.5; }
+
+.big-btn { padding: 1rem 3rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900; border: none; border-radius: 50px; cursor: pointer; font-family: 'Nunito'; background: linear-gradient(135deg, #ef4444, #3b82f6); color: white; box-shadow: 0 4px 20px rgba(239,68,68,0.3); min-height: 48px; touch-action: manipulation; }
+.big-btn:active { transform: scale(0.95); }
+
+/* Game - split screen */
+#game { padding: 0; gap: 0; }
+
+.duel-side {
+  flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 1rem; transition: background 0.3s;
+}
+#p1-side { background: linear-gradient(180deg, #7f1d1d, #991b1b, #1a1a2e); }
+#p1-side .p1-area { transform: rotate(180deg); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+#p2-side { background: linear-gradient(0deg, #1e3a5f, #1e40af, #1a1a2e); }
+.duel-side.scored { animation: flash-score 0.5s; }
+
+.player-label { font-size: clamp(1rem, 2.5vw, 1.2rem); font-weight: 900; opacity: 0.8; }
+.player-label span { font-size: clamp(1.5rem, 4vw, 2rem); }
+
+.duel-question { font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; margin: 0.3rem 0; }
+
+.duel-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; width: 100%; max-width: 300px; }
+.duel-btn {
+  padding: 0.8rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900;
+  border: 2px solid rgba(255,255,255,0.2); border-radius: 12px;
+  background: rgba(255,255,255,0.1); color: white; cursor: pointer;
+  font-family: 'Nunito'; min-height: 50px; touch-action: manipulation;
+}
+.duel-btn:active { transform: scale(0.95); }
+.duel-btn.correct { background: #22c55e; border-color: #22c55e; }
+.duel-btn.wrong { background: #ef4444; border-color: #ef4444; }
+
+.vs-bar {
+  width: 100%; background: #0f0f23; padding: 0.3rem 1rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 2px solid #ffd700; border-bottom: 2px solid #ffd700;
+}
+.vs-text { font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 900; color: #ffd700; }
+.q-counter { font-size: 0.8rem; opacity: 0.6; }
+
+/* Result */
+.result-emoji { font-size: clamp(3rem, 10vw, 5rem); animation: bounce 1s infinite; }
+#result h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 900; }
+.result-scores { display: flex; gap: 2rem; margin: 1rem 0; }
+.result-p { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.p-label { font-size: 1rem; font-weight: 700; opacity: 0.7; }
+.p-score { font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; }
+
+a.back { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; min-height: 44px; display: inline-flex; align-items: center; touch-action: manipulation; }
+
+@keyframes flash-score { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.5); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+@media (max-width: 480px) {
+  .duel-choices { max-width: 100%; }
+  .duel-btn { padding: 0.6rem; min-height: 44px; }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Math Duel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>⚔️ MATH DUEL</h1>
+    <h2>2 players, 1 device — who's faster?</h2>
+    <p class="hint">Player 1 sits on top, Player 2 on bottom</p>
+    <button class="big-btn" onclick="startGame()">FIGHT!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <div id="game" class="screen hidden">
+    <div class="duel-side" id="p1-side">
+      <div class="p1-area">
+        <div class="player-label">P1 🔴 <span id="p1-score">0</span></div>
+        <div class="duel-question" id="p1-question"></div>
+        <div class="duel-choices" id="p1-choices"></div>
+      </div>
+    </div>
+    <div class="vs-bar">
+      <span class="vs-text">⚡VS⚡</span>
+      <span class="q-counter" id="q-num">1/15</span>
+    </div>
+    <div class="duel-side" id="p2-side">
+      <div class="player-label">P2 🔵 <span id="p2-score">0</span></div>
+      <div class="duel-question" id="p2-question"></div>
+      <div class="duel-choices" id="p2-choices"></div>
+    </div>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <div class="result-emoji" id="result-emoji">🏆</div>
+    <h1 id="result-title">Player 1 Wins!</h1>
+    <div class="result-scores">
+      <div class="result-p"><span class="p-label">🔴 P1</span><span class="p-score" id="result-p1">0</span></div>
+      <div class="result-p"><span class="p-label">🔵 P2</span><span class="p-score" id="result-p2">0</span></div>
+    </div>
+    <button class="big-btn" onclick="location.reload()">REMATCH!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>

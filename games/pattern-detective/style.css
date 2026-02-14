@@ -1,0 +1,77 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(180deg, #0d1b2a, #1b2838, #1b3a4b);
+  color: white; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: '🔍'; position: fixed; top: 15%; right: 5%; font-size: 8rem; opacity: 0.04; z-index: 0; pointer-events: none;
+}
+body::after {
+  content: ''; position: fixed; bottom: 0; left: 0; right: 0; height: 200px; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.1) 0%, transparent 70%);
+}
+
+.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 2rem; position: relative; z-index: 1; }
+.hidden { display: none !important; }
+
+#start h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; color: #60a5fa; }
+#start h2 { font-size: clamp(0.9rem, 2.5vw, 1.1rem); opacity: 0.7; }
+
+.big-btn { padding: 1rem 3rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900; border: none; border-radius: 50px; cursor: pointer; font-family: 'Nunito'; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; box-shadow: 0 4px 20px rgba(59,130,246,0.3); min-height: 48px; touch-action: manipulation; }
+.big-btn:active { transform: scale(0.95); }
+
+.hud { display: flex; justify-content: space-between; width: 100%; max-width: 400px; }
+.hud-item { text-align: center; }
+.hud-label { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; }
+.hud-value { font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 900; }
+
+.prompt { font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 700; color: #93c5fd; }
+
+.sequence { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+.evidence-card {
+  width: clamp(50px, 12vw, 65px); height: clamp(50px, 12vw, 65px);
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(147,197,253,0.3);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 900;
+  animation: card-in 0.3s ease both;
+}
+.evidence-card.mystery {
+  background: rgba(59,130,246,0.2); border-color: #3b82f6; border-style: dashed;
+  color: #60a5fa; font-size: clamp(1.5rem, 4vw, 2rem);
+}
+.evidence-card.revealed { background: #3b82f6; border-color: #3b82f6; color: white; border-style: solid; animation: pop 0.4s ease; }
+
+@keyframes card-in { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; width: 100%; max-width: 300px; }
+.choice-btn {
+  padding: 1rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900;
+  border: 2px solid rgba(147,197,253,0.3); border-radius: 12px;
+  background: rgba(255,255,255,0.05); color: white; cursor: pointer;
+  font-family: 'Nunito'; min-height: 56px; touch-action: manipulation;
+  transition: all 0.15s;
+}
+.choice-btn:active { transform: scale(0.95); background: rgba(59,130,246,0.2); }
+.choice-btn.correct { background: #22c55e; border-color: #22c55e; }
+.choice-btn.wrong { background: #ef4444; border-color: #ef4444; animation: shake-no 0.4s; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; max-width: 300px; }
+.stat { background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; text-align: center; }
+.stat-value { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900; }
+.stat-label { font-size: 0.8rem; opacity: 0.7; }
+.grade { font-size: clamp(3rem, 8vw, 4rem); font-weight: 900; color: #60a5fa; }
+
+a.back { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; min-height: 44px; display: inline-flex; align-items: center; touch-action: manipulation; }
+
+@keyframes pop { 0% { transform: scale(0.5); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes shake-no { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+
+@media (max-width: 480px) {
+  .screen { padding: 1.5rem 1rem; gap: 1rem; }
+  .evidence-card { width: 45px; height: 45px; }
+}

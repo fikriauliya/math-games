@@ -43,6 +43,16 @@ h1 .emoji { font-size: clamp(1.3rem, 4vw, 2rem); }
 .game-card.theme-colors { border-left: 4px solid #f5576c; background: linear-gradient(135deg, rgba(245,87,108,0.05), white); }
 .game-card.theme-animals { border-left: 4px solid #ff8f00; background: linear-gradient(135deg, rgba(255,143,0,0.05), white); }
 .game-card.theme-numbers { border-left: 4px solid #2e5339; background: linear-gradient(135deg, rgba(46,83,57,0.05), white); }
+.game-card.theme-timestable { border-left: 4px solid #1565c0; background: linear-gradient(135deg, rgba(21,101,192,0.05), white); }
+.game-card.theme-equation { border-left: 4px solid #f57c00; background: linear-gradient(135deg, rgba(245,124,0,0.05), white); }
+.game-card.theme-pattern { border-left: 4px solid #1d4ed8; background: linear-gradient(135deg, rgba(29,78,216,0.05), white); }
+.game-card.theme-pizza { border-left: 4px solid #d32f2f; background: linear-gradient(135deg, rgba(211,47,47,0.05), white); }
+.game-card.theme-duel { border-left: 4px solid #ef4444; background: linear-gradient(135deg, rgba(239,68,68,0.05), white); }
+.game-card.theme-numberline { border-left: 4px solid #4caf50; background: linear-gradient(135deg, rgba(76,175,80,0.05), white); }
+.game-card.theme-fruits { border-left: 4px solid #4caf50; background: linear-gradient(135deg, rgba(76,175,80,0.05), white); }
+.game-card.theme-sizes { border-left: 4px solid #42a5f5; background: linear-gradient(135deg, rgba(66,165,245,0.05), white); }
+.game-card.theme-letters { border-left: 4px solid #e91e63; background: linear-gradient(135deg, rgba(233,30,99,0.05), white); }
+.game-card.theme-match { border-left: 4px solid #7c4dff; background: linear-gradient(135deg, rgba(124,77,255,0.05), white); }
 
 .game-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .game-title { font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-bottom: 0.3rem; }
