@@ -2,6 +2,16 @@
   command = "bun build ./index.html ./games/*/index.html --outdir=dist --minify"
   publish = "dist"
 
+[[redirects]]
+  from = "/games"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/games/"
+  to = "/"
+  status = 301
+
 [[headers]]
   for = "/*"
   [headers.values]
