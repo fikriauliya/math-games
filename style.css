@@ -1,17 +1,20 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Nunito', sans-serif;
   background: #faf8f5;
   color: #333;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex; flex-direction: column; align-items: center;
   padding: 2rem 1rem;
+  padding: 2rem max(1rem, env(safe-area-inset-left)) 2rem max(1rem, env(safe-area-inset-right));
+  overflow-x: hidden;
 }
 
 .header { text-align: center; margin-bottom: 2rem; }
-h1 { font-size: 2.2rem; font-weight: 900; color: #2d3436; }
-h1 .emoji { font-size: 2rem; }
-.subtitle { color: #636e72; font-size: 1rem; margin-top: 0.3rem; }
+h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; color: #2d3436; }
+h1 .emoji { font-size: clamp(1.3rem, 4vw, 2rem); }
+.subtitle { color: #636e72; font-size: clamp(0.85rem, 2.5vw, 1rem); margin-top: 0.3rem; }
 
 .games-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -25,13 +28,15 @@ h1 .emoji { font-size: 2rem; }
   transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid #e8e4df;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  touch-action: manipulation;
+  min-height: 44px;
 }
 .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
 .game-card:active { transform: scale(0.98); }
 
 .game-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .game-title { font-size: 1.2rem; font-weight: 900; color: #2d3436; margin-bottom: 0.3rem; }
-.game-desc { font-size: 0.85rem; color: #636e72; line-height: 1.5; }
+.game-desc { font-size: clamp(0.8rem, 2vw, 0.85rem); color: #636e72; line-height: 1.5; }
 .game-tags { display: flex; gap: 0.4rem; margin-top: 0.8rem; flex-wrap: wrap; }
 .tag {
   padding: 0.15rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;
@@ -48,9 +53,17 @@ h1 .emoji { font-size: 2rem; }
   text-transform: uppercase; letter-spacing: 1px;
 }
 
-footer { margin-top: 3rem; color: #b2bec3; font-size: 0.8rem; }
+footer { margin-top: 3rem; color: #b2bec3; font-size: 0.8rem; padding-bottom: env(safe-area-inset-bottom); }
 
-@media (max-width: 640px) {
-  h1 { font-size: 1.8rem; }
-  .games-grid { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  body { padding: 1.5rem 1rem; }
+  .games-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 1rem 0.75rem; }
+  h1 { font-size: 1.5rem; }
+  .games-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+  .game-card { padding: 1.2rem; }
+  .section-label { font-size: 0.75rem; }
 }

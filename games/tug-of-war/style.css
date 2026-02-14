@@ -1,16 +1,17 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: 'Nunito', sans-serif;
   background: #f0f4f8;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
 }
 
-.screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .hidden { display: none !important; }
 
 /* Start Screen */
@@ -19,20 +20,23 @@ body {
   color: white;
   gap: 1.5rem;
   padding: 2rem;
+  padding: 2rem max(2rem, env(safe-area-inset-left)) 2rem max(2rem, env(safe-area-inset-right));
 }
-#start-screen h1 { font-size: 2.5rem; font-weight: 900; }
-#start-screen h2 { font-size: 1.3rem; font-weight: 700; opacity: 0.9; margin-top: -0.5rem; }
+#start-screen h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; }
+#start-screen h2 { font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 700; opacity: 0.9; margin-top: -0.5rem; }
 .settings { display: flex; flex-direction: column; gap: 0.8rem; width: 100%; max-width: 300px; }
 .settings label { display: flex; flex-direction: column; font-size: 0.9rem; font-weight: 700; }
 .settings select {
   padding: 0.5rem; border-radius: 8px; border: none; font-size: 1rem;
   font-family: 'Nunito', sans-serif; margin-top: 0.3rem;
+  min-height: 44px;
 }
 .big-btn {
-  padding: 1rem 3rem; font-size: 1.3rem; font-weight: 900; border: none;
+  padding: 1rem 3rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900; border: none;
   border-radius: 50px; cursor: pointer; font-family: 'Nunito', sans-serif;
   background: #ffd700; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   transition: transform 0.1s;
+  min-height: 48px; touch-action: manipulation;
 }
 .big-btn:active { transform: scale(0.95); }
 .hint { font-size: 0.85rem; opacity: 0.8; text-align: center; }
@@ -42,21 +46,25 @@ body {
 
 .game-header {
   display: flex; justify-content: space-between; align-items: center;
-  width: 100%; padding: 0.5rem 1rem; background: white;
+  width: 100%; padding: 0.5rem 1rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  background: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 10;
 }
 .team-score { display: flex; align-items: center; gap: 0.5rem; }
-.team-label { font-weight: 700; font-size: 0.9rem; }
+.team-label { font-weight: 700; font-size: clamp(0.7rem, 2vw, 0.9rem); }
 .team1-score .team-label { color: #2196F3; }
 .team2-score .team-label { color: #f44336; }
 .score {
-  font-weight: 900; font-size: 1.2rem; background: #eee; padding: 0.2rem 0.6rem;
+  font-weight: 900; font-size: clamp(1rem, 2.5vw, 1.2rem); background: #eee; padding: 0.2rem 0.6rem;
   border-radius: 8px; min-width: 2rem; text-align: center;
 }
 .timer-box {
   display: flex; align-items: center; gap: 0.3rem;
   background: #ff5252; color: white; padding: 0.3rem 0.8rem;
-  border-radius: 20px; font-weight: 800; font-size: 1.1rem;
+  border-radius: 20px; font-weight: 800; font-size: clamp(0.9rem, 2.5vw, 1.1rem);
 }
 
 /* Arena */
@@ -71,14 +79,14 @@ body {
   position: relative; width: 80%; transition: transform 0.3s ease-out;
 }
 .team1-chars, .team2-chars { display: flex; gap: 0.3rem; }
-.character { font-size: 2.5rem; animation: pull 0.5s infinite alternate; }
+.character { font-size: clamp(1.5rem, 4vw, 2.5rem); animation: pull 0.5s infinite alternate; }
 .character.pulling { animation: pull-hard 0.3s infinite alternate; }
 @keyframes pull { from { transform: translateX(0); } to { transform: translateX(-3px); } }
 @keyframes pull-hard { from { transform: translateX(0); } to { transform: translateX(-6px); } }
 .team2-chars .character { transform: scaleX(-1); }
 
 .rope {
-  position: relative; width: 100px; height: 8px;
+  position: relative; width: min(100px, 15vw); height: 8px;
   background: linear-gradient(90deg, #8d6e63, #6d4c41, #8d6e63, #6d4c41);
   border-radius: 4px; margin: 0 0.5rem;
   display: flex; align-items: center; justify-content: center;
@@ -101,12 +109,14 @@ body {
 .panel {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; padding: 0.5rem;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   background: white; gap: 0.4rem;
+  overflow-y: auto;
 }
 .panel-header {
   display: flex; justify-content: space-between; align-items: center;
   width: 100%; padding: 0.4rem 0.8rem; border-radius: 10px;
-  font-weight: 800; font-size: 1rem; color: white;
+  font-weight: 800; font-size: clamp(0.8rem, 2vw, 1rem); color: white;
 }
 .team1-header { background: #2196F3; }
 .team2-header { background: #f44336; }
@@ -116,14 +126,14 @@ body {
 }
 
 .question {
-  font-size: 1.8rem; font-weight: 900; padding: 0.3rem;
+  font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 900; padding: 0.3rem;
   color: #333; min-height: 2.5rem;
 }
 .team1-panel .question { color: #1565C0; }
 .team2-panel .question { color: #c62828; }
 
 .answer-display {
-  width: 80%; max-width: 200px; text-align: center; font-size: 1.5rem;
+  width: 80%; max-width: 200px; text-align: center; font-size: clamp(1.1rem, 3vw, 1.5rem);
   font-weight: 800; padding: 0.3rem; border: 2px solid #ddd;
   border-radius: 10px; background: #fafafa; font-family: 'Nunito', sans-serif;
 }
@@ -137,15 +147,17 @@ body {
 
 .numpad {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 0.4rem; width: 90%; max-width: 220px;
+  gap: clamp(0.2rem, 1vw, 0.4rem); width: 90%; max-width: 220px;
 }
 .num-btn {
-  padding: 0.6rem; font-size: 1.3rem; font-weight: 800;
+  padding: clamp(0.4rem, 1.5vw, 0.6rem); font-size: clamp(1rem, 2.5vw, 1.3rem); font-weight: 800;
   border: none; border-radius: 12px; cursor: pointer;
   font-family: 'Nunito', sans-serif;
   background: #e8eaf6; color: #333;
   transition: transform 0.05s, background 0.1s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 .num-btn:active { transform: scale(0.9); background: #c5cae9; }
 .num-btn.clear { background: #ffcdd2; color: #c62828; }
@@ -154,48 +166,66 @@ body {
 
 /* Result Screen */
 #result-screen { background: linear-gradient(135deg, #667eea, #764ba2); color: white; gap: 2rem; }
-.result-content { text-align: center; }
-.result-content h1 { font-size: 2rem; margin-bottom: 1.5rem; }
-.final-scores { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
+.result-content { text-align: center; padding: 1rem; }
+.result-content h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1.5rem; }
+.final-scores { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.5rem); margin-bottom: 2rem; justify-content: center; flex-wrap: wrap; }
 .final-score {
   display: flex; flex-direction: column; align-items: center;
-  background: rgba(255,255,255,0.15); padding: 1rem 2rem;
+  background: rgba(255,255,255,0.15); padding: 1rem clamp(1rem, 3vw, 2rem);
   border-radius: 15px; font-weight: 800;
 }
 .final-score span:first-child { font-size: 1rem; opacity: 0.9; }
-.final-score span:last-child { font-size: 2.5rem; }
+.final-score span:last-child { font-size: clamp(1.8rem, 5vw, 2.5rem); }
 .team1-final { border: 3px solid #2196F3; }
 .team2-final { border: 3px solid #f44336; }
 .vs { font-size: 1.5rem; font-weight: 900; opacity: 0.7; }
 
 /* Flash effect */
-.flash-correct {
-  animation: flash-green 0.3s;
-}
-@keyframes flash-green {
-  0% { background: #4caf50; } 100% { background: white; }
-}
-.flash-wrong {
-  animation: flash-red 0.3s;
-}
-@keyframes flash-red {
-  0% { background: #f44336; } 100% { background: white; }
-}
+.flash-correct { animation: flash-green 0.3s; }
+@keyframes flash-green { 0% { background: #4caf50; } 100% { background: white; } }
+.flash-wrong { animation: flash-red 0.3s; }
+@keyframes flash-red { 0% { background: #f44336; } 100% { background: white; } }
 
-/* Mobile responsive */
-@media (max-width: 640px) {
+/* Tablet */
+@media (max-width: 768px) {
+  .arena { height: 100px; }
+  .character { font-size: 2rem; }
   .question { font-size: 1.4rem; }
   .num-btn { padding: 0.5rem; font-size: 1.1rem; }
-  .character { font-size: 2rem; }
-  .arena { height: 100px; }
-  #start-screen h1 { font-size: 2rem; }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .arena { height: 80px; }
+  .character { font-size: 1.5rem; }
+  .rope { width: 60px; }
+  .question { font-size: 1.2rem; min-height: 2rem; }
+  .num-btn { padding: 0.4rem; font-size: 1rem; }
+  .answer-display { font-size: 1.1rem; padding: 0.2rem; }
+  .panel { gap: 0.2rem; padding: 0.3rem; }
+  .panel-header { padding: 0.3rem 0.5rem; font-size: 0.8rem; }
+  #start-screen { gap: 1rem; padding: 1.5rem; }
+  .hint { font-size: 0.75rem; }
 }
 
 @media (max-height: 700px) {
-  .arena { height: 80px; }
-  .character { font-size: 1.8rem; }
-  .question { font-size: 1.3rem; }
-  .num-btn { padding: 0.4rem; font-size: 1rem; }
-  .answer-display { font-size: 1.2rem; padding: 0.2rem; }
-  .panel { gap: 0.2rem; padding: 0.3rem; }
+  .arena { height: 70px; }
+  .character { font-size: 1.5rem; }
+  .question { font-size: 1.2rem; }
+  .num-btn { padding: 0.3rem; font-size: 0.95rem; }
+  .answer-display { font-size: 1rem; padding: 0.2rem; }
+  .panel { gap: 0.15rem; padding: 0.25rem; }
+}
+
+/* Landscape phone — stack panels side by side (already default), shrink arena */
+@media (max-height: 500px) {
+  .arena { height: 60px; }
+  .character { font-size: 1.3rem; }
+  .game-header { padding: 0.3rem 0.8rem; }
+}
+
+/* Portrait phone — panels remain side-by-side for 2-player */
+@media (orientation: portrait) and (max-width: 480px) {
+  .numpad { gap: 0.2rem; }
+  .num-btn { border-radius: 8px; min-height: 40px; }
 }
