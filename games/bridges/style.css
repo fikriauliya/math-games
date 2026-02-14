@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(180deg, #0077b6, #023e8a, #03045e);
+  color: white; min-height: 100dvh; overflow: hidden; user-select: none;
+}
+.screen { width: 100vw; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; padding: 1.5rem; }
+.hidden { display: none !important; }
+h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; }
+h2 { font-size: clamp(0.9rem, 2.5vw, 1.1rem); opacity: 0.7; }
+.hint { font-size: 0.8rem; opacity: 0.5; max-width: 320px; text-align: center; line-height: 1.4; }
+.big-btn {
+  padding: 1rem 3rem; font-size: clamp(1.1rem, 3vw, 1.3rem); font-weight: 900;
+  border: none; border-radius: 50px; cursor: pointer; font-family: 'Nunito';
+  background: linear-gradient(135deg, #48cae4, #0096c7); color: white;
+  min-height: 48px; touch-action: manipulation; box-shadow: 0 4px 15px rgba(0,150,199,0.4);
+}
+.big-btn:active { transform: scale(0.95); }
+.reset-btn {
+  padding: 0.6rem 1.5rem; font-size: 1rem; font-weight: 700; border: none;
+  border-radius: 30px; cursor: pointer; font-family: 'Nunito';
+  background: rgba(255,255,255,0.15); color: white; touch-action: manipulation;
+}
+.hud { font-size: 0.9rem; opacity: 0.7; }
+canvas { display: block; border-radius: 12px; background: rgba(0,20,60,0.4); border: 2px solid rgba(72,202,228,0.3); touch-action: none; }
+a.back { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; min-height: 44px; display: inline-flex; align-items: center; }

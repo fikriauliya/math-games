@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sokoban 📦</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>📦 Sokoban</h1>
+    <h2>Push boxes to targets!</h2>
+    <p class="hint">Arrow keys or swipe to move</p>
+    <button class="big-btn" onclick="startGame()">START!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud">Level <span id="level">1</span> &nbsp;|&nbsp; Moves: <span id="moves">0</span></div>
+    <canvas id="board" width="350" height="350"></canvas>
+    <button class="reset-btn" onclick="resetLevel()">🔄 Reset</button>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🏆</h1>
+    <div class="grade" id="grade">S</div>
+    <p id="result-msg"></p>
+    <div id="rating-container"></div>
+    <button class="big-btn" id="next-level-btn" onclick="nextLevel()">NEXT LEVEL</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

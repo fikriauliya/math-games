@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Code Breaker 🕵️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🕵️ Code Breaker</h1>
+    <h2>Crack the secret color code!</h2>
+    <p class="hint">⬛ = right color, right spot<br>⬜ = right color, wrong spot</p>
+    <button class="big-btn" onclick="startGame()">START!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud"><span>Guess <span id="guess-num">1</span>/10</span></div>
+    <div id="history"></div>
+    <div id="current-guess" class="guess-row"></div>
+    <div id="color-picker" class="color-picker"></div>
+    <button class="submit-btn" id="submit-btn" onclick="submitGuess()">CHECK</button>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🏆</h1>
+    <div class="grade" id="grade">A</div>
+    <p id="result-msg"></p>
+    <div id="secret-reveal"></div>
+    <div id="rating-container"></div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

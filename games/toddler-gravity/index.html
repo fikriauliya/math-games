@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Jatuh Duluan! 🌍</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🌍 Jatuh Duluan!</h1>
+    <h2>Mana yang jatuh lebih cepat?</h2>
+    <button class="big-btn" onclick="startGame()">MULAI!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud">Soal <span id="qnum">1</span>/5</div>
+    <h2 id="prompt">Mana yang jatuh duluan?</h2>
+    <div class="drop-zone" id="drop-zone">
+      <div class="obj" id="obj-left"></div>
+      <div class="obj" id="obj-right"></div>
+    </div>
+    <div class="choices">
+      <button class="choice-btn" id="btn-left" onclick="pick('left')"></button>
+      <button class="choice-btn" id="btn-right" onclick="pick('right')"></button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🎉</h1>
+    <div id="result-stars" class="stars"></div>
+    <div id="rating-container"></div>
+    <button class="big-btn" onclick="location.reload()">MAIN LAGI!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

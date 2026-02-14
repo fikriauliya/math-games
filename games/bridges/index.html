@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Bridges (Hashiwokakero)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🌊 Bridges</h1>
+    <h2>Connect islands with bridges!</h2>
+    <p class="hint">Click two islands in a row/column to add a bridge (max 2). Each island needs exactly the shown number of bridges.</p>
+    <button class="big-btn" onclick="startGame()">START!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud"><span id="status">Select an island</span></div>
+    <canvas id="board" width="330" height="330"></canvas>
+    <button class="reset-btn" onclick="resetPuzzle()">🔄 Reset</button>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1>🏆 Puzzle Solved!</h1>
+    <div id="rating-container"></div>
+    <button class="big-btn" onclick="location.reload()">NEXT PUZZLE</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>
