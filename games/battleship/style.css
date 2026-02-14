@@ -1,0 +1,27 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #0a1628, #1a2a4a, #0d1b2a); color: white; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
+.screen { width: 100vw; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1rem; }
+.hidden { display: none !important; }
+h1 { font-size: 2.5rem; font-weight: 900; }
+h2 { font-size: 1rem; opacity: 0.8; }
+.big-btn { background: linear-gradient(135deg, #1b4965, #62b6cb); color: white; border: none; padding: 1rem 3rem; border-radius: 16px; font-size: 1.3rem; font-weight: 900; font-family: inherit; cursor: pointer; min-height: 48px; }
+.back { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; }
+.hud { display: flex; gap: 2rem; text-align: center; }
+.hud-label { font-size: 0.7rem; opacity: 0.6; text-transform: uppercase; }
+.hud-value { font-size: 1.1rem; font-weight: 900; }
+.boards { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+.board-section { text-align: center; }
+.board-label { font-size: 0.8rem; opacity: 0.6; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 1px; }
+.grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 1px; }
+.cell { width: 28px; height: 28px; background: rgba(27,73,101,0.4); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: background 0.15s; border-radius: 2px; }
+.cell:hover { background: rgba(98,182,203,0.3); }
+.cell.hit { background: #e94560; }
+.cell.miss { background: rgba(255,255,255,0.15); }
+.cell.miss::after { content: '·'; display: flex; align-items: center; justify-content: center; height: 100%; opacity: 0.5; }
+.cell.ship { background: rgba(98,182,203,0.4); }
+.grade { font-size: 4rem; }
+.stats { display: flex; gap: 2rem; }
+.stat { text-align: center; }
+.stat-value { font-size: 1.8rem; font-weight: 900; }
+.stat-label { font-size: 0.8rem; opacity: 0.6; }
+@media (max-width: 480px) { .cell { width: 24px; height: 24px; } h1 { font-size: 2rem; } .boards { gap: 0.8rem; } }

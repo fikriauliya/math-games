@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Peternakan! 🐄</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🏡</div>
+  <div class="start-title">Peternakan!</div>
+  <div class="start-sub">Ketuk hewan untuk dengar suaranya! 🐄🐔🐷</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+</div>
+<div class="screen" id="farm-screen">
+  <div class="farm-title">🏡 Peternakan Ku</div>
+  <div class="farm-grid" id="farm-grid"></div>
+</div>
+<div class="popup-overlay" id="animal-popup">
+  <div class="popup-card">
+    <div class="popup-emoji" id="popup-emoji"></div>
+    <div class="popup-name" id="popup-name"></div>
+    <div class="popup-sound" id="popup-sound"></div>
+    <div class="popup-fact" id="popup-fact"></div>
+    <button class="popup-close-btn" id="popup-close">OK! 👍</button>
+  </div>
+</div>
+<script src="./app.ts"></script>
+</body>
+</html>

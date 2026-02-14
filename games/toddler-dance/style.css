@@ -1,0 +1,43 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+  overflow: hidden; user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; }
+.screen.active { display: flex; }
+.start-emoji { font-size: clamp(4rem, 12vw, 6rem); animation: bounce 1s infinite; }
+.start-title { font-size: clamp(2rem, 6vw, 2.5rem); font-weight: 900; color: #ad1457; margin: 0.5rem 0; }
+.start-sub { font-size: clamp(1rem, 3vw, 1.2rem); color: #c2185b; margin-bottom: 2rem; text-align: center; }
+.btn-play {
+  font-family: inherit; font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900;
+  background: #e91e63; color: white; border: none; border-radius: 2rem;
+  padding: 1.2rem 3.5rem; cursor: pointer; box-shadow: 0 6px 0 #880e4f;
+  min-height: 64px; touch-action: manipulation;
+}
+.btn-play:active { transform: translateY(3px); box-shadow: 0 3px 0 #880e4f; }
+.level-info { font-size: 1.2rem; font-weight: 900; color: #880e4f; margin-bottom: 0.3rem; }
+.instruction { font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 700; color: #ad1457; margin-bottom: 1rem; }
+.dance-display { font-size: clamp(6rem, 20vw, 10rem); margin: 1rem 0; }
+.move-buttons {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem, 2vw, 1.2rem);
+  width: 100%; max-width: 350px;
+}
+.move-btn {
+  font-family: inherit; border: 5px solid #f8bbd0; border-radius: 1.5rem;
+  background: white; cursor: pointer; transition: all 0.15s;
+  padding: 1.2rem; display: flex; align-items: center; justify-content: center;
+  min-height: 80px; touch-action: manipulation;
+}
+.move-btn:active { transform: scale(0.9); }
+.move-btn:disabled { cursor: default; }
+.move-emoji { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+.result-emoji { font-size: clamp(4rem, 12vw, 6rem); }
+.result-title { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; color: #ad1457; margin: 0.5rem 0; }
+.result-sub { font-size: 1.1rem; color: #c2185b; margin-bottom: 2rem; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes pop { 0% { transform: scale(0.5); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }

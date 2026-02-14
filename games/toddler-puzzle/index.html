@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Puzzle Kecil! 🧩</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🧩 Puzzle Kecil!</h1>
+    <p>Susun gambar yang benar!</p>
+    <button class="start-btn" onclick="startGame()">🎮 Mulai!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="info-bar"><span id="moves">Langkah: 0</span><span id="puzzle-name"></span></div>
+    <div class="preview-label">Susun jadi:</div>
+    <div class="preview" id="preview"></div>
+    <div class="puzzle-grid" id="grid"></div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🎉 Hebat!</h1>
+    <div class="big-stars" id="big-stars"></div>
+    <p id="result-moves"></p>
+    <div id="rating-container"></div>
+    <button class="result-btn" onclick="location.reload()">Main Lagi!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

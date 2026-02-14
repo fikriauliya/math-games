@@ -1,0 +1,40 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #311b92 0%, #4527a0 50%, #311b92 100%);
+  overflow: hidden; user-select: none; color: #fff;
+}
+.back-link { position: fixed; top: 12px; left: 12px; color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; z-index: 100; font-size: 0.9rem; }
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 1rem; }
+.screen.active { display: flex; }
+.start-emoji { font-size: clamp(2.5rem, 8vw, 4rem); animation: bounce 1s infinite; }
+.start-title { font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; margin: 0.5rem 0; }
+.start-sub { font-size: clamp(0.85rem, 2.5vw, 1rem); opacity: 0.8; margin-bottom: 1.5rem; text-align: center; max-width: 300px; }
+.btn-play {
+  font-family: inherit; font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 900;
+  background: #b388ff; color: #311b92; border: none; border-radius: 2rem;
+  padding: 1rem 3rem; cursor: pointer; box-shadow: 0 4px 0 #7c4dff;
+  min-height: 56px; touch-action: manipulation;
+}
+.btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #7c4dff; }
+.progress { font-size: 1rem; font-weight: 900; margin-bottom: 0.5rem; }
+.board { display: grid; gap: 2px; max-width: 300px; width: 100%; margin-bottom: 0.5rem; }
+.cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 900; border-radius: 4px; min-height: 44px;
+  position: relative;
+}
+.cell.blank { background: #311b92; }
+.cell.clue { background: #1a0a5c; font-size: 0.7rem; }
+.clue-across { position: absolute; bottom: 2px; right: 4px; color: #b388ff; }
+.clue-down { position: absolute; top: 2px; left: 4px; color: #b388ff; }
+.cell.input { background: #fff; color: #311b92; cursor: pointer; }
+.cell.input.selected { background: #b388ff; color: #fff; }
+.hint { font-size: 0.8rem; opacity: 0.6; margin-top: 0.5rem; }
+.result-emoji { font-size: clamp(3rem, 10vw, 5rem); }
+.result-title { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; margin: 0.5rem 0; }
+.result-sub { font-size: 1.1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }

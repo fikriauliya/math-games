@@ -1,0 +1,29 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #0c0c1d, #1a1a3e, #2d2d6e); color: white; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
+.screen { width: 100vw; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem; }
+.hidden { display: none !important; }
+h1 { font-size: 2.5rem; font-weight: 900; }
+h2 { font-size: 1rem; opacity: 0.8; }
+.settings { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.settings label { background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 12px; }
+.settings select { background: transparent; color: white; border: none; font-family: inherit; font-size: 1rem; }
+.big-btn { background: linear-gradient(135deg, #4d96ff, #ff6b6b); color: white; border: none; padding: 1rem 3rem; border-radius: 16px; font-size: 1.3rem; font-weight: 900; font-family: inherit; cursor: pointer; min-height: 48px; }
+.back { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; }
+.hud { display: flex; gap: 2rem; }
+.hud-item { text-align: center; }
+.hud-label { font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; }
+.hud-value { font-size: 1.3rem; font-weight: 900; }
+canvas { border-radius: 50%; }
+.time-label { font-size: 1.5rem; font-weight: 900; }
+.q-label { font-size: 1rem; opacity: 0.8; }
+.choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-width: 340px; width: 100%; }
+.choice-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 1.2rem; font-weight: 900; font-family: inherit; padding: 0.8rem; border-radius: 14px; cursor: pointer; min-height: 50px; transition: all 0.2s; }
+.choice-btn:active { transform: scale(0.95); }
+.choice-btn.correct { background: rgba(107,203,119,0.3); border-color: #6bcb77; }
+.choice-btn.wrong { background: rgba(255,107,107,0.3); border-color: #ff6b6b; }
+.grade { font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, #ffd700, #4d96ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stats { display: flex; gap: 2rem; }
+.stat { text-align: center; }
+.stat-value { font-size: 1.8rem; font-weight: 900; }
+.stat-label { font-size: 0.8rem; opacity: 0.6; }
+@media (max-width: 480px) { h1 { font-size: 2rem; } canvas { width: 200px; height: 200px; } }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Peliharaan Kecilku! 🐶</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="pet-area">
+      <div class="pet-emoji" id="pet-emoji">🐶</div>
+      <div class="pet-name" id="pet-name">Dogi</div>
+      <div class="pet-mood" id="pet-mood">😊</div>
+      <div class="mood-text" id="mood-text">Lumayan senang</div>
+    </div>
+    <div class="bars" id="bars">
+      <div class="bar-row"><span>🍎 Kenyang</span><div class="bar"><div class="bar-fill" id="bar-hunger"></div></div></div>
+      <div class="bar-row"><span>🚿 Bersih</span><div class="bar"><div class="bar-fill" id="bar-clean"></div></div></div>
+      <div class="bar-row"><span>⚽ Senang</span><div class="bar"><div class="bar-fill" id="bar-happy"></div></div></div>
+    </div>
+    <div class="actions" id="actions"></div>
+    <div class="bottom-links">
+      <div id="rating-container"></div>
+      <a href="/" class="back">← Kembali</a>
+    </div>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

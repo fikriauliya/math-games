@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Kereta Angka! 🚂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🚂 Kereta Angka!</h1>
+    <p>Susun gerbong 1 sampai 5!</p>
+    <button class="start-btn" onclick="startGame()">🎮 Mulai!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <p class="hint">Tap 2 gerbong untuk menukar</p>
+    <div class="info-bar"><span id="moves">Langkah: 0</span></div>
+    <div class="train-track">
+      <div class="engine">🚂</div>
+      <div class="cars" id="cars"></div>
+    </div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🎉 Hebat!</h1>
+    <div class="big-stars" id="big-stars"></div>
+    <div id="rating-container"></div>
+    <button class="result-btn" onclick="location.reload()">Main Lagi!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

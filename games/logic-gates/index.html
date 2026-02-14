@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Logic Gates ⚡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">⚡</div>
+  <div class="start-title">Logic Gates</div>
+  <div class="start-sub">AND, OR, NOT, XOR — figure out the output!</div>
+  <button class="btn-play" onclick="startGame()">Play! 🎮</button>
+</div>
+<div class="screen" id="game-screen">
+  <div class="score-label" id="score-label"></div>
+  <div class="question" id="question"></div>
+  <div class="answers">
+    <button class="btn-answer btn-true" onclick="answer(true)">1 (TRUE)</button>
+    <button class="btn-answer btn-false" onclick="answer(false)">0 (FALSE)</button>
+  </div>
+</div>
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+<script src="./app.ts"></script>
+</body>
+</html>

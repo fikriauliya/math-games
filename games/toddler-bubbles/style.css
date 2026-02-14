@@ -1,0 +1,30 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100dvh; overflow: hidden; user-select: none;
+  background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+}
+canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; touch-action: none; }
+.start-screen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.start-emoji { font-size: clamp(4rem, 15vw, 7rem); animation: bounce 1s infinite; }
+.start-title { font-size: clamp(2rem, 7vw, 3rem); font-weight: 900; color: #1565c0; margin: 0.5rem 0; }
+.start-sub { font-size: clamp(1rem, 3vw, 1.3rem); color: #42a5f5; margin-bottom: 2rem; }
+.btn-play {
+  font-family: inherit; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 900;
+  background: #42a5f5; color: white; border: none; border-radius: 2rem;
+  padding: 1.2rem 4rem; cursor: pointer; box-shadow: 0 6px 0 #1565c0;
+  min-height: 70px; touch-action: manipulation;
+}
+.btn-play:active { transform: translateY(3px); box-shadow: 0 3px 0 #1565c0; }
+.pop-count {
+  position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+  font-family: 'Nunito', sans-serif; font-size: 1.5rem; font-weight: 900;
+  color: #1565c0; background: rgba(255,255,255,0.8); padding: 0.3rem 1.2rem;
+  border-radius: 2rem; z-index: 10;
+}
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes popAnim { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }

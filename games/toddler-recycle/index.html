@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pilah Sampah! ♻️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>♻️ Pilah Sampah!</h1>
+    <p>Masukkan ke tempat yang benar!</p>
+    <button class="start-btn" onclick="startGame()">🎮 Mulai!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="score-bar"><div class="stars" id="stars"></div><div class="round-info" id="round-info">1/10</div></div>
+    <div class="trash-item" id="trash-item">🍌</div>
+    <div class="trash-name" id="trash-name">Kulit pisang</div>
+    <div class="bins">
+      <button class="bin organik" onclick="chooseBin('organik')">🟢<br>Organik</button>
+      <button class="bin anorganik" onclick="chooseBin('anorganik')">🔴<br>Anorganik</button>
+    </div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="result-title">🎉 Hebat!</h1>
+    <div class="big-stars" id="big-stars"></div>
+    <div id="rating-container"></div>
+    <button class="result-btn" onclick="location.reload()">Main Lagi!</button>
+    <a href="/" class="back">← Kembali</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

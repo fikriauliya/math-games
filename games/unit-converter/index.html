@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Unit Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>📐 UNIT CONVERTER</h1>
+    <h2>Convert between units!</h2>
+    <div class="settings">
+      <label>Difficulty: <select id="diff"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select></label>
+      <label>Questions: <select id="qcount"><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label>
+    </div>
+    <button class="big-btn" onclick="startGame()">CONVERT!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-label">Score</div><div class="hud-value" id="score">0</div></div>
+      <div class="hud-item"><div class="hud-label">Progress</div><div class="hud-value" id="progress">1/15</div></div>
+    </div>
+    <div class="question-card">
+      <div class="q-category" id="category">Length</div>
+      <div class="q-conversion" id="conversion">5 km = ? m</div>
+    </div>
+    <div class="choices" id="choices"></div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="grade-text">🏆</h1>
+    <div class="grade" id="grade">S</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-value" id="r-correct">0</div><div class="stat-label">Correct</div></div>
+      <div class="stat"><div class="stat-value" id="r-wrong">0</div><div class="stat-label">Wrong</div></div>
+      <div class="stat"><div class="stat-value" id="r-score">0</div><div class="stat-label">Score</div></div>
+    </div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

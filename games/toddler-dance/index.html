@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Ayo Menari! 💃</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">💃</div>
+  <div class="start-title">Ayo Menari!</div>
+  <div class="start-sub">Ikuti gerakan yang ditunjukkan 🙌👏🦶👋</div>
+  <button class="btn-play" onclick="startGame()">Main! 🎮</button>
+</div>
+<div class="screen" id="game-screen">
+  <div class="level-info" id="level-info"></div>
+  <div class="instruction" id="instruction"></div>
+  <div class="dance-display" id="dance-display">🎵</div>
+  <div class="move-buttons" id="move-buttons"></div>
+</div>
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Main Lagi! 🔄</button>
+</div>
+<script src="./app.ts"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Ratio Recipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🍳 RATIO RECIPE</h1>
+    <h2>Scale recipes by ratio!</h2>
+    <div class="settings">
+      <label>Difficulty: <select id="diff"><option value="easy">Easy (×2, ×3)</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select></label>
+    </div>
+    <button class="big-btn" onclick="startGame()">COOK!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-label">Score</div><div class="hud-value" id="score">0</div></div>
+      <div class="hud-item"><div class="hud-label">Round</div><div class="hud-value" id="round">1/5</div></div>
+    </div>
+    <div class="recipe-card">
+      <h2 id="recipe-name">🍪 Cookies</h2>
+      <p id="serves-info" class="serves">Recipe serves 4. Make it for 8!</p>
+      <div id="ingredients" class="ingredients"></div>
+      <button class="big-btn submit-btn" onclick="submitAnswers()">CHECK ✓</button>
+    </div>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="grade-text">🏆</h1>
+    <div class="grade" id="grade">S</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-value" id="r-correct">0/0</div><div class="stat-label">Correct</div></div>
+      <div class="stat"><div class="stat-value" id="r-score">0</div><div class="stat-label">Score</div></div>
+    </div>
+    <button class="big-btn" onclick="location.reload()">COOK AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>

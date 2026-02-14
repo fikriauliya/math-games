@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Math Word Search</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🔍 MATH WORDSEARCH</h1>
+    <h2>Find hidden math terms!</h2>
+    <div class="settings">
+      <label>Difficulty: <select id="diff"><option value="easy">Easy (8×8)</option><option value="medium" selected>Medium (10×10)</option><option value="hard">Hard (12×12)</option></select></label>
+    </div>
+    <button class="big-btn" onclick="startGame()">SEARCH!</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <div id="game" class="screen hidden">
+    <div class="hud">
+      <div class="hud-item"><div class="hud-label">Found</div><div class="hud-value"><span id="found-count">0</span>/<span id="total-words">6</span></div></div>
+      <div class="hud-item"><div class="hud-label">Time</div><div class="hud-value" id="time">120</div></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <ul class="word-list" id="word-list"></ul>
+  </div>
+  <div id="result" class="screen hidden">
+    <h1 id="grade-text">🏆</h1>
+    <div class="grade" id="grade">S</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-value" id="r-found">0/0</div><div class="stat-label">Found</div></div>
+      <div class="stat"><div class="stat-value" id="r-score">0</div><div class="stat-label">Score</div></div>
+    </div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+  <script src="./app.ts"></script>
+</body>
+</html>
