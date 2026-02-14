@@ -41,7 +41,7 @@ export function getDifficultyConfig(level: Difficulty): DifficultyConfig {
 export function generateNumbers(difficulty: Difficulty, count: number, allowDecimals: boolean): number[] {
   const config = getDifficultyConfig(difficulty);
   const numbers: number[] = [];
-  const useDecimals = allowDecimals && config.decimals;
+  const useDecimals = allowDecimals || config.decimals;
 
   for (let i = 0; i < count; i++) {
     let n: number;
