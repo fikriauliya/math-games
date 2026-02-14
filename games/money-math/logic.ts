@@ -63,14 +63,21 @@ export const generateQuestionEffect = (roundNum: number): Effect.Effect<MoneyQue
   });
 
 const generateChoices = (answer: number, maxDenom: number): Effect.Effect<number[]> =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
+    const rand = (max: number) => Math.floor(Math.random() * max);
     const choices = new Set([answer]);
     while (choices.size < 4) {
-      const offset = ((yield* randomInt(5)) + 1) * DENOMINATIONS[yield* randomInt(maxDenom)];
-      const wrong = (yield* randomInt(2)) === 0 ? answer + offset : Math.max(100, answer - offset);
+      const offset = (rand(5) + 1) * DENOMINATIONS[rand(maxDenom)];
+      const wrong = rand(2) === 0 ? answer + offset : Math.max(100, answer - offset);
       if (wrong !== answer && wrong > 0) choices.add(wrong);
     }
-    return yield* shuffleEffect([...choices]);
+    const arr = [...choices];
+    // inline shuffle
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = rand(i + 1);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   });
 
 export const checkAnswerEffect = (userAnswer: number, correct: number): Either.Either<string, string> =>

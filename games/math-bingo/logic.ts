@@ -38,36 +38,35 @@ export const generateCardEffect = (diff: Difficulty): Effect.Effect<BingoCard> =
   });
 
 export const generateQuestionEffect = (answer: number, diff: Difficulty): Effect.Effect<BingoQuestion> =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
+    const rand = (max: number) => Math.floor(Math.random() * max);
     if (diff === 'easy') {
-      const a = (yield* randomInt(answer)) + 1;
-      const b = answer - a;
-      return { text: `${a} + ${b}`, answer };
+      const a = rand(Math.max(1, answer - 1)) + 1;
+      return { text: `${a} + ${answer - a}`, answer };
     } else if (diff === 'medium') {
-      const useAdd = (yield* randomInt(2)) === 0;
-      if (useAdd) {
-        const a = (yield* randomInt(answer)) + 1;
+      if (rand(2) === 0) {
+        const a = rand(Math.max(1, answer - 1)) + 1;
         return { text: `${a} + ${answer - a}`, answer };
       } else {
-        const extra = (yield* randomInt(20)) + 1;
+        const extra = rand(20) + 1;
         return { text: `${answer + extra} − ${extra}`, answer };
       }
     } else {
       const ops = ['+', '−', '×'];
-      const op = ops[yield* randomInt(3)];
+      const op = ops[rand(3)];
       if (op === '×') {
         const factors = getFactors(answer);
         if (factors.length > 0) {
-          const [a, b] = factors[yield* randomInt(factors.length)];
+          const [a, b] = factors[rand(factors.length)];
           return { text: `${a} × ${b}`, answer };
         }
-        const a = (yield* randomInt(answer)) + 1;
+        const a = rand(Math.max(1, answer - 1)) + 1;
         return { text: `${a} + ${answer - a}`, answer };
       } else if (op === '−') {
-        const extra = (yield* randomInt(30)) + 1;
+        const extra = rand(30) + 1;
         return { text: `${answer + extra} − ${extra}`, answer };
       } else {
-        const a = (yield* randomInt(answer)) + 1;
+        const a = rand(Math.max(1, answer - 1)) + 1;
         return { text: `${a} + ${answer - a}`, answer };
       }
     }

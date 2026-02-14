@@ -10,17 +10,18 @@ export const TOTAL_ROUNDS = 10;
 const randomInt = (max: number) => Effect.sync(() => Math.floor(Math.random() * max));
 
 export const generateRoundEffect = (roundNum: number): Effect.Effect<MirrorRound> =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
+    const rand = (max: number) => Math.floor(Math.random() * max);
     const size = roundNum < 3 ? 3 : roundNum < 6 ? 4 : roundNum < 8 ? 5 : 6;
     const modes: MirrorRound['mode'][] = roundNum < 4 ? ['same'] : ['same', 'mirror', 'rotate'];
-    const mode = modes[yield* randomInt(modes.length)];
+    const mode = modes[rand(modes.length)];
     const fillCount = Math.floor(size * size * 0.3) + 2;
 
     const pattern: boolean[][] = Array.from({ length: size }, () => Array(size).fill(false));
     let filled = 0;
     while (filled < fillCount) {
-      const r = yield* randomInt(size);
-      const c = yield* randomInt(size);
+      const r = rand(size);
+      const c = rand(size);
       if (!pattern[r][c]) { pattern[r][c] = true; filled++; }
     }
     return { size, pattern, mode };

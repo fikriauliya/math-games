@@ -17,41 +17,81 @@
   .ok { color: #ff9800; }
   .bad { color: #f44336; }
   .game-name { font-weight: 600; text-transform: capitalize; }
+  #login { max-width: 320px; margin: 15vh auto; text-align: center; }
+  #login input { width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #334; background: #16213e; color: #eee; font-size: 1rem; margin: 1rem 0; }
+  #login button { padding: 0.7rem 2rem; border-radius: 8px; border: none; background: #0f3460; color: #eee; font-size: 1rem; cursor: pointer; }
+  #login button:hover { background: #1a4a8a; }
+  .error { color: #f44336; font-size: 0.9rem; margin-top: 0.5rem; }
   @media (max-width: 600px) { body { padding: 0.5rem; } th, td { padding: 0.4rem; font-size: 0.8rem; } }
 </style>
 </head>
 <body>
 <h1>📊 Game Analytics</h1>
-<div id="content" class="loading">Loading...</div>
+<div id="login">
+  <p>Enter admin password</p>
+  <input type="password" id="pw" placeholder="Password" autofocus>
+  <br><button onclick="tryLogin()">Login</button>
+  <div id="login-error" class="error"></div>
+</div>
+<div id="content" class="loading" style="display:none">Loading...</div>
 <script>
-  fetch('/api/analytics?summary=true')
-    .then(r => r.json())
-    .then(data => {
-      const games = Object.entries(data).sort((a, b) => b[1].plays - a[1].plays);
-      if (!games.length) { document.getElementById('content').textContent = 'No data yet.'; return; }
-      const pct = (n, d) => d ? Math.round(n / d * 100) : 0;
-      const cls = (v, good, bad) => v >= good ? 'good' : v <= bad ? 'bad' : 'ok';
-      let html = `<table><thead><tr>
-        <th>Game</th><th>Plays</th><th>Done</th><th>%</th><th>Avg Dur</th>
-        <th>👍</th><th>👎</th><th>Rating%</th><th>Replay</th>
-      </tr></thead><tbody>`;
-      for (const [name, s] of games) {
-        const cp = pct(s.completions, s.plays);
-        const rp = s.thumbs_up + s.thumbs_down ? pct(s.thumbs_up, s.thumbs_up + s.thumbs_down) : '-';
-        html += `<tr>
-          <td class="game-name">${name.replace(/-/g, ' ')}</td>
-          <td>${s.plays}</td><td>${s.completions}</td>
-          <td class="${cls(cp, 70, 40)}">${cp}%</td>
-          <td>${s.avg_duration}s</td>
-          <td class="good">${s.thumbs_up}</td><td class="bad">${s.thumbs_down}</td>
-          <td>${rp === '-' ? '-' : `<span class="${cls(rp, 70, 40)}">${rp}%</span>`}</td>
-          <td>${s.replay_rate}x</td>
-        </tr>`;
-      }
-      html += '</tbody></table>';
-      document.getElementById('content').innerHTML = html;
-    })
-    .catch(() => { document.getElementById('content').textContent = 'Failed to load data.'; });
+  const stored = sessionStorage.getItem('admin_pw');
+  if (stored) loadDashboard(stored);
+
+  function tryLogin() {
+    const pw = document.getElementById('pw').value;
+    if (!pw) return;
+    loadDashboard(pw);
+  }
+  document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+  function loadDashboard(pw) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('content').textContent = 'Loading...';
+
+    fetch('/api/analytics?summary=true', { headers: { Authorization: 'Bearer ' + pw } })
+      .then(r => {
+        if (r.status === 401) throw new Error('wrong_password');
+        return r.json();
+      })
+      .then(data => {
+        sessionStorage.setItem('admin_pw', pw);
+        const games = Object.entries(data).sort((a, b) => b[1].plays - a[1].plays);
+        if (!games.length) { document.getElementById('content').textContent = 'No data yet.'; return; }
+        const pct = (n, d) => d ? Math.round(n / d * 100) : 0;
+        const cls = (v, good, bad) => v >= good ? 'good' : v <= bad ? 'bad' : 'ok';
+        let html = `<table><thead><tr>
+          <th>Game</th><th>Plays</th><th>Done</th><th>%</th><th>Avg Dur</th>
+          <th>👍</th><th>👎</th><th>Rating%</th><th>Replay</th>
+        </tr></thead><tbody>`;
+        for (const [name, s] of games) {
+          const cp = pct(s.completions, s.plays);
+          const rp = s.thumbs_up + s.thumbs_down ? pct(s.thumbs_up, s.thumbs_up + s.thumbs_down) : '-';
+          html += `<tr>
+            <td class="game-name">${name.replace(/-/g, ' ')}</td>
+            <td>${s.plays}</td><td>${s.completions}</td>
+            <td class="${cls(cp, 70, 40)}">${cp}%</td>
+            <td>${s.avg_duration}s</td>
+            <td class="good">${s.thumbs_up}</td><td class="bad">${s.thumbs_down}</td>
+            <td>${rp === '-' ? '-' : `<span class="${cls(rp, 70, 40)}">${rp}%</span>`}</td>
+            <td>${s.replay_rate}x</td>
+          </tr>`;
+        }
+        html += '</tbody></table>';
+        document.getElementById('content').innerHTML = html;
+      })
+      .catch(err => {
+        if (err.message === 'wrong_password') {
+          sessionStorage.removeItem('admin_pw');
+          document.getElementById('content').style.display = 'none';
+          document.getElementById('login').style.display = 'block';
+          document.getElementById('login-error').textContent = 'Wrong password';
+        } else {
+          document.getElementById('content').textContent = 'Failed to load data.';
+        }
+      });
+  }
 </script>
 </body>
 </html>

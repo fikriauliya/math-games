@@ -21,30 +21,37 @@ export const shuffleEffect = <T>(a: T[]): Effect.Effect<T[]> =>
   });
 
 export const generateRoundEffect = (roundNum: number): Effect.Effect<SkipRound> =>
-  Effect.gen(function* () {
+  Effect.sync(() => {
+    const rand = (max: number) => Math.floor(Math.random() * max);
     const steps = roundNum < 3 ? [2, 5, 10] : roundNum < 6 ? [2, 3, 5, 10] : [2, 3, 4, 5, 6, 7, 10];
-    const step = steps[yield* randomInt(steps.length)];
-    const start = step * ((yield* randomInt(5)) + 1);
-    const len = 6;
+    const step = steps[rand(steps.length)];
+    const start = step * (rand(5) + 1);
     const full: number[] = [];
-    for (let i = 0; i < len; i++) full.push(start + step * i);
+    for (let i = 0; i < 6; i++) full.push(start + step * i);
 
-    // Remove 2 numbers as blanks
     const blankCount = roundNum < 4 ? 1 : 2;
-    const indices = [1, 2, 3, 4]; // don't blank first or last
-    const blankIndices = (yield* shuffleEffect(indices)).slice(0, blankCount);
+    const indices = [1, 2, 3, 4];
+    // shuffle indices
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = rand(i + 1);
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    const blankIndices = indices.slice(0, blankCount);
     const answers: number[] = blankIndices.map(i => full[i]);
     const sequence: (number | null)[] = full.map((n, i) => blankIndices.includes(i) ? null : n);
 
-    // Generate choices
     const choiceSet = new Set(answers);
     while (choiceSet.size < answers.length + 3) {
-      const wrong = answers[0] + ((yield* randomInt(10)) - 5) * step;
+      const wrong = answers[0] + (rand(10) - 5) * step;
       if (wrong > 0 && !answers.includes(wrong)) choiceSet.add(wrong);
     }
-    const choices = yield* shuffleEffect([...choiceSet]);
+    const arr = [...choiceSet];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = rand(i + 1);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
 
-    return { step, sequence, answers, choices };
+    return { step, sequence, answers, choices: arr };
   });
 
 export const checkAnswerEffect = (answer: number, expected: number): Either.Either<string, string> =>

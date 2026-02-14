@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Multiplication War ⚔️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a href="/" class="back-link">← Back</a>
+
+<div class="screen active" id="start-screen">
+  <div class="start-emoji">🃏</div>
+  <div class="start-title">Multiplication War</div>
+  <div class="start-sub">Two cards flip — first to tap the product wins the round!</div>
+  <button class="btn-play" onclick="startGame()">Play! ⚔️</button>
+</div>
+
+<div class="screen" id="game-screen">
+  <div class="round-info">Round <span id="round-num">1</span> / 15</div>
+  <div class="scores-bar">
+    <div class="player-score p1">P1: <span id="p1-score">0</span></div>
+    <div class="player-score p2">P2: <span id="p2-score">0</span></div>
+  </div>
+  <div class="cards-area">
+    <div class="war-card" id="card1">?</div>
+    <div class="vs">×</div>
+    <div class="war-card" id="card2">?</div>
+  </div>
+  <div class="choices" id="choices"></div>
+  <div class="turn-label" id="turn-label"></div>
+</div>
+
+<div class="screen" id="result-screen">
+  <div class="result-emoji" id="result-emoji"></div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <button class="btn-play" onclick="startGame()">Play Again! 🔄</button>
+</div>
+
+<script src="./app.ts"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import { getStore } from '@netlify/blobs';
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
 function json(data: any, status = 200) {
@@ -34,7 +34,12 @@ export default async (request: Request) => {
   }
 
   if (request.method === 'GET') {
+    const adminPw = process.env.ADMIN_PASSWORD;
+    if (!adminPw) return json({ error: 'ADMIN_PASSWORD not configured' }, 500);
     const url = new URL(request.url);
+    const pw = url.searchParams.get('password') || request.headers.get('Authorization')?.replace('Bearer ', '');
+    if (pw !== adminPw) return json({ error: 'unauthorized' }, 401);
+
     const date = url.searchParams.get('date');
     const summary = url.searchParams.get('summary');
 
