@@ -53,6 +53,11 @@ h1 .emoji { font-size: clamp(1.1rem, 4vw, 1.8rem); }
 .game-card.theme-sizes { border-left: 4px solid #42a5f5; }
 .game-card.theme-letters { border-left: 4px solid #e91e63; }
 .game-card.theme-match { border-left: 4px solid #7c4dff; }
+.game-card.theme-sudoku { border-left: 4px solid #1a1a2e; }
+.game-card.theme-logicgrid { border-left: 4px solid #5d4037; }
+.game-card.theme-maze { border-left: 4px solid #e74c3c; }
+.game-card.theme-sequence { border-left: 4px solid #f39c12; }
+.game-card.theme-oddone { border-left: 4px solid #ffd93d; }
 
 .game-emoji { font-size: 2rem; flex-shrink: 0; width: 2.5rem; text-align: center; }
 .game-info { flex: 1; min-width: 0; }

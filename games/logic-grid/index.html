@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Logic Grid Puzzle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="start" class="screen">
+    <h1>🔍 LOGIC GRID</h1>
+    <h2>Use clues to solve who owns what!</h2>
+    <div class="settings">
+      <label>Difficulty: <select id="diff">
+        <option value="easy">Easy (2×2)</option>
+        <option value="medium" selected>Medium (3×3)</option>
+        <option value="hard">Hard (4×4)</option>
+      </select></label>
+    </div>
+    <button class="big-btn" onclick="startGame()">SOLVE</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <div id="game" class="screen hidden">
+    <div class="hud">
+      <a href="/" class="back-small">← Back</a>
+      <div class="timer" id="timer">0:00</div>
+    </div>
+    <div class="clues-area" id="clues"></div>
+    <div class="grid-area" id="grid-table"></div>
+    <p class="hint">Tap: ✗ → ✓ → clear</p>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <h1>🎉 SOLVED!</h1>
+    <div class="result-time" id="r-time">0:00</div>
+    <button class="big-btn" onclick="location.reload()">PLAY AGAIN</button>
+    <a href="/" class="back">← Back to Games</a>
+  </div>
+
+  <script src="./app.ts"></script>
+</body>
+</html>
